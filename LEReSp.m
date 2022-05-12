@@ -74,17 +74,30 @@ function [PSa,PSv,Sd,Sv,Sa,SievABS,SievREL]=LEReSp(dt,xgtt,T,varargin)
 %         energy velocity.
 %
 % Example
+%     %
 %     dt=0.02;
-%     xgtt=rand(1000,1);
-%     Tspectra=logspace(log10(0.02),log10(50),1000)';
+%     %
+%     N=10;
+%     a=rand(N,1)-0.5;
+%     b=100*pi*rand(N,1);
+%     c=pi*(rand(N,1)-0.5);
+%     t=(0:dt:(100*dt))';
+%     xgtt=zeros(size(t));
+%     for i=1:N
+%         xgtt=xgtt+a(i)*sin(b(i)*t+c(i));
+%     end
+%     %
+%     T=logspace(log10(0.02),log10(50),1000)';
+%     %
 %     ksi=0.05;
+%     %
 %     [PSa,PSv,Sd,Sv,Sa,SievABS,SievREL]=LEReSp(dt,xgtt,T,ksi);
 %
 %__________________________________________________________________________
-% Copyright (c) 2018-2021
+% Copyright (c) 2018-2022
 %     George Papazafeiropoulos
 %     Major, Infrastructure Engineer, Hellenic Air Force
-%     Civil Engineer, M.Sc., Ph.D. candidate, NTUA
+%     Civil Engineer, M.Sc., Ph.D.
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 

@@ -155,10 +155,10 @@ function param=OpenSeismoMatlab(dt,xgtt,varargin)
 %         PARAM.Fm [double(1 x 1)] Mean frequency (Fm)
 %
 %__________________________________________________________________________
-% Copyright (c) 2018-2021
+% Copyright (c) 2018-2022
 %     George Papazafeiropoulos
 %     Major, Infrastructure Engineer, Hellenic Air Force
-%     Civil Engineer, M.Sc., Ph.D. candidate, NTUA
+%     Civil Engineer, M.Sc., Ph.D.
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 
@@ -322,12 +322,13 @@ switch sw
         T=T(:);
         param.Period = T(:);
         % n [double(1 x 1)] is the maximum number of iterations.
-        n=65;
+        n=50;
         tol=0.005;
+        redf=4;
         dtTol=0.02;
         rinf=1;
         [CDPSa,CDPSv,CDSd,CDSv,CDSa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,mu,n,tol,...
-            dtTol,AlgID,rinf);
+            redf,dtTol,AlgID,rinf);
         param.CDPSa=CDPSa(:);
         param.CDPSv=CDPSv(:);
         param.CDSd=CDSd(:);

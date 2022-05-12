@@ -93,10 +93,10 @@ function [u,ut,utt] = LIDA(dt,xgtt,omega,varargin)
 %     D=max(abs(u))/0.0254
 %
 %__________________________________________________________________________
-% Copyright (c) 2018-2021
+% Copyright (c) 2018-2022
 %     George Papazafeiropoulos
 %     Major, Infrastructure Engineer, Hellenic Air Force
-%     Civil Engineer, M.Sc., Ph.D. candidate, NTUA
+%     Civil Engineer, M.Sc., Ph.D.
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 

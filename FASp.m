@@ -19,10 +19,10 @@ function [f,U] = FASp(dt,xgtt)
 %     U [double(1:2^(nextpow2(length(XGTT))-1) x 1)] contains the Fourier amplitudes
 %
 %__________________________________________________________________________
-% Copyright (c) 2018-2021
+% Copyright (c) 2018-2022
 %     George Papazafeiropoulos
 %     Major, Infrastructure Engineer, Hellenic Air Force
-%     Civil Engineer, M.Sc., Ph.D. candidate, NTUA
+%     Civil Engineer, M.Sc., Ph.D.
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 

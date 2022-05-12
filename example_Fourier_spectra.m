@@ -59,10 +59,10 @@ end
 
 %% Copyright
 %
-% Copyright (c) 2018-2021 by George Papazafeiropoulos
+% Copyright (c) 2018-2022 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
-% * Civil Engineer, M.Sc., Ph.D. candidate, NTUA
+% * Civil Engineer, M.Sc., Ph.D.
 % * Email: gpapazafeiropoulos@yahoo.gr
 %
 

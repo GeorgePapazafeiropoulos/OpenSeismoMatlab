@@ -120,10 +120,10 @@ function [u,ut,utt,Fs,Ey,Es,Ed,jiter] = NLIDABLKIN(dt,xgtt,m,k_hi,k_lo,uy,...
 %     uttn=acceleration after increment n
 %
 %__________________________________________________________________________
-% Copyright (c) 2018-2021
+% Copyright (c) 2018-2022
 %     George Papazafeiropoulos
 %     Major, Infrastructure Engineer, Hellenic Air Force
-%     Civil Engineer, M.Sc., Ph.D. candidate, NTUA
+%     Civil Engineer, M.Sc., Ph.D.
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 

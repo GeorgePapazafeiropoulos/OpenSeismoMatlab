@@ -77,34 +77,45 @@ function [f,K,C,k_status,d] = BLKIN(u,ut,k_hi,k_lo,uy,M,ksi,k_status,d)
 %         before the next application of this function at a next (time)
 %         step.
 %
-% Verification:
+% Example
+%     %
 %     u=0:0.2:4;
-%     ut=0.001*ones(1,numel(u));
 %     u=[u,u(end:-1:1)];
-%     ut=[ut,-ut];
 %     u=[u,-u];
-%     ut=[ut,ut(end:-1:1)];
 %     u=[u u];
+%     %
+%     ut=0.001*ones(1,numel(u));
+%     ut=[ut,-ut];
+%     ut=[ut,ut(end:-1:1)];
 %     ut=[ut ut];
+%     %
 %     k_hi=1000;
+%     %
 %     k_lo=1;
+%     %
 %     uy=2;
+%     %
 %     M=1;
+%     %
 %     ksi=0.05;
+%     %
 %     k=k_hi;
+%     %
 %     d=0;
+%     %
 %     f=zeros(1,numel(u));
 %     for i=1:numel(u)
 %         [f(i),K,C,k,d] = BLKIN(u(i),ut(i),k_hi,k_lo,uy,M,ksi,k,d);
 %     end
+%     %
 %     figure()
 %     plot(u,f)
 %
 %__________________________________________________________________________
-% Copyright (c) 2018-2021
+% Copyright (c) 2018-2022
 %     George Papazafeiropoulos
 %     Major, Infrastructure Engineer, Hellenic Air Force
-%     Civil Engineer, M.Sc., Ph.D. candidate, NTUA
+%     Civil Engineer, M.Sc., Ph.D.
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 

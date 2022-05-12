@@ -2,7 +2,7 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %
 % Constant Ductility Response Spectra (CDReSp)
 %
-% [PSA,PSV,SD,SV,SA,FYK,MUK,ITERK]=CDRESP(DT,XGTT,T,KSI,MU,N,TOL)
+% [PSA,PSV,SD,SV,SA,FYK,MUK,ITERK]=CDRESP(DT,XGTT,T,KSI,MU,N,TOL,REDF,DTTOL,ALGID,RINF)
 %
 % Description
 %     The constant ductility response spectra for a given time-history of
@@ -23,9 +23,60 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %         spectra are calculated.
 %     N [double(1 x 1)] is the maximum number of iterations that can be
 %         performed until convergence of the calculated ductility to the
-%         target ductility is achieved. Default value 65.
+%         target ductility is achieved. Default value 50.
 %     TOL [double(1 x 1)] is the tolerance for convergence for the target
 %         ductility. Default value 0.01.
+%     REDF [double(1 x 1)] is the reduction factor of the lower bound of
+%         the range of the yield limit. The yield limit that corresponds to
+%         to ductility of the SDOF system equal to the target ductility is
+%         assumed to be in the range [maxU/REDF,maxU], where maxU is the
+%         maximum (absolute) displacement of the linear equivalent SDOF
+%         system. Increasing REDF reduces the lower limit increasing thus
+%         the available range. Default value 4.
+%     DTTOL [double(1 x 1)] is the tolerance for resampling of the input
+%         acceleration time history. For a given eigenperiod T, resampling
+%         takes place if DT/T>dtTol. Default value 0.01.
+%     ALGID [char(1 x :inf)] is the algorithm to be used for the time
+%         integration. It can be one of the following strings for superior
+%         optimally designed algorithms:
+%             'generalized a-method': The generalized a-method (Chung &
+%             Hulbert, 1993)
+%             'HHT a-method': The Hilber-Hughes-Taylor method (Hilber,
+%             Hughes & Taylor, 1977)
+%             'WBZ': The Wood–Bossak–Zienkiewicz method (Wood, Bossak &
+%             Zienkiewicz, 1980)
+%             'U0-V0-Opt': Optimal numerical dissipation and dispersion
+%             zero order displacement zero order velocity algorithm
+%             'U0-V0-CA': Continuous acceleration (zero spurious root at
+%             the low frequency limit) zero order displacement zero order
+%             velocity algorithm
+%             'U0-V0-DA': Discontinuous acceleration (zero spurious root at
+%             the high frequency limit) zero order displacement zero order
+%             velocity algorithm
+%             'U0-V1-Opt': Optimal numerical dissipation and dispersion
+%             zero order displacement first order velocity algorithm
+%             'U0-V1-CA': Continuous acceleration (zero spurious root at
+%             the low frequency limit) zero order displacement first order
+%             velocity algorithm
+%             'U0-V1-DA': Discontinuous acceleration (zero spurious root at
+%             the high frequency limit) zero order displacement first order
+%             velocity algorithm
+%             'U1-V0-Opt': Optimal numerical dissipation and dispersion
+%             first order displacement zero order velocity algorithm
+%             'U1-V0-CA': Continuous acceleration (zero spurious root at
+%             the low frequency limit) first order displacement zero order
+%             velocity algorithm
+%             'U1-V0-DA': Discontinuous acceleration (zero spurious root at
+%             the high frequency limit) first order displacement zero order
+%             velocity algorithm
+%             'Newmark ACA': Newmark Average Constant Acceleration method
+%             'Newmark LA': Newmark Linear Acceleration method
+%             'Newmark BA': Newmark Backward Acceleration method
+%             'Fox-Goodwin': Fox-Goodwin formula
+%         Default value 'U0-V0-CA'.
+%     RINF [double(1 x 1)] is the minimum absolute value of the eigenvalues
+%         of the amplification matrix. For the amplification matrix see
+%         eq.(61) in Zhou & Tamma (2004). Default value 0.
 %
 % Output parameters
 %     PSA [double(1:numSDOFs x 1)] is the Pseudo-Spectral Acceleration.
@@ -41,24 +92,47 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %         convergence for each period (each SDOF).
 %
 % Example
-%     fid=fopen('elcentro.dat','r');
-%     text=textscan(fid,'%f %f');
-%     fclose(fid);
+%     %
 %     dt=0.02;
-%     xgtt=text{1,2};
-%     Tspectra=logspace(log10(0.1),log10(3),10)';
+%     %
+%     N=10;
+%     a=rand(N,1)-0.5;
+%     b=100*pi*rand(N,1);
+%     c=pi*(rand(N,1)-0.5);
+%     t=(0:dt:(100*dt))';
+%     xgtt=zeros(size(t));
+%     for i=1:N
+%         xgtt=xgtt+a(i)*sin(b(i)*t+c(i));
+%     end
+%     %
+%     T=(0.04:0.04:4)';
+%     %
 %     ksi=0.05;
+%     %
 %     mu=2;
-%     n=65;
+%     %
+%     n=50;
+%     %
 %     tol=0.01;
-%     [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,mu,n,tol);
-%     plot(Tspectra,Sa)
+%     %
+%     redf=4;
+%     %
+%     dtTol=0.02;
+%     %
+%     AlgID='U0-V0-Opt';
+%     %
+%     rinf=1;
+%     %
+%     [CDPSa,CDPSv,CDSd,CDSv,CDSa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,...
+%         mu,n,tol,redf,dtTol,AlgID,rinf);
+%     %
+%     plot(T,CDSd)
 %
 %__________________________________________________________________________
-% Copyright (c) 2018-2021
+% Copyright (c) 2018-2022
 %     George Papazafeiropoulos
 %     Major, Infrastructure Engineer, Hellenic Air Force
-%     Civil Engineer, M.Sc., Ph.D. candidate, NTUA
+%     Civil Engineer, M.Sc., Ph.D.
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 
@@ -66,17 +140,17 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 if nargin<3
     error('Input arguments less than required')
 end
-if nargin>10
+if nargin>11
     error('Input arguments more than required')
 end
 % set defaults for optional inputs
-optargs = {0.05,2,60,0.01,0.01,'U0-V0-CA',0};
+optargs = {0.05,2,50,0.01,4,0.01,'U0-V0-CA',0};
 % skip any new inputs if they are empty
 newVals = cellfun(@(x) ~isempty(x), varargin);
 % overwrite the default values by those specified in varargin
 optargs(newVals) = varargin(newVals);
 % place optional args in memorable variable names
-[ksi,mu,n,tol,dtTol,AlgID,rinf] = optargs{:};
+[ksi,mu,n,tol,redf,dtTol,AlgID,rinf] = optargs{:};
 % required inputs
 if ~isscalar(dt)
     error('dt is not scalar')
@@ -110,13 +184,31 @@ if ~isscalar(n)
     error('n is not scalar')
 end
 if n<10
-    error('n is lower than 10')
+    warning('n is lower than 10')
 end
 if ~isscalar(tol)
     error('tol is not scalar')
 end
 if tol<=0
     error('tol is zero or negative')
+end
+if ~isscalar(redf)
+    error('redf is not scalar')
+end
+if redf<=0
+    error('redf is zero or negative')
+end
+if ~isscalar(dtTol)
+    error('dtTol is not scalar')
+end
+if dtTol<=0
+    error('dtTol is zero or negative')
+end
+if ~isscalar(rinf)
+    error('rinf is not scalar')
+end
+if rinf<0 || rinf>1
+    error('rinf is lower than 0 or higher than 1')
 end
 
 %% Calculation
@@ -604,8 +696,10 @@ for j=1:length(T)
     uy=zeros(n+1,1);
     resid=zeros(n+1,1);
     pos = max(abs(u));
-    neg = max(abs(u))/(mu*10);
+    neg = max(abs(u))/redf;
     uy(1) = pos;
+    indpos=1;
+    indneg=2;
     tol1=tol;
     for k=1:n % k = iteration number
         [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
@@ -615,53 +709,24 @@ for j=1:length(T)
         fy=k_hi*uy(k);
         fybark=fy/fpeak;
         muk=(umax/upeak)/fybark;
-        % CONVERGENCE TEST : NEWTON AVERAGE ALGORITHM
+        % CONVERGENCE ALGORITHM
         % residual (difference between real and target ductility)
         resid(k) = mu - muk;
+        fyK(j)=fy;
+        muK(j)=muk;
+        iterK(j)=k;
         if (abs(resid(k))/mu <= tol1)
-            fyK(j)=fy;
-            muK(j)=muk;
-            iterK(j)=k;
             break
         elseif (k>=2)
-            % adjust tol1 according to the number of iterations performed
-            if (k>round(n/2) && k<=round(3*n/4))
-                tol1=0.1;
-            elseif (k>round(3*n/4) && k<=round(7*n/8))
-                tol1=0.2;
-            elseif (k>round(7*n/8))
-                tol1=0.8;
-            end
-            % assign uy of previous iteration to pos or neg
-            if resid(k-1)<0
-                neg=uy(k-1);
+            if resid(k)>0
+                indpos=k;
             else
-                pos=uy(k-1);
+                indneg=k;
             end
             % calculate the next value of uy
-            if (resid(k)<0 && resid(k-1)>0)
-                neg=uy(k);
-                uynew=(pos+neg)/2;
-                uy(k+1)=uynew;
-            elseif (resid(k)>0 && resid(k-1)<0)
-                pos=uy(k);
-                uynew=(pos+neg)/2;
-                uy(k+1)=uynew;
-            elseif resid(k)<0 && resid(k-1)<0 && resid(k)>=resid(k-1)
-                neg=uy(k);
-                uynew=(pos+neg)/2;
-                uy(k+1)=uynew;
-            elseif resid(k)<0 && resid(k-1)<0 && resid(k)<=resid(k-1)
-                uynew=(pos+neg)/2;
-                uy(k+1)=uynew;
-            elseif resid(k)>0 && resid(k-1)>0 && resid(k)>=resid(k-1)
-                uynew=(pos+neg)/2;
-                uy(k+1)=uynew;
-            elseif resid(k)>0 && resid(k-1)>0 && resid(k)<=resid(k-1)
-                pos=uy(k);
-                uynew=(pos+neg)/2;
-                uy(k+1)=uynew;
-            end
+            uynew=(resid(indpos)*uy(indneg)-uy(indpos)*resid(indneg))/...
+                (resid(indpos)-resid(indneg));
+            uy(k+1)=uynew;
         elseif (k==1)
             uynew = neg;
             uy(k+1)=uynew;
