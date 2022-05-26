@@ -784,9 +784,9 @@ for n=1:NumSteps-1
     %\_____________________________________________________________________
     
     % assignments to output parameters
-    u(n+1)=un1k;
-    ut(n+1)=utn1k;
-    utt(n+1)=uttn1k;
+    u(n+1)=-un1k;
+    ut(n+1)=-utn1k;
+    utt(n+1)=-uttn1k+xgtt(n+1);
     Fs(n+1)=FKCn1k;
     Ey(n+1)=-(cumsum(FKCn1k-Cn1k*utn1k)+cumsum(FKCn-Cn*utn))/2.*diff([un1k-un;0]);
     Es(n+1)=cumsum(FKCn1k-Cn1k*utn1k).^2./k_hi/2;

@@ -614,6 +614,8 @@ omega=omega(end:-1:1);
 Sd=Sd(end:-1:1);
 Sv=Sv(end:-1:1);
 Sa=Sa(end:-1:1);
+SievABS=SievABS(end:-1:1);
+SievREL=SievREL(end:-1:1);
 % Calculate pseudovelocity and pseudoacceleration
 PSv=Sd.*omega;
 PSa=Sd.*omega.^2;

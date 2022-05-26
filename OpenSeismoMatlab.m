@@ -2,7 +2,7 @@ function param=OpenSeismoMatlab(dt,xgtt,varargin)
 %
 % Seismic parameters of an acceleration time history
 %
-% PARAM=OPENSEISMOMATLAB(DT,XGTT,SW,BASELINESW,DTI,KSI,T,MU,ALGID)
+% PARAM=OPENSEISMOMATLAB(DT,XGTT,SW,BASELINESW,DTI,KSI,T,MU,PYSF,ALGID)
 %
 % Description
 %     This function calculates the seismic parameters from an acceleration
@@ -60,6 +60,11 @@ function param=OpenSeismoMatlab(dt,xgtt,varargin)
 %         of SDOF oscillators being analysed to produce the spectra.
 %     MU [double(1 x 1)] is the specified ductility for which the response
 %         spectra are calculated.
+%     PYSF [double(1 x 1)] is the post-yield stiffness factor, i.e. the
+%         ratio of the postyield stiffness to the initial stiffness. PYSF=0
+%         is not recommended for simulation of an elastoplastic system. A
+%         small positive value is always suggested. PYSF is ignored if
+%         MU=1. Default value 0.01.
 %     ALGID [char(1 x :inf)] is the algorithm to be used for the time
 %         integration, if applicable. It can be one of the following
 %         strings for superior optimally designed algorithms (strings are
@@ -166,17 +171,18 @@ function param=OpenSeismoMatlab(dt,xgtt,varargin)
 if nargin<2
     error('Input arguments less than required')
 end
-if nargin>9
+if nargin>10
     error('Input arguments more than required')
 end
 % set defaults for optional inputs
-optargs = {'ES',true,0.01,0.05,logspace(log10(0.02),log10(50),1000)',2,'U0-V0-Opt'};
+optargs = {'ES',true,0.01,0.05,logspace(log10(0.02),log10(50),1000)',2,...
+    0.01,'U0-V0-Opt'};
 % skip any new inputs if they are empty
 newVals = cellfun(@(x) ~isempty(x), varargin);
 % overwrite the default values by those specified in varargin
 optargs(newVals) = varargin(newVals);
 % place optional args in memorable variable names
-[sw,baselineSw,dti,ksi,T,mu,AlgID] = optargs{:};
+[sw,baselineSw,dti,ksi,T,mu,pysf,AlgID] = optargs{:};
 % required inputs
 if ~isscalar(dt)
     error('dt is not scalar')
@@ -322,13 +328,12 @@ switch sw
         T=T(:);
         param.Period = T(:);
         % n [double(1 x 1)] is the maximum number of iterations.
-        n=50;
+        n=100;
         tol=0.005;
-        redf=4;
         dtTol=0.02;
         rinf=1;
         [CDPSa,CDPSv,CDSd,CDSv,CDSa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,mu,n,tol,...
-            redf,dtTol,AlgID,rinf);
+            pysf,dtTol,AlgID,rinf);
         param.CDPSa=CDPSa(:);
         param.CDPSv=CDPSv(:);
         param.CDSd=CDSd(:);

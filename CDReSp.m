@@ -2,13 +2,15 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %
 % Constant Ductility Response Spectra (CDReSp)
 %
-% [PSA,PSV,SD,SV,SA,FYK,MUK,ITERK]=CDRESP(DT,XGTT,T,KSI,MU,N,TOL,REDF,DTTOL,ALGID,RINF)
+% [PSA,PSV,SD,SV,SA,FYK,MUK,ITERK]=CDRESP(DT,XGTT,T,KSI,MU,N,TOL,PYSF,...
+%     DTTOL,ALGID,RINF)
 %
 % Description
 %     The constant ductility response spectra for a given time-history of
 %     constant time step, a given eigenperiod range, a given viscous
 %     damping ratio and a given ductility are computed. See section 7.5 in
-%     Chopra (2012).
+%     Chopra (2012) and the notes "Inelastic Response Spectra" (CEE 541.
+%     Structural Dynamics) by Henri P. Gavin.
 %
 % Input parameters
 %     DT [double(1 x 1)] is the time step of the input acceleration time
@@ -23,16 +25,14 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %         spectra are calculated.
 %     N [double(1 x 1)] is the maximum number of iterations that can be
 %         performed until convergence of the calculated ductility to the
-%         target ductility is achieved. Default value 50.
+%         target ductility is achieved. Default value 30.
 %     TOL [double(1 x 1)] is the tolerance for convergence for the target
 %         ductility. Default value 0.01.
-%     REDF [double(1 x 1)] is the reduction factor of the lower bound of
-%         the range of the yield limit. The yield limit that corresponds to
-%         to ductility of the SDOF system equal to the target ductility is
-%         assumed to be in the range [maxU/REDF,maxU], where maxU is the
-%         maximum (absolute) displacement of the linear equivalent SDOF
-%         system. Increasing REDF reduces the lower limit increasing thus
-%         the available range. Default value 4.
+%     PYSF [double(1 x 1)] is the post-yield stiffness factor, i.e. the
+%         ratio of the postyield stiffness to the initial stiffness. PYSF=0
+%         is not recommended for simulation of an elastoplastic system. A
+%         small positive value is always suggested. PYSF is ignored if
+%         MU=1. Default value 0.01.
 %     DTTOL [double(1 x 1)] is the tolerance for resampling of the input
 %         acceleration time history. For a given eigenperiod T, resampling
 %         takes place if DT/T>dtTol. Default value 0.01.
@@ -115,7 +115,7 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %     %
 %     tol=0.01;
 %     %
-%     redf=4;
+%     pysf=0.1;
 %     %
 %     dtTol=0.02;
 %     %
@@ -124,9 +124,19 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %     rinf=1;
 %     %
 %     [CDPSa,CDPSv,CDSd,CDSv,CDSa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,...
-%         mu,n,tol,redf,dtTol,AlgID,rinf);
+%         mu,n,tol,pysf,dtTol,AlgID,rinf);
 %     %
+%     figure()
 %     plot(T,CDSd)
+%     %
+%     figure()
+%     plot(T,fyK)
+%     %
+%     figure()
+%     plot(T,muK)
+%     %
+%     figure()
+%     plot(T,iterK)
 %
 %__________________________________________________________________________
 % Copyright (c) 2018-2022
@@ -144,13 +154,13 @@ if nargin>11
     error('Input arguments more than required')
 end
 % set defaults for optional inputs
-optargs = {0.05,2,50,0.01,4,0.01,'U0-V0-CA',0};
+optargs = {0.05,2,50,0.01,0.01,0.01,'U0-V0-CA',0};
 % skip any new inputs if they are empty
 newVals = cellfun(@(x) ~isempty(x), varargin);
 % overwrite the default values by those specified in varargin
 optargs(newVals) = varargin(newVals);
 % place optional args in memorable variable names
-[ksi,mu,n,tol,redf,dtTol,AlgID,rinf] = optargs{:};
+[ksi,mu,n,tol,pysf,dtTol,AlgID,rinf] = optargs{:};
 % required inputs
 if ~isscalar(dt)
     error('dt is not scalar')
@@ -192,10 +202,10 @@ end
 if tol<=0
     error('tol is zero or negative')
 end
-if ~isscalar(redf)
+if ~isscalar(pysf)
     error('redf is not scalar')
 end
-if redf<=0
+if pysf<=0
     error('redf is zero or negative')
 end
 if ~isscalar(dtTol)
@@ -651,13 +661,14 @@ else
 end
 % initialize
 NumSDOF=length(T);
-Sd=zeros(NumSDOF,1);
-Sv=zeros(NumSDOF,1);
-Sa=zeros(NumSDOF,1);
-PSv=zeros(NumSDOF,1);
-PSa=zeros(NumSDOF,1);
-fyK=zeros(NumSDOF,1);
-muK=zeros(NumSDOF,1);
+Sd=nan(NumSDOF,1);
+Sv=nan(NumSDOF,1);
+Sa=nan(NumSDOF,1);
+PSv=nan(NumSDOF,1);
+PSa=nan(NumSDOF,1);
+fyK=nan(NumSDOF,1);
+uyK=nan(NumSDOF,1);
+muK=nan(NumSDOF,1);
 iterK=zeros(NumSDOF,1);
 % natural frequencies of SDOFs to be analysed
 omega=2*pi./T;
@@ -677,7 +688,7 @@ jmax=200;
 % Infinitesimal variation of acceleration
 dak=eps;
 for j=1:length(T)
-    % Step 3, 7.5.3
+    % Step 3, 7.5.3 in Chopra
     omegaj=omega(j);
     % Check if dt/T>dtTol. If yes, then reproduce the time history with the
     % half step
@@ -686,50 +697,113 @@ for j=1:length(T)
         dt=dt/2;
     end
     k_hi=m*omegaj^2;
-    k_lo=k_hi/100;
-    % Step 4, 7.5.3
+    if mu==1
+        k_lo=k_hi;
+    else
+        k_lo=k_hi*pysf;
+    end
+    % Step 4, 7.5.3 in Chopra
     [u,ut,utt,p,Es,Ed] = DRHA(k_hi,m,dt,xgtt,ksi,u0,ut0,AlgID,rinf);
     upeak=max(abs(u));
     fpeak=k_hi*upeak;
-    % Step 5, 7.5.3
-    % find uy in order to achieve ductility equal to mu
-    uy=zeros(n+1,1);
-    resid=zeros(n+1,1);
-    pos = max(abs(u));
-    neg = max(abs(u))/redf;
-    uy(1) = pos;
-    indpos=1;
-    indneg=2;
-    tol1=tol;
-    for k=1:n % k = iteration number
+    
+    % Step 5, 7.5.3 in Chopra
+    % Find uy in order to achieve ductility equal to mu
+    
+    % The following steps are setup according to the notes "Inelastic
+    % Response Spectra" (CEE 541. Structural Dynamics) by Henri P. Gavin
+    
+    % Step 4.(b) in Gavin
+    % Maximum yield strength coefficient Cymax=2
+    maxuy = max(abs(u))*0.999;
+    % Calculate minimum ductility demand mumin
+    % ductility factor from eq. 7.2.4. in Chopra
+    [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
+        k_lo,maxuy,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+    umax=max(abs(um));
+    fy=k_hi*maxuy;
+    fybark=fy/fpeak;
+    mumin=(umax/upeak)/fybark;
+    % Step 4.(a) in Gavin
+    % Minimum yield strength coefficient Cymin=0.01
+    minuy = max(abs(u))/(mu*5);
+    % Calculate minimum ductility demand mumax
+    % ductility factor from eq. 7.2.4. in Chopra
+    [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
+        k_lo,minuy,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+    umax=max(abs(um));
+    fy=k_hi*minuy;
+    fybark=fy/fpeak;
+    mumax=(umax/upeak)/fybark;
+    % Step 4.(c)
+    % Hyperbola coefficients [mu=alpha/(uy+beta)]
+    alpha=mumin*mumax*(maxuy-minuy)/(mumax-mumin);
+    beta=(maxuy*mumin-minuy*mumax)/(mumax-mumin);
+    % Step 4.(d)
+    % Determine yield strengths corresponding to 1.2*mu and 0.8*mu
+    % according to the hyperbola of Step 4.(c)
+    uy1=max(alpha/(1.2*mu)-beta,minuy);
+    uy2=min(alpha/(0.8*mu)-beta,maxuy);
+    % Convergence iterations
+    % k = iteration number
+    for k=1:n
+        % Step 5.(b) Solve for uy1
         [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
-            k_lo,uy(k),ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+            k_lo,uy1,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
         umax=max(abs(um));
         % ductility factor from eq. 7.2.4. in Chopra
-        fy=k_hi*uy(k);
+        fy=k_hi*uy1;
         fybark=fy/fpeak;
-        muk=(umax/upeak)/fybark;
-        % CONVERGENCE ALGORITHM
-        % residual (difference between real and target ductility)
-        resid(k) = mu - muk;
+        mu1=(umax/upeak)/fybark;
+        % Step 5.(c) Solve for uy2
+        [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
+            k_lo,uy2,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+        umax=max(abs(um));
+        % ductility factor from eq. 7.2.4. in Chopra
+        fy=k_hi*uy2;
+        fybark=fy/fpeak;
+        mu2=(umax/upeak)/fybark;
+        % Step 5.(d) Slope of line connecting (uy1,mu1) and (uy2,mu2)
+        S=(mu2-mu1)/(uy2-uy1);
+        % Step 5.(e) Evaluate Duy
+        Duy=min(abs(mu-mu2)/S,0.1*(uy1+uy2));
+        % Step 5.(f)
+        if (mu-mu2)/S>0
+            Duy=-Duy;
+        end
+        % Step 5.(g)
+        if S>0 && mu2<mu
+            Duy=-0.5*uy2;
+        end
+        % Step 5.(h)
+        if S>0 && mu2>mu
+            Duy=0.1*uy2;
+        end
+        % Step 5.(i)
+        if uy2+Duy<0
+            Duy=(minuy-uy2)*(mu-mu2)/(mumax-mu2);
+        end
+        % Step 5.(j)
+        uy1=uy2;
+        mu1=mu2;
+        % Step 5.(k)
+        uy2=uy2+Duy;
+        % Step 5.(l)
+        [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
+            k_lo,uy2,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+        umax=max(abs(um));
+        % ductility factor from eq. 7.2.4. in Chopra
+        fy=k_hi*uy2;
+        fybark=fy/fpeak;
+        mu2=(umax/upeak)/fybark;
+        % Store the output values of the current iteration
+        muK(j)=mu2;
         fyK(j)=fy;
-        muK(j)=muk;
+        uyK(j)=uy2;
         iterK(j)=k;
-        if (abs(resid(k))/mu <= tol1)
+        % Step 5.(m) Check for convergence
+        if abs(uy1-uy2)<1e-4*tol || abs(mu1-mu2)<1e-4*tol || abs(mu2-mu)<tol
             break
-        elseif (k>=2)
-            if resid(k)>0
-                indpos=k;
-            else
-                indneg=k;
-            end
-            % calculate the next value of uy
-            uynew=(resid(indpos)*uy(indneg)-uy(indpos)*resid(indneg))/...
-                (resid(indpos)-resid(indneg));
-            uy(k+1)=uynew;
-        elseif (k==1)
-            uynew = neg;
-            uy(k+1)=uynew;
         end
     end
     % find Sd, Sv, Sa
@@ -741,11 +815,11 @@ for j=1:length(T)
     PSa(j)=Sd(j)*omegaj^2;
 end
 % Flip output quantities to be compatible with omega
+PSa=PSa(end:-1:1);
+PSv=PSv(end:-1:1);
 Sd=Sd(end:-1:1);
 Sv=Sv(end:-1:1);
 Sa=Sa(end:-1:1);
-PSv=PSv(end:-1:1);
-PSa=PSa(end:-1:1);
 fyK=fyK(end:-1:1);
 muK=muK(end:-1:1);
 iterK=iterK(end:-1:1);

@@ -114,8 +114,9 @@ plot(S8.Period,S8.SievABS,'k','LineWidth',1)
 %% 
 figure(15)
 plot(S8.Period,S8.SievREL,'k','LineWidth',1)
-%% 
+%%
 S8.PredPSa
+
 %% 
 S8.PredPeriod
 
