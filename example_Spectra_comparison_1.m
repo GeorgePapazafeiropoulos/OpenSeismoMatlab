@@ -26,7 +26,7 @@ mu=1; % mu=1 equivalent to a linear SDoF
 sw='cds';
 %%
 % Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
-S1=OpenSeismoMatlab(dt,xgtt,sw,[],[],ksi,Tspectra,mu);
+S1=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi,mu);
 
 %% Next we use ES to calculate linear response
 % Extract linear elastic response spectra
@@ -36,7 +36,7 @@ sw='es';
 LERS=cell(numel(eqmotions),1);
 %%
 % Calculation LERS{i}=[S.Period,S.Sd,S.PSv,S.PSa];
-S2=OpenSeismoMatlab(dt,xgtt,sw,[],[],ksi,Tspectra,mu);
+S2=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi);
 
 %% Results from SeismoSignal
 %

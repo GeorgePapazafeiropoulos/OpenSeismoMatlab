@@ -1,8 +1,8 @@
-function [cor_xg, cor_xgt, cor_xgtt] = baselineCorr(t,xgtt)
+function [cor_xg,cor_xgt,cor_xgtt] = baselineCorr(t,xgtt)
 %
 % Baseline correction of acceleration time history
 %
-% [COR_XG, COR_XGT, COR_XGTT] = BASELINECORR(T,XGTT)
+% [COR_XG,COR_XGT,COR_XGTT] = BASELINECORR(T,XGTT)
 %
 % Description
 %     Linear baseline correction is performed for an uncorrected
@@ -32,30 +32,23 @@ function [cor_xg, cor_xgt, cor_xgtt] = baselineCorr(t,xgtt)
 %     COR_XGTT [double(1:nstep x 1)]: time-history of acceleration
 %
 % Example
-%     %
 %     fid=fopen('elcentro.dat','r');
 %     text=textscan(fid,'%f %f');
 %     fclose(fid);
 %     time=text{1,1};
-%     xgtt1=9.81*text{1,2};
-%     %
+%     xgtt1=text{1,2};
 %     dt=time(2)-time(1);
-%     %
 %     xgt1 = cumtrapz(time,xgtt1);
 %     xg1 = cumtrapz(time,xgt1);
-%     %
 %     [xg2, xgt2, xgtt2] = baselineCorr(time,xgtt1)
-%     %
 %     figure()
 %     plot(time,xgtt1)
 %     hold on
 %     plot(time,xgtt2)
-%     %
 %     figure()
 %     plot(time,xgt1)
 %     hold on
 %     plot(time,xgt2)
-%     %
 %     figure()
 %     plot(time,xg1)
 %     hold on

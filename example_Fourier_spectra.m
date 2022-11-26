@@ -1,6 +1,6 @@
 %% Fourier spectra
 % Generate the Fourier spectra of an earthquake suite using
-% OpenSeismoMatlab.
+% OpenSeismoMatlab
 
 %% Input
 % earthquake motions
@@ -15,24 +15,15 @@ eqmotions={'Imperial Valley'; % Imperial valley 1979
     'El Centro'; % Imperial valley 1940
     'Hollister';
     'Kobe'};
-%%
-% Set the eigenperiod range for which the response spectra will be
-% calculated.
-Tspectra=(0.02:0.01:4)';
-%%
-% Set critical damping ratio of the response spectra to be calculated.
-ksi=0.05;
-%%
-% Set the target ductility (not used here)
-mu=2;
-%%
-% Extract fourier spectra
-sw='fas';
 
-%% Calculation
-% Initialize Fourier
+%%
+% Switch
+sw='fs';
+
+%% Extract fourier spectra
+% Initialize cell of Fourier spectra
 Fourier=cell(numel(eqmotions),1);
-% Calculation of peak values
+% Calculation of Fourier spectra
 for i=1:numel(eqmotions)
     % earthquake
     data=load([eqmotions{i},'.dat']);
@@ -52,7 +43,7 @@ for i=1:numel(eqmotions)
     plot(Fourier{i}(:,1),Fourier{i}(:,2),'k','LineWidth',1);
     set(gca,'FontName','Times New Roman')
     title(eqmotions{i},'FontName','Times New Roman')
-    ylabel('FAS','FontName','Times New Roman')
+    ylabel('fs','FontName','Times New Roman')
     xlabel('Frequency (Hz)','FontName','Times New Roman')
     axis tight
 end

@@ -1,6 +1,6 @@
 function [f,K,C,k_status,d] = BLKIN(u,ut,k_hi,k_lo,uy,M,ksi,k_status,d)
 %
-% Bilinear elastoplastic hysteretic model with elastic viscous damping
+% Bilinear kinematic hysteretic model with elastic viscous damping
 %
 % [F,K,C,K_STATUS,D] = BLKIN(U,UT,K_HI,K_LO,UY,M,KSI,K_STATUS,D)
 %
@@ -78,36 +78,25 @@ function [f,K,C,k_status,d] = BLKIN(u,ut,k_hi,k_lo,uy,M,ksi,k_status,d)
 %         step.
 %
 % Example
-%     %
 %     u=0:0.2:4;
 %     u=[u,u(end:-1:1)];
 %     u=[u,-u];
 %     u=[u u];
-%     %
 %     ut=0.001*ones(1,numel(u));
 %     ut=[ut,-ut];
 %     ut=[ut,ut(end:-1:1)];
 %     ut=[ut ut];
-%     %
 %     k_hi=1000;
-%     %
 %     k_lo=1;
-%     %
 %     uy=2;
-%     %
 %     M=1;
-%     %
 %     ksi=0.05;
-%     %
 %     k=k_hi;
-%     %
 %     d=0;
-%     %
 %     f=zeros(1,numel(u));
 %     for i=1:numel(u)
 %         [f(i),K,C,k,d] = BLKIN(u(i),ut(i),k_hi,k_lo,uy,M,ksi,k,d);
 %     end
-%     %
 %     figure()
 %     plot(u,f)
 %

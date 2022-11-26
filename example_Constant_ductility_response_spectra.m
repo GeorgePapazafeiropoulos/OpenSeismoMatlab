@@ -42,7 +42,7 @@ for i=1:numel(eqmotions)
     t=data(:,1);
     dt=t(2)-t(1);
     xgtt=data(:,2);
-    S=OpenSeismoMatlab(dt,xgtt,sw,[],[],ksi,Tspectra,mu,p(i));
+    S=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi,mu,p(i));
     CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
 end
 

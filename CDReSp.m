@@ -1,9 +1,10 @@
-function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
+function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,mu,n,tol,...
+    pysf,dtTol,AlgID,rinf,maxtol,jmax,dak)
 %
-% Constant Ductility Response Spectra (CDReSp)
+% Constant Ductility Response Spectra
 %
-% [PSA,PSV,SD,SV,SA,FYK,MUK,ITERK]=CDRESP(DT,XGTT,T,KSI,MU,N,TOL,PYSF,...
-%     DTTOL,ALGID,RINF)
+% [PSA,PSV,SD,SV,SA,FYK,MUK,ITERK]=CDRESP(DT,XGTT,T,KSI,MU,N,TOL,...
+%     PYSF,DTTOL,ALGID,RINF,MAXTOL,JMAX,DAK)
 %
 % Description
 %     The constant ductility response spectra for a given time-history of
@@ -25,17 +26,17 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %         spectra are calculated.
 %     N [double(1 x 1)] is the maximum number of iterations that can be
 %         performed until convergence of the calculated ductility to the
-%         target ductility is achieved. Default value 30.
+%         target ductility is achieved.
 %     TOL [double(1 x 1)] is the tolerance for convergence for the target
-%         ductility. Default value 0.01.
+%         ductility.
 %     PYSF [double(1 x 1)] is the post-yield stiffness factor, i.e. the
 %         ratio of the postyield stiffness to the initial stiffness. PYSF=0
 %         is not recommended for simulation of an elastoplastic system. A
 %         small positive value is always suggested. PYSF is ignored if
-%         MU=1. Default value 0.01.
+%         MU=1.
 %     DTTOL [double(1 x 1)] is the tolerance for resampling of the input
 %         acceleration time history. For a given eigenperiod T, resampling
-%         takes place if DT/T>dtTol. Default value 0.01.
+%         takes place if DT/T>dtTol.
 %     ALGID [char(1 x :inf)] is the algorithm to be used for the time
 %         integration. It can be one of the following strings for superior
 %         optimally designed algorithms:
@@ -73,10 +74,18 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %             'Newmark LA': Newmark Linear Acceleration method
 %             'Newmark BA': Newmark Backward Acceleration method
 %             'Fox-Goodwin': Fox-Goodwin formula
-%         Default value 'U0-V0-CA'.
 %     RINF [double(1 x 1)] is the minimum absolute value of the eigenvalues
 %         of the amplification matrix. For the amplification matrix see
-%         eq.(61) in Zhou & Tamma (2004). Default value 0.
+%         eq.(61) in Zhou & Tamma (2004).
+%     MAXTOL [double(1 x 1)] is the maximum tolerance of convergence of the
+%         Full Newton Raphson method for numerical computation of
+%         acceleration.
+%     JMAX [double(1 x 1)] is the maximum number of iterations per
+%         increment. If JMAX=0 then iterations are not performed and the
+%         MAXTOL parameter is not taken into account.
+%     DAK [double(1 x 1)] is the infinitesimal acceleration for the
+%         calculation of the derivetive required for the convergence of the
+%         Newton-Raphson iteration.
 %
 % Output parameters
 %     PSA [double(1:numSDOFs x 1)] is the Pseudo-Spectral Acceleration.
@@ -92,9 +101,7 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %         convergence for each period (each SDOF).
 %
 % Example
-%     %
 %     dt=0.02;
-%     %
 %     N=10;
 %     a=rand(N,1)-0.5;
 %     b=100*pi*rand(N,1);
@@ -104,37 +111,26 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %     for i=1:N
 %         xgtt=xgtt+a(i)*sin(b(i)*t+c(i));
 %     end
-%     %
 %     T=(0.04:0.04:4)';
-%     %
 %     ksi=0.05;
-%     %
 %     mu=2;
-%     %
 %     n=50;
-%     %
 %     tol=0.01;
-%     %
 %     pysf=0.1;
-%     %
 %     dtTol=0.02;
-%     %
 %     AlgID='U0-V0-Opt';
-%     %
 %     rinf=1;
-%     %
+%     maxtol=0.01;
+%     jmax=200;
+%     dak=eps;
 %     [CDPSa,CDPSv,CDSd,CDSv,CDSa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,...
-%         mu,n,tol,pysf,dtTol,AlgID,rinf);
-%     %
+%         mu,n,tol,pysf,dtTol,AlgID,rinf,maxtol,jmax,dak);
 %     figure()
 %     plot(T,CDSd)
-%     %
 %     figure()
 %     plot(T,fyK)
-%     %
 %     figure()
 %     plot(T,muK)
-%     %
 %     figure()
 %     plot(T,iterK)
 %
@@ -146,520 +142,11 @@ function [PSa,PSv,Sd,Sv,Sa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,varargin)
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 
-%% Initial checks
-if nargin<3
-    error('Input arguments less than required')
-end
-if nargin>11
-    error('Input arguments more than required')
-end
-% set defaults for optional inputs
-optargs = {0.05,2,50,0.01,0.01,0.01,'U0-V0-CA',0};
-% skip any new inputs if they are empty
-newVals = cellfun(@(x) ~isempty(x), varargin);
-% overwrite the default values by those specified in varargin
-optargs(newVals) = varargin(newVals);
-% place optional args in memorable variable names
-[ksi,mu,n,tol,pysf,dtTol,AlgID,rinf] = optargs{:};
-% required inputs
-if ~isscalar(dt)
-    error('dt is not scalar')
-end
-if dt<=0
-    error('dt is zero or negative')
-end
-if ~isvector(xgtt)
-    error('xgtt is not vector')
-end
-if ~isvector(T)
-    error('T is not vector')
-end
-if any(T<=0)
-    error('T must be positive')
-end
-% optional inputs
-if ~isscalar(ksi)
-    error('ksi is not scalar')
-end
-if ksi<=0
-    error('ksi is zero or negative')
-end
-if ~isscalar(mu)
-    error('mu is not scalar')
-end
-if mu<1
-    error('mu is lower than unity')
-end
-if ~isscalar(n)
-    error('n is not scalar')
-end
-if n<10
-    warning('n is lower than 10')
-end
-if ~isscalar(tol)
-    error('tol is not scalar')
-end
-if tol<=0
-    error('tol is zero or negative')
-end
-if ~isscalar(pysf)
-    error('redf is not scalar')
-end
-if pysf<=0
-    error('redf is zero or negative')
-end
-if ~isscalar(dtTol)
-    error('dtTol is not scalar')
-end
-if dtTol<=0
-    error('dtTol is zero or negative')
-end
-if ~isscalar(rinf)
-    error('rinf is not scalar')
-end
-if rinf<0 || rinf>1
-    error('rinf is lower than 0 or higher than 1')
-end
-
 %% Calculation
 % Set integration constants
-if all(size(AlgID)==[1,14])
-    % define integration constants explicitly
-    w1=AlgID(1);
-    w2=AlgID(2);
-    w3=AlgID(3);
-    W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-    % W2=(1/3+w1/4+w2/5+w3/6)/(1+w1/2+w2/3+w3/4); % definition
-    % W3=(1/4+w1/5+w2/6+w3/7)/(1+w1/2+w2/3+w3/4); % definition
-    W1L1=AlgID(4);
-    W2L2=AlgID(5);
-    W3L3=AlgID(6);
-    W1L4=AlgID(7);
-    W2L5=AlgID(8);
-    W1L6=AlgID(9);
-    l1=AlgID(10);
-    l2=AlgID(11);
-    l3=AlgID(12);
-    l4=AlgID(13);
-    l5=AlgID(14);
-else
-    switch AlgID
-        case 'U0-V0-Opt'
-            % zero-order displacement & velocity overshooting behavior and
-            % optimal numerical dissipation and dispersion
-            % rinf must belong to [0 1]
-            if rinf<0
-                rinf=0;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 0');
-            end
-            if rinf>1
-                rinf=1; % mid-point rule a-form algorithm
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15*(1-2*rinf)/(1-4*rinf); % suggested
-            w2=15*(3-4*rinf)/(1-4*rinf); % suggested
-            w3=-35*(1-rinf)/(1-4*rinf); % suggested
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1/(1+rinf);
-            W2L2=1/2/(1+rinf);
-            W3L3=1/2/(1+rinf)^2;
-            W1L4=1/(1+rinf);
-            W2L5=1/(1+rinf)^2; % suggested
-            W1L6=(3-rinf)/2/(1+rinf);
-            l1=1;
-            l2=1/2;
-            l3=1/2/(1+rinf);
-            l4=1;
-            l5=1/(1+rinf);
-        case 'U0-V0-CA'
-            % zero-order displacement & velocity overshooting behavior and
-            % continuous acceleration
-            % rinf must belong to [1/3 1]
-            if rinf<1/3
-                rinf=1/3;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1/3');
-            end
-            if rinf>1
-                rinf=1; % Newmark average acceleration a-form algorithm
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15*(1-5*rinf)/(3-7*rinf); % suggested
-            w2=15*(1-13*rinf)/(3-7*rinf); % suggested
-            w3=140*rinf/(3-7*rinf); % suggested
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=(1+3*rinf)/2/(1+rinf);
-            W2L2=(1+3*rinf)/4/(1+rinf);
-            W3L3=(1+3*rinf)/4/(1+rinf)^2;
-            W1L4=(1+3*rinf)/2/(1+rinf);
-            W2L5=(1+3*rinf)/2/(1+rinf)^2; % suggested
-            W1L6=1;
-            l1=1;
-            l2=1/2;
-            l3=1/2/(1+rinf);
-            l4=1;
-            l5=1/(1+rinf);
-        case 'U0-V0-DA'
-            % zero-order displacement & velocity overshooting behavior and
-            % discontinuous acceleration
-            % rinf must belong to [0 1]
-            if rinf<0
-                rinf=0;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 0');
-            end
-            if rinf>1
-                rinf=1; % Newmark average acceleration a-form algorithm
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15; % suggested
-            w2=45; % suggested
-            w3=-35; % suggested
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1;
-            W2L2=1/2;
-            W3L3=1/2/(1+rinf);
-            W1L4=1;
-            W2L5=1/(1+rinf); % suggested
-            W1L6=(3+rinf)/2/(1+rinf);
-            l1=1;
-            l2=1/2;
-            l3=1/2/(1+rinf);
-            l4=1;
-            l5=1/(1+rinf);
-        case 'U0-V1-Opt'
-            % zero-order displacement & first-order velocity overshooting
-            % behavior and optimal numerical dissipation and dispersion
-            % This is the generalized a-method (Chung & Hulbert, 1993)
-            % rinf must belong to [0 1]
-            if rinf<0
-                rinf=0;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 0');
-            end
-            if rinf>1
-                rinf=1;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15*(1-2*rinf)/(1-4*rinf);
-            w2=15*(3-4*rinf)/(1-4*rinf);
-            w3=-35*(1-rinf)/(1-4*rinf);
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1/(1+rinf);
-            W2L2=1/2/(1+rinf);
-            W3L3=1/(1+rinf)^3;
-            W1L4=1/(1+rinf);
-            W2L5=(3-rinf)/2/(1+rinf)^2;
-            W1L6=(2-rinf)/(1+rinf);
-            l1=1;
-            l2=1/2;
-            l3=1/(1+rinf)^2;
-            l4=1;
-            l5=(3-rinf)/2/(1+rinf);
-        case 'generalized a-method'
-            % zero-order displacement & first-order velocity overshooting
-            % behavior and optimal numerical dissipation and dispersion
-            % This is the generalized a-method (Chung & Hulbert, 1993)
-            % rinf must belong to [0 1]
-            if rinf<0
-                rinf=0;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 0');
-            end
-            if rinf>1
-                rinf=1;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15*(1-2*rinf)/(1-4*rinf);
-            w2=15*(3-4*rinf)/(1-4*rinf);
-            w3=-35*(1-rinf)/(1-4*rinf);
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1/(1+rinf);
-            W2L2=1/2/(1+rinf);
-            W3L3=1/(1+rinf)^3;
-            W1L4=1/(1+rinf);
-            W2L5=(3-rinf)/2/(1+rinf)^2;
-            W1L6=(2-rinf)/(1+rinf);
-            l1=1;
-            l2=1/2;
-            l3=1/(1+rinf)^2;
-            l4=1;
-            l5=(3-rinf)/2/(1+rinf);
-        case 'U0-V1-CA'
-            % zero-order displacement & first-order velocity overshooting
-            % behavior and continuous acceleration
-            % This is the Hilber-Hughes-Taylor method (Hilber, Hughes &
-            % Taylor, 1977)
-            % rinf must belong to [1/2 1]
-            if rinf<1/2
-                rinf=1/2;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1/2');
-            end
-            if rinf>1
-                rinf=1;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15*(1-2*rinf)/(2-3*rinf);
-            w2=15*(2-5*rinf)/(2-3*rinf);
-            w3=-35*(1-3*rinf)/2/(2-3*rinf);
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=2*rinf/(1+rinf);
-            W2L2=rinf/(1+rinf);
-            W3L3=2*rinf/(1+rinf)^3;
-            W1L4=2*rinf/(1+rinf);
-            W2L5=rinf*(3-rinf)/(1+rinf)^2;
-            W1L6=1;
-            l1=1;
-            l2=1/2;
-            l3=1/(1+rinf)^2;
-            l4=1;
-            l5=(3-rinf)/2/(1+rinf);
-        case 'HHT a-method'
-            % zero-order displacement & first-order velocity overshooting
-            % behavior and continuous acceleration
-            % This is the Hilber-Hughes-Taylor method (Hilber, Hughes &
-            % Taylor, 1977)
-            % rinf must belong to [1/2 1]
-            if rinf<1/2
-                rinf=1/2;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1/2');
-            end
-            if rinf>1
-                rinf=1;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15*(1-2*rinf)/(2-3*rinf);
-            w2=15*(2-5*rinf)/(2-3*rinf);
-            w3=-35*(1-3*rinf)/2/(2-3*rinf);
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=2*rinf/(1+rinf);
-            W2L2=rinf/(1+rinf);
-            W3L3=2*rinf/(1+rinf)^3;
-            W1L4=2*rinf/(1+rinf);
-            W2L5=rinf*(3-rinf)/(1+rinf)^2;
-            W1L6=1;
-            l1=1;
-            l2=1/2;
-            l3=1/(1+rinf)^2;
-            l4=1;
-            l5=(3-rinf)/2/(1+rinf);
-        case 'U0-V1-DA'
-            % zero-order displacement & first-order velocity overshooting
-            % behavior and discontinuous acceleration
-            % This is the Wood–Bossak–Zienkiewicz method (Wood, Bossak &
-            % Zienkiewicz, 1980)
-            % rinf must belong to [0 1]
-            if rinf<0
-                rinf=0;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 0');
-            end
-            if rinf>1
-                rinf=1;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15;
-            w2=45;
-            w3=-35;
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1;
-            W2L2=1/2;
-            W3L3=1/(1+rinf)^2;
-            W1L4=1;
-            W2L5=(3-rinf)/2/(1+rinf);
-            W1L6=2/(1+rinf);
-            l1=1;
-            l2=1/2;
-            l3=1/(1+rinf)^2;
-            l4=1;
-            l5=(3-rinf)/2/(1+rinf);
-        case 'WBZ'
-            % zero-order displacement & first-order velocity overshooting
-            % behavior and discontinuous acceleration
-            % This is the Wood–Bossak–Zienkiewicz method (Wood, Bossak &
-            % Zienkiewicz, 1980)
-            % rinf must belong to [0 1]
-            if rinf<0
-                rinf=0;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 0');
-            end
-            if rinf>1
-                rinf=1;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-15;
-            w2=45;
-            w3=-35;
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1;
-            W2L2=1/2;
-            W3L3=1/(1+rinf)^2;
-            W1L4=1;
-            W2L5=(3-rinf)/2/(1+rinf);
-            W1L6=2/(1+rinf);
-            l1=1;
-            l2=1/2;
-            l3=1/(1+rinf)^2;
-            l4=1;
-            l5=(3-rinf)/2/(1+rinf);
-        case 'U1-V0-Opt'
-            % first-order displacement & zero-order velocity overshooting
-            % behavior and optimal numerical dissipation and dispersion
-            % rinf must belong to [0 1]
-            if rinf<0
-                rinf=0;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 0');
-            end
-            if rinf>1
-                rinf=1; % mid-point rule a-form algorithm
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-30*(3-8*rinf+6*rinf^2)/(9-22*rinf+19*rinf^2);
-            w2=15*(25-74*rinf+53*rinf^2)/2/(9-22*rinf+19*rinf^2);
-            w3=-35*(3-10*rinf+7*rinf^2)/(9-22*rinf+19*rinf^2);
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=(3-rinf)/2/(1+rinf);
-            W2L2=1/(1+rinf)^2;
-            W3L3=1/(1+rinf)^3;
-            W1L4=(3-rinf)/2/(1+rinf);
-            W2L5=2/(1+rinf)^3;
-            W1L6=(2-rinf)/(1+rinf);
-            l1=1;
-            l2=1/2;
-            l3=1/2/(1+rinf);
-            l4=1;
-            l5=1/(1+rinf);
-        case 'U1-V0-CA'
-            % first-order displacement & zero-order velocity overshooting
-            % behavior and continuous acceleration
-            % rinf must belong to [1/2 1]
-            if rinf<1/2
-                rinf=1/2;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1/2');
-            end
-            if rinf>1
-                rinf=1; % Newmark average acceleration a-form algorithm
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-60*(2-8*rinf+7*rinf^2)/(11-48*rinf+41*rinf^2);
-            w2=15*(37-140*rinf+127*rinf^2)/2/(11-48*rinf+41*rinf^2);
-            w3=-35*(5-18*rinf+17*rinf^2)/(11-48*rinf+41*rinf^2);
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=(1+3*rinf)/2/(1+rinf);
-            W2L2=2*rinf/(1+rinf)^2;
-            W3L3=2*rinf/(1+rinf)^3;
-            W1L4=(1+3*rinf)/2/(1+rinf);
-            W2L5=4*rinf/(1+rinf)^3;
-            W1L6=1;
-            l1=1;
-            l2=1/2;
-            l3=1/2/(1+rinf);
-            l4=1;
-            l5=1/(1+rinf);
-        case 'U1-V0-DA'
-            % first-order displacement & zero-order velocity overshooting behavior
-            % and discontinuous acceleration
-            % This is the Newmark average acceleration a-form algorithm
-            % rinf must belong to [0 1]
-            if rinf<0
-                rinf=0;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 0');
-            end
-            if rinf>1
-                rinf=1;
-                warning('Minimum absolute eigenvalue of amplification matrix is set to 1');
-            end
-            w1=-30*(3-4*rinf)/(9-11*rinf);
-            w2=15*(25-37*rinf)/2/(9-11*rinf);
-            w3=-35*(3-5*rinf)/(9-11*rinf);
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=(3+rinf)/2/(1+rinf);
-            W2L2=1/(1+rinf);
-            W3L3=1/(1+rinf)^2;
-            W1L4=(3+rinf)/2/(1+rinf);
-            W2L5=2/(1+rinf)^2;
-            W1L6=2/(1+rinf);
-            l1=1;
-            l2=1/2;
-            l3=1/(1+rinf)^2;
-            l4=1;
-            l5=(3-rinf)/2/(1+rinf);
-        case 'Newmark ACA'
-            % Newmark Average Constant Acceleration method
-            w1=-15;
-            w2=45;
-            w3=-35;
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            % W2=(1/3+w1/4+w2/5+w3/6)/(1+w1/2+w2/3+w3/4); % definition
-            % W3=(1/4+w1/5+w2/6+w3/7)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1;
-            W2L2=0.25;
-            W3L3=0.25;
-            W1L4=0.5;
-            W2L5=0.5;
-            W1L6=1;
-            l1=1;
-            l2=0.5;
-            l3=0.25;
-            l4=1;
-            l5=0.5;
-        case 'Newmark LA'
-            % Newmark Linear Acceleration method
-            w1=-15;
-            w2=45;
-            w3=-35;
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            % W2=(1/3+w1/4+w2/5+w3/6)/(1+w1/2+w2/3+w3/4); % definition
-            % W3=(1/4+w1/5+w2/6+w3/7)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1;
-            W2L2=1/6;
-            W3L3=1/6;
-            W1L4=0.5;
-            W2L5=0.5;
-            W1L6=1;
-            l1=1;
-            l2=0.5;
-            l3=1/6;
-            l4=1;
-            l5=0.5;
-        case 'Newmark BA'
-            % Newmark Backward Acceleration method
-            w1=-15;
-            w2=45;
-            w3=-35;
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            % W2=(1/3+w1/4+w2/5+w3/6)/(1+w1/2+w2/3+w3/4); % definition
-            % W3=(1/4+w1/5+w2/6+w3/7)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1;
-            W2L2=0.5;
-            W3L3=0.5;
-            W1L4=0.5;
-            W2L5=0.5;
-            W1L6=1;
-            l1=1;
-            l2=0.5;
-            l3=0.5;
-            l4=1;
-            l5=0.5;
-        case 'Fox-Goodwin'
-            % Fox-Goodwin formula
-            w1=-15;
-            w2=45;
-            w3=-35;
-            W1=(1/2+w1/3+w2/4+w3/5)/(1+w1/2+w2/3+w3/4); % definition
-            % W2=(1/3+w1/4+w2/5+w3/6)/(1+w1/2+w2/3+w3/4); % definition
-            % W3=(1/4+w1/5+w2/6+w3/7)/(1+w1/2+w2/3+w3/4); % definition
-            W1L1=1;
-            W2L2=1/12;
-            W3L3=1/12;
-            W1L4=0.5;
-            W2L5=0.5;
-            W1L6=1;
-            l1=1;
-            l2=0.5;
-            l3=1/12;
-            l4=1;
-            l5=0.5;
-        otherwise
-            error('No appropriate algorithm specified.');
-    end
-end
-% initialize
+[w1,w2,w3,W1,W1L1,W2L2,W3L3,W1L4,W2L5,W1L6,l1,l2,l3,l4,l5,rinf] = ...
+    TimeIntConstants(AlgID,rinf);
+% Initialize
 NumSDOF=length(T);
 Sd=nan(NumSDOF,1);
 Sv=nan(NumSDOF,1);
@@ -670,23 +157,18 @@ fyK=nan(NumSDOF,1);
 uyK=nan(NumSDOF,1);
 muK=nan(NumSDOF,1);
 iterK=zeros(NumSDOF,1);
-% natural frequencies of SDOFs to be analysed
+% Natural frequencies of SDOFs to be analysed
 omega=2*pi./T;
 % Flip eigenfrequency vector in order for the half-stepping algorithm
 % (HalfStep function) to work from large to small eigenperiods
 omega=omega(end:-1:1);
-% set initial conditions
+% Set initial conditions
 u0=0;
 ut0=0;
-% set SDOF mass to unity (any value can be specified without change of the
+% Set SDOF mass to unity (any value can be specified without change of the
 % results)
 m=1;
-% Maximum tolerance for convergence
-tol2=0.01;
-% Maximum number of iterations per increment
-jmax=200;
-% Infinitesimal variation of acceleration
-dak=eps;
+
 for j=1:length(T)
     % Step 3, 7.5.3 in Chopra
     omegaj=omega(j);
@@ -719,7 +201,7 @@ for j=1:length(T)
     % Calculate minimum ductility demand mumin
     % ductility factor from eq. 7.2.4. in Chopra
     [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
-        k_lo,maxuy,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+        k_lo,maxuy,ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
     umax=max(abs(um));
     fy=k_hi*maxuy;
     fybark=fy/fpeak;
@@ -730,7 +212,7 @@ for j=1:length(T)
     % Calculate minimum ductility demand mumax
     % ductility factor from eq. 7.2.4. in Chopra
     [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
-        k_lo,minuy,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+        k_lo,minuy,ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
     umax=max(abs(um));
     fy=k_hi*minuy;
     fybark=fy/fpeak;
@@ -749,7 +231,7 @@ for j=1:length(T)
     for k=1:n
         % Step 5.(b) Solve for uy1
         [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
-            k_lo,uy1,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+            k_lo,uy1,ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
         umax=max(abs(um));
         % ductility factor from eq. 7.2.4. in Chopra
         fy=k_hi*uy1;
@@ -757,7 +239,7 @@ for j=1:length(T)
         mu1=(umax/upeak)/fybark;
         % Step 5.(c) Solve for uy2
         [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
-            k_lo,uy2,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+            k_lo,uy2,ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
         umax=max(abs(um));
         % ductility factor from eq. 7.2.4. in Chopra
         fy=k_hi*uy2;
@@ -790,7 +272,7 @@ for j=1:length(T)
         uy2=uy2+Duy;
         % Step 5.(l)
         [um,umt,umtt,p,Ey,Es,Ed,iter] = NLIDABLKIN(dt,xgtt,m,k_hi,...
-            k_lo,uy2,ksi,AlgID,u0,ut0,rinf,tol2,jmax,dak);
+            k_lo,uy2,ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
         umax=max(abs(um));
         % ductility factor from eq. 7.2.4. in Chopra
         fy=k_hi*uy2;

@@ -23,9 +23,6 @@ Tspectra=(0.01:0.01:4)';
 % Set critical damping ratio of the response spectra to be calculated.
 ksi=0.05;
 %%
-% Set the target ductility (not used here)
-mu=2;
-%%
 % Extract linear elastic response spectra
 sw='es';
 
@@ -40,7 +37,7 @@ for i=1:numel(eqmotions)
     t=data(:,1);
     dt=t(2)-t(1);
     xgtt=data(:,2);
-    S=OpenSeismoMatlab(dt,xgtt,sw,[],[],ksi,Tspectra,mu);
+    S=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi);
     LERS{i}=[S.Period,S.Sd,S.PSv,S.PSa];
 end
 

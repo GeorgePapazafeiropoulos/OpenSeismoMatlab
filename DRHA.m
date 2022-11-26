@@ -1,29 +1,69 @@
-function [U,V,A,f,Es,Ed] = DRHA(k,m,dt,xgtt,varargin)
+function [U,V,A,f,Es,Ed] = DRHA(k,m,dt,xgtt,ksi,u0,ut0,AlgID,rinf)
 %
-% Dynamic Response History Analysis (DRHA) of a SDOF system
+% Dynamic Response History Analysis
 %
-% [U,V,A,F,ES,ED] = DRHA(K,M,DT,XGTT,KSI,U0,UT0,RINF)
+% [U,V,A,F,ES,ED] = DRHA(K,M,DT,XGTT,KSI,U0,UT0,ALGID,RINF)
 %
 % Description
-%     Determine the time history of structural response of a SDOF system
+%     Calculate the dynamic response of a linear MDOF system using modal
+%     analysis. This function is part of the OpenSeismoMatlab software. It
+%     can be used as standalone, however attention is needed for the
+%     correctness of the input arguments, since no checks are performed in
+%     this function. See the example example_DRHA.m for more details about
+%     how this function can be implemented.
 %
 % Input parameters
-%     K [double(1 x 1)] is the stiffness of the system.
-%     M [double(1 x 1)] is the lumped masses of the structure.
-%     DT [double(1 x 1)] is the time step of the response history analysis
-%         from which the response spectrum is calculated
+%     K [double(:inf x 1)] is the stiffness of the system.
+%     M [double(:inf x 1)] is the lumped masses of the structure.
+%     DT [double(1 x 1)] is the time step of the dynamic response history
+%         analysis
 %     XGTT [double(1:nstep x 1)]: column vector of the acceleration history
 %         of the excitation imposed at the base. nstep is the number of
 %         time steps of the dynamic response.
 %     KSI [double(1 x 1)] is the ratio of critical damping of the SDOF
-%         system. Default value 0.05.
-%     U0 [double(1 x 1)] is the initial displacement of the SDOF system.
-%         Default value 0.
-%     UT0 [double(1 x 1)] is the initial velocity of the SDOF system.
-%         Default value 0.
+%         system.
+%     U0 [double(:inf x 1)] is the initial displacement of the SDOF system.
+%     UT0 [double(:inf x 1)] is the initial velocity of the SDOF system.
+%     ALGID [char(1 x :inf)] is the algorithm to be used for the time
+%         integration. It can be one of the following strings for superior
+%         optimally designed algorithms:
+%             'generalized a-method': The generalized a-method (Chung &
+%             Hulbert, 1993)
+%             'HHT a-method': The Hilber-Hughes-Taylor method (Hilber,
+%             Hughes & Taylor, 1977)
+%             'WBZ': The Wood–Bossak–Zienkiewicz method (Wood, Bossak &
+%             Zienkiewicz, 1980)
+%             'U0-V0-Opt': Optimal numerical dissipation and dispersion
+%             zero order displacement zero order velocity algorithm
+%             'U0-V0-CA': Continuous acceleration (zero spurious root at
+%             the low frequency limit) zero order displacement zero order
+%             velocity algorithm
+%             'U0-V0-DA': Discontinuous acceleration (zero spurious root at
+%             the high frequency limit) zero order displacement zero order
+%             velocity algorithm
+%             'U0-V1-Opt': Optimal numerical dissipation and dispersion
+%             zero order displacement first order velocity algorithm
+%             'U0-V1-CA': Continuous acceleration (zero spurious root at
+%             the low frequency limit) zero order displacement first order
+%             velocity algorithm
+%             'U0-V1-DA': Discontinuous acceleration (zero spurious root at
+%             the high frequency limit) zero order displacement first order
+%             velocity algorithm
+%             'U1-V0-Opt': Optimal numerical dissipation and dispersion
+%             first order displacement zero order velocity algorithm
+%             'U1-V0-CA': Continuous acceleration (zero spurious root at
+%             the low frequency limit) first order displacement zero order
+%             velocity algorithm
+%             'U1-V0-DA': Discontinuous acceleration (zero spurious root at
+%             the high frequency limit) first order displacement zero order
+%             velocity algorithm
+%             'Newmark ACA': Newmark Average Constant Acceleration method
+%             'Newmark LA': Newmark Linear Acceleration method
+%             'Newmark BA': Newmark Backward Acceleration method
+%             'Fox-Goodwin': Fox-Goodwin formula
 %     RINF [double(1 x 1)] is the minimum absolute value of the eigenvalues
 %         of the amplification matrix. For the amplification matrix see
-%         eq.(61) in Zhou & Tamma (2004). Default value 1.
+%         eq.(61) in Zhou & Tamma (2004).
 %
 % Output parameters
 %     U [double(1 x 1:nstep)]: displacement time history.
@@ -46,62 +86,6 @@ function [U,V,A,f,Es,Ed] = DRHA(k,m,dt,xgtt,varargin)
 %     Email: gpapazafeiropoulos@yahoo.gr
 % _________________________________________________________________________
 
-%% Initial checks
-if nargin<4
-    error('Input arguments less than required')
-end
-if nargin>9
-    error('Input arguments more than required')
-end
-% set defaults for optional inputs
-optargs = {0.05,0,0,'U0-V0-CA',0};
-% skip any new inputs if they are empty
-newVals = cellfun(@(x) ~isempty(x), varargin);
-% overwrite the default values by those specified in varargin
-optargs(newVals) = varargin(newVals);
-% place optional args in memorable variable names
-[ksi,u0,ut0,AlgID,rinf] = optargs{:};
-% required inputs
-if ~isscalar(dt)
-    error('dt is not scalar')
-end
-if dt<=0
-    error('dt is zero or negative')
-end
-if ~isvector(xgtt)
-    error('xgtt is not vector')
-end
-if ~isscalar(k)
-    error('k is not scalar')
-end
-if k<=0
-    error('k is zero or negative')
-end
-if ~isscalar(m)
-    error('m is not scalar')
-end
-if m<=0
-    error('m is zero or negative')
-end
-% optional inputs
-if ~isscalar(ksi)
-    error('ksi is not scalar')
-end
-if ksi<=0
-    error('ksi is zero or negative')
-end
-if ~isscalar(u0)
-    error('u0 is not scalar')
-end
-if ~isscalar(ut0)
-    error('ut0 is not scalar')
-end
-if ~isscalar(rinf)
-    error('rinf is not scalar')
-end
-if rinf<0 || rinf>1
-    error('rinf is lower than 0 or higher than 1')
-end
 
 %% Calculation
 % Number of time integration steps
@@ -131,7 +115,7 @@ D1=diag(Eigval,0);
 % (2012).
 Mn=diag(Eigvec'*M*Eigvec);
 % Ln coefficients from eq.(13.1.5) of Chopra (2012).
-Ln=Eigvec'*M;
+Ln=Eigvec'*M*ones(ndofs,1);
 % Gamman coefficients from eq.(13.1.5) of Chopra (2012).
 Gamman=Ln./Mn;
 % Eigenperiods of the building

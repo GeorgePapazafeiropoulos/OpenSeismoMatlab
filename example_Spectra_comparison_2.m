@@ -36,7 +36,7 @@ mu=2; % mu=1 equivalent to a linear SDoF
 sw='cds';
 %%
 % Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
-S1=OpenSeismoMatlab(dt,xgtt{1},sw,[],[],ksi,Tspectra,mu);
+S1=OpenSeismoMatlab(dt,xgtt{1},sw,Tspectra,ksi,mu);
 
 %% Results from SeismoSignal
 %

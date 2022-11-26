@@ -11,11 +11,8 @@ function uNew = HalfStep(u)
 %     UNEW [double(1:n x 1)] is the output signal with time step dt/2.
 %
 % Verification:
-%     %
 %     u=0.2:0.2:4;
-%     %
 %     uNew=HalfStep(u);
-%     %
 %     figure()
 %     plot((1:numel(u)),u)
 %     hold on
