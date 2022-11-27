@@ -1,0 +1,462 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>General demonstration of the OpenSeismoMatlab capabilities</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="example_general.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>General demonstration of the OpenSeismoMatlab capabilities</h1><!--introduction--><p>This is to demonstrate the capabilities of OpenSeismoMatlab and also to verify that OpenSeismoMatlab works properly for all of its possible options and types of application, and yields meaningful results. <b>All</b> capabilities of OpenSeismoMatlab are tested in this example</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load earthquake data</a></li><li><a href="#2">Time histories without baseline correction</a></li><li><a href="#6">Time histories with baseline correction</a></li><li><a href="#10">Resample acceleration time history from 0.02 sec to 0.01 sec.</a></li><li><a href="#12">PGA</a></li><li><a href="#14">PGV</a></li><li><a href="#16">PGD</a></li><li><a href="#18">Total cumulative energy, Arias intensity and significant duration</a></li><li><a href="#26">Linear elastic response spectra and pseudospectra</a></li><li><a href="#36">Constant ductility response spectra and pseudospectra</a></li><li><a href="#45">Fourier amplitude spectrum and mean period</a></li><li><a href="#49">High pass Butterworth filter</a></li><li><a href="#51">Low pass Butterworth filter</a></li><li><a href="#53">Incremental dynamic analysis</a></li><li><a href="#55">Copyright</a></li></ul></div><h2 id="1">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+text=textscan(fid,<span class="string">'%f %f'</span>);
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+</pre><h2 id="2">Time histories without baseline correction</h2><pre class="codeinput">sw=<span class="string">'timehist'</span>;
+baselineSw=false;
+S1=OpenSeismoMatlab(dt,xgtt,sw,baselineSw);
+</pre><pre class="codeinput">figure(1)
+plot(S1.time,S1.disp,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_01.png" alt=""> <pre class="codeinput">figure(2)
+plot(S1.time,S1.vel,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_02.png" alt=""> <pre class="codeinput">figure(3)
+plot(S1.time,S1.acc,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_03.png" alt=""> <h2 id="6">Time histories with baseline correction</h2><pre class="codeinput">sw=<span class="string">'timehist'</span>;
+baselineSw=true;
+S2=OpenSeismoMatlab(dt,xgtt,sw,baselineSw);
+</pre><pre class="codeinput">figure(4)
+plot(S2.time,S2.disp,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_04.png" alt=""> <pre class="codeinput">figure(5)
+plot(S2.time,S2.vel,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_05.png" alt=""> <pre class="codeinput">figure(6)
+plot(S2.time,S2.acc,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_06.png" alt=""> <h2 id="10">Resample acceleration time history from 0.02 sec to 0.01 sec.</h2><pre class="codeinput">sw=<span class="string">'resample'</span>;
+dti=0.01;
+S3=OpenSeismoMatlab(dt,xgtt,sw,dti);
+</pre><pre class="codeinput">figure(7)
+plot(S3.time,S3.acc,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_07.png" alt=""> <h2 id="12">PGA</h2><pre class="codeinput">sw=<span class="string">'pga'</span>;
+S4=OpenSeismoMatlab(dt,xgtt,sw);
+</pre><pre class="codeinput">S4.PGA
+</pre><pre class="codeoutput">
+ans =
+
+   3.127624200000000
+
+</pre><h2 id="14">PGV</h2><pre class="codeinput">sw=<span class="string">'pgv'</span>;
+S5=OpenSeismoMatlab(dt,xgtt,sw);
+</pre><pre class="codeinput">S5.PGV
+</pre><pre class="codeoutput">
+ans =
+
+   0.360920691000000
+
+</pre><h2 id="16">PGD</h2><pre class="codeinput">sw=<span class="string">'pgd'</span>;
+S6=OpenSeismoMatlab(dt,xgtt,sw);
+</pre><pre class="codeinput">S6.PGD
+</pre><pre class="codeoutput">
+ans =
+
+   0.211893410160001
+
+</pre><h2 id="18">Total cumulative energy, Arias intensity and significant duration</h2><pre class="codeinput">sw=<span class="string">'arias'</span>;
+S7=OpenSeismoMatlab(dt,xgtt,sw);
+</pre><pre class="codeinput">S7.Ecum
+</pre><pre class="codeoutput">
+ans =
+
+  11.251388628141965
+
+</pre><pre class="codeinput">figure(8)
+plot(S7.time,S7.EcumTH,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_08.png" alt=""> <pre class="codeinput">S7.t_5_95
+</pre><pre class="codeoutput">
+ans =
+
+   1.680000000000000  25.500000000000000
+
+</pre><pre class="codeinput">S7.Td_5_95
+</pre><pre class="codeoutput">
+ans =
+
+  23.840000000000000
+
+</pre><pre class="codeinput">S7.t_5_75
+</pre><pre class="codeoutput">
+ans =
+
+   1.680000000000000  11.779999999999999
+
+</pre><pre class="codeinput">S7.Td_5_75
+</pre><pre class="codeoutput">
+ans =
+
+  10.119999999999999
+
+</pre><pre class="codeinput">S7.arias
+</pre><pre class="codeoutput">
+ans =
+
+   1.645606908074047
+
+</pre><h2 id="26">Linear elastic response spectra and pseudospectra</h2><pre class="codeinput">sw=<span class="string">'es'</span>;
+ksi=0.05;
+T=0.04:0.02:1;
+S8=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
+</pre><pre class="codeinput">figure(9)
+plot(S8.Period,S8.PSa,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_09.png" alt=""> <pre class="codeinput">figure(10)
+plot(S8.Period,S8.PSv,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_10.png" alt=""> <pre class="codeinput">figure(11)
+plot(S8.Period,S8.Sd,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_11.png" alt=""> <pre class="codeinput">figure(12)
+plot(S8.Period,S8.Sv,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_12.png" alt=""> <pre class="codeinput">figure(13)
+plot(S8.Period,S8.Sa,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_13.png" alt=""> <pre class="codeinput">figure(14)
+plot(S8.Period,S8.SievABS,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_14.png" alt=""> <pre class="codeinput">figure(15)
+plot(S8.Period,S8.SievREL,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><pre class="codeoutput">Warning: Imaginary parts of complex X
+and/or Y arguments ignored 
+</pre><img vspace="5" hspace="5" src="example_general_15.png" alt=""> <pre class="codeinput">S8.PredPSa
+</pre><pre class="codeoutput">
+ans =
+
+   9.011815256159021
+
+</pre><pre class="codeinput">S8.PredPeriod
+</pre><pre class="codeoutput">
+ans =
+
+   0.500000000000000
+
+</pre><h2 id="36">Constant ductility response spectra and pseudospectra</h2><pre class="codeinput">sw=<span class="string">'cds'</span>;
+ksi=0.05;
+T=0.04:0.02:1;
+mu=2;
+S9=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu);
+</pre><pre class="codeinput">figure(15)
+plot(S9.Period,S9.CDPSa,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_16.png" alt=""> <pre class="codeinput">figure(16)
+plot(S9.Period,S9.CDPSv,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_17.png" alt=""> <pre class="codeinput">figure(17)
+plot(S9.Period,S9.CDSd,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_18.png" alt=""> <pre class="codeinput">figure(18)
+plot(S9.Period,S9.CDSv,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_19.png" alt=""> <pre class="codeinput">figure(19)
+plot(S9.Period,S9.CDSa,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_20.png" alt=""> <pre class="codeinput">figure(20)
+plot(S9.Period,S9.fyK,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_21.png" alt=""> <pre class="codeinput">figure(21)
+plot(S9.Period,S9.muK,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_22.png" alt=""> <pre class="codeinput">figure(22)
+plot(S9.Period,S9.iterK,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_23.png" alt=""> <h2 id="45">Fourier amplitude spectrum and mean period</h2><pre class="codeinput">sw=<span class="string">'fs'</span>;
+S10=OpenSeismoMatlab(dt,xgtt,sw);
+</pre><pre class="codeinput">figure(23)
+plot(S10.freq,S10.FAS,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_24.png" alt=""> <pre class="codeinput">S10.Tm
+</pre><pre class="codeoutput">
+ans =
+
+   0.533389590787339
+
+</pre><pre class="codeinput">S10.Fm
+</pre><pre class="codeoutput">
+ans =
+
+   3.293755163661825
+
+</pre><h2 id="49">High pass Butterworth filter</h2><pre class="codeinput">sw=<span class="string">'butterworthhigh'</span>;
+bOrder=4;
+flc=0.1;
+S11=OpenSeismoMatlab(dt,xgtt,sw,bOrder,flc);
+</pre><pre class="codeinput">figure(24)
+plot(S11.time,S11.acc,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_25.png" alt=""> <h2 id="51">Low pass Butterworth filter</h2><pre class="codeinput">sw=<span class="string">'butterworthlow'</span>;
+bOrder=4;
+fhc=10;
+S12=OpenSeismoMatlab(dt,xgtt,sw,bOrder,fhc);
+</pre><pre class="codeinput">figure(25)
+plot(S12.time,S12.acc,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_26.png" alt=""> <h2 id="53">Incremental dynamic analysis</h2><pre class="codeinput">sw=<span class="string">'ida'</span>;
+S13=OpenSeismoMatlab(dt,xgtt,sw);
+</pre><pre class="codeinput">figure(26)
+plot(S13.DM,S13.IM,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+</pre><img vspace="5" hspace="5" src="example_general_27.png" alt=""> <h2 id="55">Copyright</h2><p>Copyright (c) 2018-2022 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% General demonstration of the OpenSeismoMatlab capabilities
+% This is to demonstrate the capabilities of OpenSeismoMatlab and also to
+% verify that OpenSeismoMatlab works properly for all of its possible
+% options and types of application, and yields meaningful results. *All*
+% capabilities of OpenSeismoMatlab are tested in this example
+
+%% Load earthquake data
+% Earthquake acceleration time history of the El Centro earthquake will be
+% used (El Centro, 1940, El Centro Terminal Substation Building)
+fid=fopen('elcentro.dat','r');
+text=textscan(fid,'%f %f');
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+%% Time histories without baseline correction
+%
+sw='timehist';
+baselineSw=false;
+S1=OpenSeismoMatlab(dt,xgtt,sw,baselineSw);
+%%
+figure(1)
+plot(S1.time,S1.disp,'k','LineWidth',1)
+%%
+figure(2)
+plot(S1.time,S1.vel,'k','LineWidth',1)
+%%
+figure(3)
+plot(S1.time,S1.acc,'k','LineWidth',1)
+
+%% Time histories with baseline correction
+%
+sw='timehist';
+baselineSw=true;
+S2=OpenSeismoMatlab(dt,xgtt,sw,baselineSw);
+%%
+figure(4)
+plot(S2.time,S2.disp,'k','LineWidth',1)
+%%
+figure(5)
+plot(S2.time,S2.vel,'k','LineWidth',1)
+%%
+figure(6)
+plot(S2.time,S2.acc,'k','LineWidth',1)
+
+%% Resample acceleration time history from 0.02 sec to 0.01 sec.
+%
+sw='resample';
+dti=0.01;
+S3=OpenSeismoMatlab(dt,xgtt,sw,dti);
+%%
+figure(7)
+plot(S3.time,S3.acc,'k','LineWidth',1)
+
+%% PGA
+%
+sw='pga';
+S4=OpenSeismoMatlab(dt,xgtt,sw);
+%%
+S4.PGA
+
+%% PGV
+%
+sw='pgv';
+S5=OpenSeismoMatlab(dt,xgtt,sw);
+%%
+S5.PGV
+
+%% PGD
+%
+sw='pgd';
+S6=OpenSeismoMatlab(dt,xgtt,sw);
+%%
+S6.PGD
+
+%% Total cumulative energy, Arias intensity and significant duration
+%
+sw='arias';
+S7=OpenSeismoMatlab(dt,xgtt,sw);
+%%
+S7.Ecum
+%%
+figure(8)
+plot(S7.time,S7.EcumTH,'k','LineWidth',1)
+%%
+S7.t_5_95
+%%
+S7.Td_5_95
+%%
+S7.t_5_75
+%%
+S7.Td_5_75
+%%
+S7.arias
+
+%% Linear elastic response spectra and pseudospectra
+%
+sw='es';
+ksi=0.05;
+T=0.04:0.02:1;
+S8=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
+%%
+figure(9)
+plot(S8.Period,S8.PSa,'k','LineWidth',1)
+%%
+figure(10)
+plot(S8.Period,S8.PSv,'k','LineWidth',1)
+%%
+figure(11)
+plot(S8.Period,S8.Sd,'k','LineWidth',1)
+%%
+figure(12)
+plot(S8.Period,S8.Sv,'k','LineWidth',1)
+%%
+figure(13)
+plot(S8.Period,S8.Sa,'k','LineWidth',1)
+%%
+figure(14)
+plot(S8.Period,S8.SievABS,'k','LineWidth',1)
+%%
+figure(15)
+plot(S8.Period,S8.SievREL,'k','LineWidth',1)
+%%
+S8.PredPSa
+
+%%
+S8.PredPeriod
+
+%% Constant ductility response spectra and pseudospectra
+%
+sw='cds';
+ksi=0.05;
+T=0.04:0.02:1;
+mu=2;
+S9=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu);
+%%
+figure(15)
+plot(S9.Period,S9.CDPSa,'k','LineWidth',1)
+%%
+figure(16)
+plot(S9.Period,S9.CDPSv,'k','LineWidth',1)
+%%
+figure(17)
+plot(S9.Period,S9.CDSd,'k','LineWidth',1)
+%%
+figure(18)
+plot(S9.Period,S9.CDSv,'k','LineWidth',1)
+%%
+figure(19)
+plot(S9.Period,S9.CDSa,'k','LineWidth',1)
+%%
+figure(20)
+plot(S9.Period,S9.fyK,'k','LineWidth',1)
+%%
+figure(21)
+plot(S9.Period,S9.muK,'k','LineWidth',1)
+%%
+figure(22)
+plot(S9.Period,S9.iterK,'k','LineWidth',1)
+
+%% Fourier amplitude spectrum and mean period
+%
+sw='fs';
+S10=OpenSeismoMatlab(dt,xgtt,sw);
+%%
+figure(23)
+plot(S10.freq,S10.FAS,'k','LineWidth',1)
+%%
+S10.Tm
+%%
+S10.Fm
+
+%% High pass Butterworth filter
+%
+sw='butterworthhigh';
+bOrder=4;
+flc=0.1;
+S11=OpenSeismoMatlab(dt,xgtt,sw,bOrder,flc);
+%%
+figure(24)
+plot(S11.time,S11.acc,'k','LineWidth',1)
+
+%% Low pass Butterworth filter
+%
+sw='butterworthlow';
+bOrder=4;
+fhc=10;
+S12=OpenSeismoMatlab(dt,xgtt,sw,bOrder,fhc);
+%%
+figure(25)
+plot(S12.time,S12.acc,'k','LineWidth',1)
+
+%% Incremental dynamic analysis
+%
+sw='ida';
+S13=OpenSeismoMatlab(dt,xgtt,sw);
+%%
+figure(26)
+plot(S13.DM,S13.IM,'k','LineWidth',1)
+
+%% Copyright
+%
+% Copyright (c) 2018-2022 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

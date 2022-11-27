@@ -1,0 +1,212 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Comparison of constant ductility response spectra of RSN1044 for mu=2</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="example_Spectra_comparison_2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Comparison of constant ductility response spectra of RSN1044 for mu=2</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Input</a></li><li><a href="#7">Results from OpenSeismoMatlab</a></li><li><a href="#10">Results from SeismoSignal</a></li><li><a href="#11">Output</a></li></ul></div><h2 id="1">Input</h2><p>Earthquake motions</p><pre class="codeinput">GMFileLoc = <span class="string">'input\'</span>;
+</pre><p>A text file containing the lists of GM names</p><pre class="codeinput">RecordList = [<span class="string">'input\Record_List.txt'</span>];
+</pre><p>Read E.Q. records name from the specifid list</p><pre class="codeinput">fid = fopen (RecordList,<span class="string">'r'</span>);
+records = textscan(fid, <span class="string">'%s'</span>); <span class="comment">% length = num of records*1, cell</span>
+fclose (fid);
+</pre><p>Read E.Q. records name from the specifid list Return variables include record names, dt, num of points, PGA, Acc TH, Spectral Acc The accelration-related variables (PGA, Sa, Acc TH) are in unit of g; disp-related in m If you do not specify scaling factors at this step, the default value = 1 for each GM</p><pre class="codeinput">[RecordName_all, dt, numPoint_all, PGA_all, xgtt] =<span class="keyword">...</span>
+    fn_ParseAT2File2(GMFileLoc, records);
+</pre><p>Set the eigenperiod range for which the response spectra will be calculated.</p><pre class="codeinput">Tspectra=(0.05:0.05:4)';
+</pre><p>Set critical damping ratio of the response spectra to be calculated.</p><pre class="codeinput">ksi=0.02;
+</pre><h2 id="7">Results from OpenSeismoMatlab</h2><p>Set the target ductility</p><pre class="codeinput">mu=2; <span class="comment">% mu=1 equivalent to a linear SDoF</span>
+</pre><p>Extract constant ductility response spectra</p><pre class="codeinput">sw=<span class="string">'cds'</span>;
+</pre><p>Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt{1},sw,Tspectra,ksi,mu);
+</pre><h2 id="10">Results from SeismoSignal</h2><pre class="codeinput">fileID = fopen(<span class="string">'input/RSN1044_Damping2.txt'</span>);
+<span class="keyword">for</span> idx = 1:5
+    fgetl(fileID);
+<span class="keyword">end</span>
+C = textscan(fileID,repmat(<span class="string">'%f'</span>,1,15));
+fclose(fileID);
+</pre><h2 id="11">Output</h2><p>Plot spectral acceleration response spectra</p><pre class="codeinput">figure()
+plot(S1.Period,S1.CDSa/9.8,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+hold <span class="string">on</span>
+<span class="comment">%plot(S2.Period,S2.Sa,'r','LineWidth',1);</span>
+plot(C{1},C{3})
+legend(<span class="string">'CDS with mu=2'</span>,<span class="string">'SeismoSignal'</span>);
+xlabel(<span class="string">'Period'</span>);
+ylabel(<span class="string">'Spectra Acc.'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_01.png" alt=""> <p>Plot spectral velocity response spectra</p><pre class="codeinput">figure()
+plot(S1.Period,S1.CDSv,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+hold <span class="string">on</span>
+<span class="comment">%plot(S2.Period,S2.Sa,'r','LineWidth',1);</span>
+plot(C{1},C{7}/100)
+legend(<span class="string">'CDS with mu=2'</span>,<span class="string">'SeismoSignal'</span>);
+xlabel(<span class="string">'Period'</span>);
+ylabel(<span class="string">'Spectra Vel.'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_02.png" alt=""> <p>Plot spectral displacement response spectra</p><pre class="codeinput">figure()
+plot(S1.Period,S1.CDSd,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+hold <span class="string">on</span>
+<span class="comment">%plot(S2.Period,S2.Sa,'r','LineWidth',1);</span>
+plot(C{1},C{11}/100)
+legend(<span class="string">'CDS with mu=2'</span>,<span class="string">'SeismoSignal'</span>);
+xlabel(<span class="string">'Period'</span>);
+ylabel(<span class="string">'Spectra Disp.'</span>)
+hold <span class="string">off</span>
+</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_03.png" alt=""> <p>Plot the achieved ductility for each eigenperiod. It should be equal or close to the target ductility mu=2</p><pre class="codeinput">figure()
+plot(S1.Period,S1.muK,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+xlabel(<span class="string">'Period'</span>);
+ylabel(<span class="string">'Real mu values after iterations'</span>)
+</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_04.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Comparison of constant ductility response spectra of RSN1044 for mu=2
+
+%% Input
+% Earthquake motions
+GMFileLoc = 'input\';
+%%
+% A text file containing the lists of GM names
+RecordList = ['input\Record_List.txt'];
+%%
+% Read E.Q. records name from the specifid list
+fid = fopen (RecordList,'r');
+records = textscan(fid, '%s'); % length = num of records*1, cell
+fclose (fid);
+%%
+% Read E.Q. records name from the specifid list
+% Return variables include record names, dt, num of points, PGA, Acc TH,
+% Spectral Acc
+% The accelration-related variables (PGA, Sa, Acc TH) are in unit of g;
+% disp-related in m
+% If you do not specify scaling factors at this step, the default value = 1
+% for each GM
+[RecordName_all, dt, numPoint_all, PGA_all, xgtt] =...
+    fn_ParseAT2File2(GMFileLoc, records);
+%%
+% Set the eigenperiod range for which the response spectra will be
+% calculated.
+Tspectra=(0.05:0.05:4)';
+%%
+% Set critical damping ratio of the response spectra to be calculated.
+ksi=0.02;
+%% Results from OpenSeismoMatlab
+% Set the target ductility
+mu=2; % mu=1 equivalent to a linear SDoF
+%%
+% Extract constant ductility response spectra
+sw='cds';
+%%
+% Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
+S1=OpenSeismoMatlab(dt,xgtt{1},sw,Tspectra,ksi,mu);
+
+%% Results from SeismoSignal
+%
+fileID = fopen('input/RSN1044_Damping2.txt');
+for idx = 1:5
+    fgetl(fileID);
+end
+C = textscan(fileID,repmat('%f',1,15));
+fclose(fileID);
+
+%% Output
+% Plot spectral acceleration response spectra
+figure()
+plot(S1.Period,S1.CDSa/9.8,'k','LineWidth',1);
+hold on
+%plot(S2.Period,S2.Sa,'r','LineWidth',1);
+plot(C{1},C{3})
+legend('CDS with mu=2','SeismoSignal');
+xlabel('Period');
+ylabel('Spectra Acc.')
+hold off
+%%
+% Plot spectral velocity response spectra
+figure()
+plot(S1.Period,S1.CDSv,'k','LineWidth',1);
+hold on
+%plot(S2.Period,S2.Sa,'r','LineWidth',1);
+plot(C{1},C{7}/100)
+legend('CDS with mu=2','SeismoSignal');
+xlabel('Period');
+ylabel('Spectra Vel.')
+hold off
+%%
+% Plot spectral displacement response spectra
+figure()
+plot(S1.Period,S1.CDSd,'k','LineWidth',1);
+hold on
+%plot(S2.Period,S2.Sa,'r','LineWidth',1);
+plot(C{1},C{11}/100)
+legend('CDS with mu=2','SeismoSignal');
+xlabel('Period');
+ylabel('Spectra Disp.')
+hold off
+%%
+% Plot the achieved ductility for each eigenperiod. It should be equal or
+% close to the target ductility mu=2
+figure()
+plot(S1.Period,S1.muK,'k','LineWidth',1);
+xlabel('Period');
+ylabel('Real mu values after iterations')
+
+
+##### SOURCE END #####
+--></body></html>

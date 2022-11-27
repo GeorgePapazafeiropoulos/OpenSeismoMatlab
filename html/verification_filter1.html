@@ -1,0 +1,236 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Verify the high pass Butterworth filter of OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="verification_filter1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Verify the high pass Butterworth filter of OpenSeismoMatlab</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Earthquake motion</a></li><li><a href="#4">Apply high pass Butterworth filter</a></li><li><a href="#9">Plot the time history of the initial ground motion</a></li><li><a href="#10">Obtain displacement and velocity time histories</a></li><li><a href="#14">Plot the displacement time histories</a></li><li><a href="#15">Plot the velocity time histories</a></li><li><a href="#16">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Boore, D. M. (2005). On pads and filters: Processing strong-motion data. Bulletin of the Seismological Society of America, 95(2), 745-750.</p><h2 id="2">Description</h2><p>Verify Figure 1 of the above reference, for the 1940 El Centro analog recording. The displacements and velocities from unfiltered and filtered accelerations are shown. Filtering is done by using two passes of a fourth-order high pass (i.e. frequencies lower than the cut-off frequency are attenuated) Butterworth filter with cut-off frequency as shown in Figure 1.</p><h2 id="3">Earthquake motion</h2><p>Load earthquake data</p><pre class="codeinput">eqmotions={<span class="string">'Imperial_Valley_El_Centro_9_EW'</span>};
+data=load([eqmotions{1},<span class="string">'.dat'</span>]);
+t=data(:,1);
+dt=t(2)-t(1);
+xgtt=data(:,2);
+</pre><h2 id="4">Apply high pass Butterworth filter</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'butterworthhigh'</span>;
+</pre><p>Order of Butterworth filter</p><pre class="codeinput">bOrder=4;
+</pre><p>Cut-off frequency</p><pre class="codeinput">flc=0.1;
+</pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw,bOrder,flc);
+</pre><p>Filtered acceleration</p><pre class="codeinput">cxgtt=S1.acc;
+</pre><h2 id="9">Plot the time history of the initial ground motion</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
+figure()
+hold <span class="string">on</span>
+plot(t,zeros(size(t)),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+<span class="comment">% Plot the acceleration time history of the initial ground motion</span>
+plot(t,xgtt,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+<span class="comment">% Finalize figure</span>
+hold <span class="string">off</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Acc. (cm/sec2)'</span>)
+</pre><img vspace="5" hspace="5" src="verification_filter1_01.png" alt=""> <h2 id="10">Obtain displacement and velocity time histories</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'timehist'</span>;
+</pre><p>Do not use baseline correction</p><pre class="codeinput">baselineSw=false;
+</pre><p>Apply OpenSeismoMatlab to the initial ground motion</p><pre class="codeinput">S2=OpenSeismoMatlab(dt,xgtt,sw,baselineSw);
+</pre><p>Apply OpenSeismoMatlab to the filtered ground motion</p><pre class="codeinput">S3=OpenSeismoMatlab(dt,cxgtt,sw,baselineSw);
+</pre><h2 id="14">Plot the displacement time histories</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
+figure()
+hold <span class="string">on</span>
+plot(S3.time,zeros(size(S3.time)),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+<span class="comment">% Plot the displacement time history of the initial ground motion</span>
+p1=plot(S2.time,S2.disp,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+<span class="comment">% Plot the displacement time history of the filtered ground motion</span>
+p2=plot(S3.time,S3.disp,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,1);
+<span class="comment">% Finalize figure</span>
+hold <span class="string">off</span>
+grid <span class="string">on</span>
+legend([p1,p2],{<span class="string">'Initial'</span>,<span class="string">'Filtered'</span>})
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Disp. (cm)'</span>)
+</pre><img vspace="5" hspace="5" src="verification_filter1_02.png" alt=""> <h2 id="15">Plot the velocity time histories</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
+figure()
+hold <span class="string">on</span>
+plot(S3.time,zeros(size(S3.time)),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+<span class="comment">% Plot the velocity time history of the initial ground motion</span>
+p1=plot(S2.time,S2.vel,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+<span class="comment">% Plot the velocity time history of the filtered ground motion</span>
+p2=plot(S3.time,S3.vel,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,1);
+<span class="comment">% Finalize figure</span>
+hold <span class="string">off</span>
+grid <span class="string">on</span>
+legend([p1,p2],{<span class="string">'Initial'</span>,<span class="string">'Filtered'</span>})
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Vel. (cm/sec)'</span>)
+</pre><img vspace="5" hspace="5" src="verification_filter1_03.png" alt=""> <h2 id="16">Copyright</h2><p>Copyright (c) 2018-2022 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Verify the high pass Butterworth filter of OpenSeismoMatlab
+
+%% Reference
+% Boore, D. M. (2005). On pads and filters: Processing strong-motion data.
+% Bulletin of the Seismological Society of America, 95(2), 745-750.
+
+%% Description
+% Verify Figure 1 of the above reference, for the 1940 El Centro analog
+% recording. The displacements and velocities from unfiltered and filtered
+% accelerations are shown. Filtering is done by using two passes of a
+% fourth-order high pass (i.e. frequencies lower than the cut-off frequency
+% are attenuated) Butterworth filter with cut-off frequency as shown in
+% Figure 1.
+
+%% Earthquake motion
+% Load earthquake data
+eqmotions={'Imperial_Valley_El_Centro_9_EW'};
+data=load([eqmotions{1},'.dat']);
+t=data(:,1);
+dt=t(2)-t(1);
+xgtt=data(:,2);
+
+%% Apply high pass Butterworth filter
+% Switch
+sw='butterworthhigh';
+%%
+% Order of Butterworth filter
+bOrder=4;
+%%
+% Cut-off frequency
+flc=0.1;
+%%
+% Apply OpenSeismoMatlab
+S1=OpenSeismoMatlab(dt,xgtt,sw,bOrder,flc);
+%%
+% Filtered acceleration
+cxgtt=S1.acc;
+
+%% Plot the time history of the initial ground motion
+
+% Initialize figure
+figure()
+hold on
+plot(t,zeros(size(t)),'k','LineWidth',1)
+% Plot the acceleration time history of the initial ground motion
+plot(t,xgtt,'k','LineWidth',1)
+% Finalize figure
+hold off
+grid on
+xlabel('Time (sec)')
+ylabel('Acc. (cm/sec2)')
+
+%% Obtain displacement and velocity time histories
+% Switch
+sw='timehist';
+%%
+% Do not use baseline correction
+baselineSw=false;
+%%
+% Apply OpenSeismoMatlab to the initial ground motion
+S2=OpenSeismoMatlab(dt,xgtt,sw,baselineSw);
+%%
+% Apply OpenSeismoMatlab to the filtered ground motion
+S3=OpenSeismoMatlab(dt,cxgtt,sw,baselineSw);
+
+%% Plot the displacement time histories
+
+% Initialize figure
+figure()
+hold on
+plot(S3.time,zeros(size(S3.time)),'k','LineWidth',1)
+% Plot the displacement time history of the initial ground motion
+p1=plot(S2.time,S2.disp,'k','LineWidth',1);
+% Plot the displacement time history of the filtered ground motion
+p2=plot(S3.time,S3.disp,'r','LineWidth',1);
+% Finalize figure
+hold off
+grid on
+legend([p1,p2],{'Initial','Filtered'})
+xlabel('Time (sec)')
+ylabel('Disp. (cm)')
+
+%% Plot the velocity time histories
+
+% Initialize figure
+figure()
+hold on
+plot(S3.time,zeros(size(S3.time)),'k','LineWidth',1)
+% Plot the velocity time history of the initial ground motion
+p1=plot(S2.time,S2.vel,'k','LineWidth',1);
+% Plot the velocity time history of the filtered ground motion
+p2=plot(S3.time,S3.vel,'r','LineWidth',1);
+% Finalize figure
+hold off
+grid on
+legend([p1,p2],{'Initial','Filtered'})
+xlabel('Time (sec)')
+ylabel('Vel. (cm/sec)')
+
+%% Copyright
+%
+% Copyright (c) 2018-2022 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

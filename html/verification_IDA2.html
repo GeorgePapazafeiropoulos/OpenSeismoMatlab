@@ -1,0 +1,245 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Verify the incremental dynamic analysis for multiple motions</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="verification_IDA2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Verify the incremental dynamic analysis for multiple motions</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Earthquake motions</a></li><li><a href="#4">Setup parameters for IDA analysis</a></li><li><a href="#19">Construct and plot the IDA curves in a loop</a></li><li><a href="#20">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Deng, P., Pei, S., van de Lindt, J. W., Liu, H., &amp; Zhang, C. (2017). An approach to quantify the influence of ground motion uncertainty on elastoplastic system acceleration in incremental dynamic analysis. Advances in Structural Engineering, 20(11), 1744-1756.</p><h2 id="2">Description</h2><p>Figure 4(a) of the above reference contains the IDA curves of an elastoplastic SDOF system under the Consortium of Universities for Research in Earthquake Engineering (CUREE) GM suite (Krawinkler et al., 2001), which were constructed using the maximum acceleration. In this example, an arbitrary suite of strong ground motions is selected and the maximum acceleration IDA curves are constructed similar to Figure 4(a) of the above reference. The IDA curves of this example strongly resemble those of that figure.</p><h2 id="3">Earthquake motions</h2><p>Load data from a suite of earthquakes</p><pre class="codeinput">GM={<span class="string">'Cape Mendocino.dat'</span>;
+    <span class="string">'ChiChi.dat'</span>;
+    <span class="string">'Christchurch2011HVPS_UP.dat'</span>;
+    <span class="string">'Imperial Valley.dat'</span>;
+    <span class="string">'Imperial_Valley_El_Centro_9_EW.dat'</span>;
+    <span class="string">'Kobe.dat'</span>;
+    <span class="string">'Kocaeli.dat'</span>;
+    <span class="string">'San Fernando.dat'</span>;
+    <span class="string">'Spitak.dat'</span>};
+n=size(GM,1);
+dt=cell(n,1);
+xgtt=cell(n,1);
+<span class="keyword">for</span> i=1:n
+    fid=fopen(GM{i},<span class="string">'r'</span>);
+    text=textscan(fid,<span class="string">'%f %f'</span>);
+    fclose(fid);
+    t=text{1,1};
+    dt{i}=t(2)-t(1);
+    xgtt{i}=text{1,2};
+<span class="keyword">end</span>
+</pre><h2 id="4">Setup parameters for IDA analysis</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'ida'</span>;
+</pre><p>Eigenperiod</p><pre class="codeinput">T=1;
+</pre><p>Scaling factors</p><pre class="codeinput">lambdaF=logspace(log10(0.001),log10(10),100);
+</pre><p>Type of IDA analysis</p><pre class="codeinput">IM_DM=<span class="string">'pgv_acc'</span>;
+</pre><p>Mass</p><pre class="codeinput">m=1;
+</pre><p>Yield displacement</p><pre class="codeinput">uy = 0.18*9.81/(2*pi/T)^2;
+</pre><p>Post yield stiffness factor</p><pre class="codeinput">pysf=0.01;
+</pre><p>Fraction of critical viscous damping</p><pre class="codeinput">ksi=0.05;
+</pre><p>Algorithm to be used for the time integration</p><pre class="codeinput">AlgID=<span class="string">'U0-V0-Opt'</span>;
+</pre><p>Set initial displacement</p><pre class="codeinput">u0=0;
+</pre><p>Set initial velocity</p><pre class="codeinput">ut0=0;
+</pre><p>Minimum absolute value of the eigenvalues of the amplification matrix</p><pre class="codeinput">rinf=1;
+</pre><p>Maximum tolerance for convergence</p><pre class="codeinput">maxtol=0.01;
+</pre><p>Maximum number of iterations per increment</p><pre class="codeinput">jmax=200;
+</pre><p>Infinitesimal variation of acceleration</p><pre class="codeinput">dak=eps;
+</pre><h2 id="19">Construct and plot the IDA curves in a loop</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
+figure()
+hold <span class="string">on</span>
+<span class="comment">% Plot the red bold curve of Figure 4(a) of the above reference</span>
+plot([0,0.22,0.34],[0,0.125,2],<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,2)
+<span class="keyword">for</span> i=1:n
+    <span class="comment">% Apply OpenSeismoMatlab to calculate the ith IDA curve</span>
+    S1=OpenSeismoMatlab(dt{i},xgtt{i},sw,T,lambdaF,IM_DM,m,uy,pysf,ksi,AlgID,<span class="keyword">...</span>
+        u0,ut0,rinf,maxtol,jmax,dak);
+    <span class="comment">% Plot the ith IDA curve</span>
+    plot(S1.DM/9.81,S1.IM)
+<span class="keyword">end</span>
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'Maximum Acceleration (g)'</span>)
+ylabel(<span class="string">'PGV (m/s)'</span>)
+xlim([0,0.5])
+ylim([0,2])
+</pre><img vspace="5" hspace="5" src="verification_IDA2_01.png" alt=""> <h2 id="20">Copyright</h2><p>Copyright (c) 2018-2022 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Verify the incremental dynamic analysis for multiple motions
+
+%% Reference
+% Deng, P., Pei, S., van de Lindt, J. W., Liu, H., & Zhang, C. (2017). An
+% approach to quantify the influence of ground motion uncertainty on
+% elastoplastic system acceleration in incremental dynamic analysis.
+% Advances in Structural Engineering, 20(11), 1744-1756.
+
+%% Description
+% Figure 4(a) of the above reference contains the IDA curves of an
+% elastoplastic SDOF system under the Consortium of Universities for
+% Research in Earthquake Engineering (CUREE) GM suite (Krawinkler et al.,
+% 2001), which were constructed using the maximum acceleration. In this
+% example, an arbitrary suite of strong ground motions is selected and the
+% maximum acceleration IDA curves are constructed similar to Figure 4(a) of
+% the above reference. The IDA curves of this example strongly resemble
+% those of that figure.
+
+%% Earthquake motions
+% Load data from a suite of earthquakes
+GM={'Cape Mendocino.dat';
+    'ChiChi.dat';
+    'Christchurch2011HVPS_UP.dat';
+    'Imperial Valley.dat';
+    'Imperial_Valley_El_Centro_9_EW.dat';
+    'Kobe.dat';
+    'Kocaeli.dat';
+    'San Fernando.dat'; 
+    'Spitak.dat'};
+n=size(GM,1);
+dt=cell(n,1);
+xgtt=cell(n,1);
+for i=1:n
+    fid=fopen(GM{i},'r');
+    text=textscan(fid,'%f %f');
+    fclose(fid);
+    t=text{1,1};
+    dt{i}=t(2)-t(1);
+    xgtt{i}=text{1,2};
+end
+
+%% Setup parameters for IDA analysis
+% Switch
+sw='ida';
+%%
+% Eigenperiod
+T=1;
+%%
+% Scaling factors
+lambdaF=logspace(log10(0.001),log10(10),100);
+%%
+% Type of IDA analysis
+IM_DM='pgv_acc';
+%%
+% Mass
+m=1;
+%%
+% Yield displacement
+uy = 0.18*9.81/(2*pi/T)^2;
+%%
+% Post yield stiffness factor
+pysf=0.01;
+%%
+% Fraction of critical viscous damping
+ksi=0.05;
+%%
+% Algorithm to be used for the time integration
+AlgID='U0-V0-Opt';
+%%
+% Set initial displacement
+u0=0;
+%%
+% Set initial velocity
+ut0=0;
+%%
+% Minimum absolute value of the eigenvalues of the amplification matrix
+rinf=1;
+%%
+% Maximum tolerance for convergence
+maxtol=0.01;
+%%
+% Maximum number of iterations per increment
+jmax=200;
+%%
+% Infinitesimal variation of acceleration
+dak=eps;
+
+%% Construct and plot the IDA curves in a loop
+
+% Initialize figure
+figure()
+hold on
+% Plot the red bold curve of Figure 4(a) of the above reference
+plot([0,0.22,0.34],[0,0.125,2],'r','LineWidth',2)
+for i=1:n
+    % Apply OpenSeismoMatlab to calculate the ith IDA curve
+    S1=OpenSeismoMatlab(dt{i},xgtt{i},sw,T,lambdaF,IM_DM,m,uy,pysf,ksi,AlgID,...
+        u0,ut0,rinf,maxtol,jmax,dak);
+    % Plot the ith IDA curve
+    plot(S1.DM/9.81,S1.IM)
+end
+% Finalize figure
+grid on
+xlabel('Maximum Acceleration (g)')
+ylabel('PGV (m/s)')
+xlim([0,0.5])
+ylim([0,2])
+
+%% Copyright
+%
+% Copyright (c) 2018-2022 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

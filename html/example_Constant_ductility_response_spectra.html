@@ -1,0 +1,303 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Constant ductility response spectra</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="example_Constant_ductility_response_spectra.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Constant ductility response spectra</h1><!--introduction--><p>Generate the constant ductility response spectra and associated results of an earthquake suite using OpenSeismoMatlab.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Input</a></li><li><a href="#7">Calculation</a></li><li><a href="#8">Output</a></li><li><a href="#14">Copyright</a></li></ul></div><h2 id="1">Input</h2><p>earthquake motions</p><pre class="codeinput">eqmotions={<span class="string">'Imperial Valley'</span>; <span class="comment">% Imperial valley 1979</span>
+    <span class="string">'Kocaeli'</span>;
+    <span class="string">'Loma Prieta'</span>;
+    <span class="string">'Northridge'</span>;
+    <span class="string">'San Fernando'</span>;
+    <span class="string">'Spitak'</span>;
+    <span class="string">'Cape Mendocino'</span>;
+    <span class="string">'ChiChi'</span>;
+    <span class="string">'El Centro'</span>; <span class="comment">% Imperial valley 1940</span>
+    <span class="string">'Hollister'</span>;
+    <span class="string">'Kobe'</span>};
+</pre><p>Set the eigenperiod range for which the response spectra will be calculated.</p><pre class="codeinput">Tspectra=(0.08:0.08:4)';
+</pre><p>Set critical damping ratio of the response spectra to be calculated.</p><pre class="codeinput">ksi=0.05;
+</pre><p>Set the target ductility (not used here)</p><pre class="codeinput">mu=2;
+</pre><p>Set the postyield stiffness factor for each earthquake</p><pre class="codeinput">p=[0.02;0.01;0.02;0.01;0.01;0.01;0.02;0.01;0.01;0.01;0.01];
+</pre><p>Extract nonlinear response spectra</p><pre class="codeinput">sw=<span class="string">'cds'</span>;
+</pre><h2 id="7">Calculation</h2><p>Initialize CDRS</p><pre class="codeinput">CDRS=cell(numel(eqmotions),1);
+<span class="comment">% Calculation of peak values</span>
+<span class="keyword">for</span> i=1:numel(eqmotions)
+    <span class="comment">% earthquake</span>
+    data=load([eqmotions{i},<span class="string">'.dat'</span>]);
+    t=data(:,1);
+    dt=t(2)-t(1);
+    xgtt=data(:,2);
+    S=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi,mu,p(i));
+    CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
+<span class="keyword">end</span>
+</pre><h2 id="8">Output</h2><p>Plot constant ductility spectral displacement</p><pre class="codeinput">Fig1 = figure(<span class="string">'units'</span>, <span class="string">'centimeters'</span>, <span class="string">'Position'</span>, [0,0, 20/sqrt(2), 20]);
+<span class="comment">% Scan all subplots</span>
+<span class="keyword">for</span> i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,2),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+    set(gca,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    title(eqmotions{i},<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    ylabel(<span class="string">'Sd'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    axis <span class="string">tight</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="example_Constant_ductility_response_spectra_01.png" alt=""> <p>Plot constant ductility spectral velocity</p><pre class="codeinput">Fig2 = figure(<span class="string">'units'</span>, <span class="string">'centimeters'</span>, <span class="string">'Position'</span>, [0,0, 20/sqrt(2), 20]);
+<span class="comment">% Scan all subplots</span>
+<span class="keyword">for</span> i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,3),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+    set(gca,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    title(eqmotions{i},<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    ylabel(<span class="string">'Sv'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    axis <span class="string">tight</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="example_Constant_ductility_response_spectra_02.png" alt=""> <p>Plot constant ductility spectral acceleration</p><pre class="codeinput">Fig3 = figure(<span class="string">'units'</span>, <span class="string">'centimeters'</span>, <span class="string">'Position'</span>, [0,0, 20/sqrt(2), 20]);
+<span class="comment">% Scan all subplots</span>
+<span class="keyword">for</span> i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,4),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+    set(gca,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    title(eqmotions{i},<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    ylabel(<span class="string">'PSa'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    axis <span class="string">tight</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="example_Constant_ductility_response_spectra_03.png" alt=""> <p>Plot constant ductility spectral yield limit</p><pre class="codeinput">Fig4 = figure(<span class="string">'units'</span>, <span class="string">'centimeters'</span>, <span class="string">'Position'</span>, [0,0, 20/sqrt(2), 20]);
+<span class="comment">% Scan all subplots</span>
+<span class="keyword">for</span> i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,5),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+    set(gca,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    title(eqmotions{i},<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    ylabel(<span class="string">'fy'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    axis <span class="string">tight</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="example_Constant_ductility_response_spectra_04.png" alt=""> <p>Plot constant ductility spectral achieved ductility</p><pre class="codeinput">Fig5 = figure(<span class="string">'units'</span>, <span class="string">'centimeters'</span>, <span class="string">'Position'</span>, [0,0, 20/sqrt(2), 20]);
+<span class="comment">% Scan all subplots</span>
+<span class="keyword">for</span> i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,6),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+    set(gca,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    title(eqmotions{i},<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    ylabel(<span class="string">'mu'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    axis <span class="string">tight</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="example_Constant_ductility_response_spectra_05.png" alt=""> <p>Plot constant ductility spectral number of iterations needed for convergence</p><pre class="codeinput">Fig6 = figure(<span class="string">'units'</span>, <span class="string">'centimeters'</span>, <span class="string">'Position'</span>, [0,0, 20/sqrt(2), 20]);
+<span class="comment">% Scan all subplots</span>
+<span class="keyword">for</span> i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,7),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
+    set(gca,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    title(eqmotions{i},<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    ylabel(<span class="string">'iter'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
+    axis <span class="string">tight</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="example_Constant_ductility_response_spectra_06.png" alt=""> <h2 id="14">Copyright</h2><p>Copyright (c) 2018-2022 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Constant ductility response spectra
+% Generate the constant ductility response spectra and associated results
+% of an earthquake suite using OpenSeismoMatlab.
+
+%% Input
+% earthquake motions
+eqmotions={'Imperial Valley'; % Imperial valley 1979
+    'Kocaeli';
+    'Loma Prieta';
+    'Northridge';
+    'San Fernando';
+    'Spitak';
+    'Cape Mendocino';
+    'ChiChi';
+    'El Centro'; % Imperial valley 1940
+    'Hollister';
+    'Kobe'};
+%%
+% Set the eigenperiod range for which the response spectra will be
+% calculated.
+Tspectra=(0.08:0.08:4)';
+%%
+% Set critical damping ratio of the response spectra to be calculated.
+ksi=0.05;
+%%
+% Set the target ductility (not used here)
+mu=2;
+%%
+% Set the postyield stiffness factor for each earthquake
+p=[0.02;0.01;0.02;0.01;0.01;0.01;0.02;0.01;0.01;0.01;0.01];
+%%
+% Extract nonlinear response spectra
+sw='cds';
+
+%% Calculation
+% Initialize CDRS
+CDRS=cell(numel(eqmotions),1);
+% Calculation of peak values
+for i=1:numel(eqmotions)
+    % earthquake
+    data=load([eqmotions{i},'.dat']);
+    t=data(:,1);
+    dt=t(2)-t(1);
+    xgtt=data(:,2);
+    S=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi,mu,p(i));
+    CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
+end
+
+%% Output
+% Plot constant ductility spectral displacement
+Fig1 = figure('units', 'centimeters', 'Position', [0,0, 20/sqrt(2), 20]);
+% Scan all subplots
+for i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,2),'k','LineWidth',1);
+    set(gca,'FontName','Times New Roman')
+    title(eqmotions{i},'FontName','Times New Roman')
+    ylabel('Sd','FontName','Times New Roman')
+    xlabel('Period (s)','FontName','Times New Roman')
+    axis tight
+end
+%%
+% Plot constant ductility spectral velocity
+Fig2 = figure('units', 'centimeters', 'Position', [0,0, 20/sqrt(2), 20]);
+% Scan all subplots
+for i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,3),'k','LineWidth',1);
+    set(gca,'FontName','Times New Roman')
+    title(eqmotions{i},'FontName','Times New Roman')
+    ylabel('Sv','FontName','Times New Roman')
+    xlabel('Period (s)','FontName','Times New Roman')
+    axis tight
+end
+%%
+% Plot constant ductility spectral acceleration
+Fig3 = figure('units', 'centimeters', 'Position', [0,0, 20/sqrt(2), 20]);
+% Scan all subplots
+for i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,4),'k','LineWidth',1);
+    set(gca,'FontName','Times New Roman')
+    title(eqmotions{i},'FontName','Times New Roman')
+    ylabel('PSa','FontName','Times New Roman')
+    xlabel('Period (s)','FontName','Times New Roman')
+    axis tight
+end
+%%
+% Plot constant ductility spectral yield limit
+Fig4 = figure('units', 'centimeters', 'Position', [0,0, 20/sqrt(2), 20]);
+% Scan all subplots
+for i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,5),'k','LineWidth',1);
+    set(gca,'FontName','Times New Roman')
+    title(eqmotions{i},'FontName','Times New Roman')
+    ylabel('fy','FontName','Times New Roman')
+    xlabel('Period (s)','FontName','Times New Roman')
+    axis tight
+end
+%%
+% Plot constant ductility spectral achieved ductility
+Fig5 = figure('units', 'centimeters', 'Position', [0,0, 20/sqrt(2), 20]);
+% Scan all subplots
+for i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,6),'k','LineWidth',1);
+    set(gca,'FontName','Times New Roman')
+    title(eqmotions{i},'FontName','Times New Roman')
+    ylabel('mu','FontName','Times New Roman')
+    xlabel('Period (s)','FontName','Times New Roman')
+    axis tight
+end
+%%
+% Plot constant ductility spectral number of iterations needed for
+% convergence
+Fig6 = figure('units', 'centimeters', 'Position', [0,0, 20/sqrt(2), 20]);
+% Scan all subplots
+for i=1:numel(eqmotions)
+    subplot(4,3,i)
+    plot(CDRS{i}(:,1),CDRS{i}(:,7),'k','LineWidth',1);
+    set(gca,'FontName','Times New Roman')
+    title(eqmotions{i},'FontName','Times New Roman')
+    ylabel('iter','FontName','Times New Roman')
+    xlabel('Period (s)','FontName','Times New Roman')
+    axis tight
+end
+
+%% Copyright
+%
+% Copyright (c) 2018-2022 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+##### SOURCE END #####
+--></body></html>

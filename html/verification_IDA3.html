@@ -1,0 +1,204 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Verify the incremental dynamic analysis for ductility response</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="verification_IDA3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Verify the incremental dynamic analysis for ductility response</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Earthquake motion</a></li><li><a href="#4">Perform IDA analysis</a></li><li><a href="#20">Plot the IDA curve</a></li><li><a href="#21">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Vamvatsikos, D., &amp; Cornell, C. A. (2002). Incremental dynamic analysis. Earthquake engineering &amp; structural dynamics, 31(3), 491-514.</p><h2 id="2">Description</h2><p>The ductility response IDA curve of an elastoplastic SDOF system excited by the Loma Prieta, 1989, Halls Valley earthquake (component 090) is constructed at multiple levels of shaking, and compared to the curve shown in Figure 4(a) of the above reference. The SDOF system has T=1 sec and critical damping ratio 5%</p><h2 id="3">Earthquake motion</h2><p>Load earthquake data</p><pre class="codeinput">GM=<span class="string">'LomaPrietaHallsValley90.dat'</span>;
+fid=fopen(GM,<span class="string">'r'</span>);
+text=textscan(fid,<span class="string">'%f %f'</span>);
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+</pre><h2 id="4">Perform IDA analysis</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'ida'</span>;
+</pre><p>Eigenperiod</p><pre class="codeinput">T=1;
+</pre><p>Scaling factors</p><pre class="codeinput">lambdaF=logspace(log10(0.01),log10(30),100);
+</pre><p>Type of IDA analysis</p><pre class="codeinput">IM_DM=<span class="string">'Sa_mu'</span>;
+</pre><p>Mass</p><pre class="codeinput">m=1;
+</pre><p>Yield displacement</p><pre class="codeinput">uy=0.25;
+</pre><p>Post yield stiffness factor</p><pre class="codeinput">pysf=0.01;
+</pre><p>Fraction of critical viscous damping</p><pre class="codeinput">ksi=0.05;
+</pre><p>Algorithm to be used for the time integration</p><pre class="codeinput">AlgID=<span class="string">'U0-V0-Opt'</span>;
+</pre><p>Set initial displacement</p><pre class="codeinput">u0=0;
+</pre><p>Set initial velocity</p><pre class="codeinput">ut0=0;
+</pre><p>Minimum absolute value of the eigenvalues of the amplification matrix</p><pre class="codeinput">rinf=1;
+</pre><p>Maximum tolerance for convergence</p><pre class="codeinput">maxtol=0.01;
+</pre><p>Maximum number of iterations per increment</p><pre class="codeinput">jmax=200;
+</pre><p>Infinitesimal variation of acceleration</p><pre class="codeinput">dak=eps;
+</pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw,T,lambdaF,IM_DM,m,uy,pysf,ksi,AlgID,<span class="keyword">...</span>
+    u0,ut0,rinf,maxtol,jmax,dak);
+</pre><h2 id="20">Plot the IDA curve</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
+figure()
+<span class="comment">% Plot the IDA curve</span>
+plot(S1.DM,S1.IM/9.81,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'Ductility, \mu'</span>)
+ylabel(<span class="string">'Spectral acceleration Sa(T1,5%) (g)'</span>)
+xlim([0,3])
+ylim([0,3.5])
+</pre><img vspace="5" hspace="5" src="verification_IDA3_01.png" alt=""> <h2 id="21">Copyright</h2><p>Copyright (c) 2018-2022 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Verify the incremental dynamic analysis for ductility response
+
+%% Reference
+% Vamvatsikos, D., & Cornell, C. A. (2002). Incremental dynamic analysis.
+% Earthquake engineering & structural dynamics, 31(3), 491-514.
+
+%% Description
+% The ductility response IDA curve of an elastoplastic SDOF system excited
+% by the Loma Prieta, 1989, Halls Valley earthquake (component 090) is
+% constructed at multiple levels of shaking, and compared to the curve
+% shown in Figure 4(a) of the above reference. The SDOF system has T=1 sec
+% and critical damping ratio 5%
+
+%% Earthquake motion
+% Load earthquake data
+GM='LomaPrietaHallsValley90.dat';
+fid=fopen(GM,'r');
+text=textscan(fid,'%f %f');
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+
+%% Perform IDA analysis
+% Switch
+sw='ida';
+%%
+% Eigenperiod
+T=1;
+%%
+% Scaling factors
+lambdaF=logspace(log10(0.01),log10(30),100);
+%%
+% Type of IDA analysis
+IM_DM='Sa_mu';
+%%
+% Mass
+m=1;
+%%
+% Yield displacement
+uy=0.25;
+%%
+% Post yield stiffness factor
+pysf=0.01;
+%%
+% Fraction of critical viscous damping
+ksi=0.05;
+%%
+% Algorithm to be used for the time integration
+AlgID='U0-V0-Opt';
+%%
+% Set initial displacement
+u0=0;
+%%
+% Set initial velocity
+ut0=0;
+%%
+% Minimum absolute value of the eigenvalues of the amplification matrix
+rinf=1;
+%%
+% Maximum tolerance for convergence
+maxtol=0.01;
+%%
+% Maximum number of iterations per increment
+jmax=200;
+%%
+% Infinitesimal variation of acceleration
+dak=eps;
+%%
+% Apply OpenSeismoMatlab
+S1=OpenSeismoMatlab(dt,xgtt,sw,T,lambdaF,IM_DM,m,uy,pysf,ksi,AlgID,...
+    u0,ut0,rinf,maxtol,jmax,dak);
+
+%% Plot the IDA curve
+
+% Initialize figure
+figure()
+% Plot the IDA curve
+plot(S1.DM,S1.IM/9.81,'k','LineWidth',1)
+% Finalize figure
+grid on
+xlabel('Ductility, \mu')
+ylabel('Spectral acceleration Sa(T1,5%) (g)')
+xlim([0,3])
+ylim([0,3.5])
+
+%% Copyright
+%
+% Copyright (c) 2018-2022 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

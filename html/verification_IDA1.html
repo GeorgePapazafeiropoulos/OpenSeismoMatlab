@@ -1,0 +1,306 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Verify the incremental dynamic analysis of OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="verification_IDA1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Verify the incremental dynamic analysis of OpenSeismoMatlab</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Earthquake motion</a></li><li><a href="#4">Adjust earthquake motion to have D_5_75=8.3sec</a></li><li><a href="#8">Calculate duration D_5_75 of adjusted earthquake motion</a></li><li><a href="#11">Scale earthquake motion to have Sa(1 sec)=0.382g</a></li><li><a href="#17">Calculate spectral acceleration of scaled earthquake motion</a></li><li><a href="#22">Plot the acceleration time history</a></li><li><a href="#23">Perform IDA analysis</a></li><li><a href="#32">Plot the displacement time histories</a></li><li><a href="#33">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Mashayekhi, M., Harati, M., Darzi, A., &amp; Estekanchi, H. E. (2020). Incorporation of strong motion duration in incremental-based seismic assessments. Engineering Structures, 223, 111144.</p><h2 id="2">Description</h2><p>Incremental dynamic analysis (IDA) is performed for a non-degrading SDOF model with eigenperiod T=1 sec. The employed hysteretic model is a bilinear elastoplastic model used for non-degrading SDOF systems and is shown in Figure 17(a) of the above reference. An IDA analysis is performed with a ground motion the spectral acceleration of which resembles the red line of Figure 14 of the above reference, i.e. the ground motion must have Sa(1 sec)=0.382g (which is the Intensity Measure - IM) and the duration D_5_75 must be roughly equal to 8.3 sec. An acceleration time history with such characteristics is shown in Figure 16(c) of the above reference. In this example, an arbitrary ground motion acceleration is loaded, which is then adjusted so that the resulting time history has Sa(1 sec)=0.382g and D_5_75=8.3 sec. The adjusted time history is plotted in this example and can be compared to Figure 16(c) of the above reference. Based on the above problem statement, the median response curve of Figure 18(a) of the above reference is verified.</p><h2 id="3">Earthquake motion</h2><p>Load earthquake data</p><pre class="codeinput">eqmotions={<span class="string">'LomaPrietaHallsValley90'</span>};
+data=load([eqmotions{1},<span class="string">'.dat'</span>]);
+t=data(:,1);
+dt=t(2)-t(1);
+xgtt=data(:,2);
+</pre><h2 id="4">Adjust earthquake motion to have D_5_75=8.3sec</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'arias'</span>;
+</pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw);
+</pre><p>Duration D_5_75 of the initially loaded motion</p><pre class="codeinput">S1.Td_5_75
+</pre><pre class="codeoutput">
+ans =
+
+   7.759999999999999
+
+</pre><p>S.Td_5_75 must be roughly near 8.3 sec, as required in Mashayekhi et al. (2020) We manipulate the strong shaking part of the motion which corresponds to the significant duration so that S.Td_5_75 is increased to the desired value (8.3 sec)</p><pre class="codeinput">id1=find(t==S1.t_5_75(1));
+id2=find(t==S1.t_5_75(2));
+xgtt(id1:id2)=0.8*xgtt(id1:id2);
+</pre><h2 id="8">Calculate duration D_5_75 of adjusted earthquake motion</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'arias'</span>;
+</pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S2=OpenSeismoMatlab(dt,xgtt,sw);
+</pre><p>Duration D_5_75 of the adjusted motion</p><pre class="codeinput">S2.Td_5_75
+</pre><pre class="codeoutput">
+ans =
+
+   8.359999999999999
+
+</pre><h2 id="11">Scale earthquake motion to have Sa(1 sec)=0.382g</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'es'</span>;
+</pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
+</pre><p>Period where Sa=0.382g</p><pre class="codeinput">T=1;
+</pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S3=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
+</pre><p>Spectral acceleration of the adjusted motion at 1 sec</p><pre class="codeinput">S3.Sa
+</pre><pre class="codeoutput">
+ans =
+
+   1.286911370102642
+
+</pre><p>Sa at 1 sec must be equal to 0.382g, so we scale the entire acceleration time history up to this level</p><pre class="codeinput">scaleF=0.382*9.81/S3.Sa;
+xgtt=xgtt*scaleF;
+</pre><h2 id="17">Calculate spectral acceleration of scaled earthquake motion</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'es'</span>;
+</pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
+</pre><p>Period where Sa=0.382g</p><pre class="codeinput">T=1;
+</pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S4=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
+</pre><p>Spectral acceleration of the adjusted motion at 1 sec</p><pre class="codeinput">S4.Sa
+</pre><pre class="codeoutput">
+ans =
+
+   3.747419999999983
+
+</pre><h2 id="22">Plot the acceleration time history</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
+figure()
+<span class="comment">% Plot the acceleration time history of the adjusted motion</span>
+plot(t,xgtt)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Acceleration (g)'</span>)
+</pre><img vspace="5" hspace="5" src="verification_IDA1_01.png" alt=""> <h2 id="23">Perform IDA analysis</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'ida'</span>;
+</pre><p>Eigenperiod</p><pre class="codeinput">T=1;
+</pre><p>Scaling factors</p><pre class="codeinput">lambdaF=logspace(log10(0.001),log10(10),100);
+</pre><p>Type of IDA analysis</p><pre class="codeinput">IM_DM=<span class="string">'Sa_disp'</span>;
+</pre><p>Mass</p><pre class="codeinput">m=1;
+</pre><p>Yield displacement</p><pre class="codeinput">uy = 0.082*9.81/(2*pi/T)^2;
+</pre><p>Post yield stiffness factor</p><pre class="codeinput">pysf=0.01;
+</pre><p>Fraction of critical viscous damping</p><pre class="codeinput">ksi=0.05;
+</pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S5=OpenSeismoMatlab(dt,xgtt,sw,T,lambdaF,IM_DM,m,uy,pysf,ksi);
+</pre><h2 id="32">Plot the displacement time histories</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
+figure()
+<span class="comment">% Plot the response curve of the incremental dynamic analysis</span>
+plot(S5.DM*1000,S5.IM/9.81,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'Displacement (mm)'</span>)
+ylabel(<span class="string">'Sa(T1,5%)[g]'</span>)
+xlim([0,350])
+ylim([0,0.7])
+</pre><img vspace="5" hspace="5" src="verification_IDA1_02.png" alt=""> <h2 id="33">Copyright</h2><p>Copyright (c) 2018-2022 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Verify the incremental dynamic analysis of OpenSeismoMatlab
+
+%% Reference
+% Mashayekhi, M., Harati, M., Darzi, A., & Estekanchi, H. E. (2020).
+% Incorporation of strong motion duration in incremental-based seismic
+% assessments. Engineering Structures, 223, 111144.
+
+%% Description
+% Incremental dynamic analysis (IDA) is performed for a non-degrading SDOF
+% model with eigenperiod T=1 sec. The employed hysteretic model is a
+% bilinear elastoplastic model used for non-degrading SDOF systems and is
+% shown in Figure 17(a) of the above reference. An IDA analysis is
+% performed with a ground motion the spectral acceleration of which
+% resembles the red line of Figure 14 of the above reference, i.e. the
+% ground motion must have Sa(1 sec)=0.382g (which is the Intensity Measure
+% - IM) and the duration D_5_75 must be roughly equal to 8.3 sec. An
+% acceleration time history with such characteristics is shown in Figure
+% 16(c) of the above reference. In this example, an arbitrary ground motion
+% acceleration is loaded, which is then adjusted so that the resulting time
+% history has Sa(1 sec)=0.382g and D_5_75=8.3 sec. The adjusted time
+% history is plotted in this example and can be compared to Figure 16(c) of
+% the above reference. Based on the above problem statement, the median
+% response curve of Figure 18(a) of the above reference is verified.
+
+%% Earthquake motion
+% Load earthquake data
+eqmotions={'LomaPrietaHallsValley90'};
+data=load([eqmotions{1},'.dat']);
+t=data(:,1);
+dt=t(2)-t(1);
+xgtt=data(:,2);
+
+%% Adjust earthquake motion to have D_5_75=8.3sec
+% Switch
+sw='arias';
+%%
+% Apply OpenSeismoMatlab
+S1=OpenSeismoMatlab(dt,xgtt,sw);
+%%
+% Duration D_5_75 of the initially loaded motion
+S1.Td_5_75
+%% 
+% S.Td_5_75 must be roughly near 8.3 sec, as required in Mashayekhi et al. (2020)
+% We manipulate the strong shaking part of the motion which corresponds to
+% the significant duration so that S.Td_5_75 is increased to the desired
+% value (8.3 sec)
+id1=find(t==S1.t_5_75(1));
+id2=find(t==S1.t_5_75(2));
+xgtt(id1:id2)=0.8*xgtt(id1:id2);
+
+%% Calculate duration D_5_75 of adjusted earthquake motion
+% Switch
+sw='arias';
+%%
+% Apply OpenSeismoMatlab
+S2=OpenSeismoMatlab(dt,xgtt,sw);
+%%
+% Duration D_5_75 of the adjusted motion
+S2.Td_5_75
+
+%% Scale earthquake motion to have Sa(1 sec)=0.382g
+% Switch
+sw='es';
+%%
+% Critical damping ratio
+ksi=0.05;
+%%
+% Period where Sa=0.382g
+T=1;
+%%
+% Apply OpenSeismoMatlab
+S3=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
+%%
+% Spectral acceleration of the adjusted motion at 1 sec
+S3.Sa
+%%
+% Sa at 1 sec must be equal to 0.382g, so we scale the entire acceleration
+% time history up to this level
+scaleF=0.382*9.81/S3.Sa;
+xgtt=xgtt*scaleF;
+
+%% Calculate spectral acceleration of scaled earthquake motion
+% Switch
+sw='es';
+%%
+% Critical damping ratio
+ksi=0.05;
+%%
+% Period where Sa=0.382g
+T=1;
+%%
+% Apply OpenSeismoMatlab
+S4=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
+%%
+% Spectral acceleration of the adjusted motion at 1 sec
+S4.Sa
+
+%% Plot the acceleration time history
+
+% Initialize figure
+figure()
+% Plot the acceleration time history of the adjusted motion
+plot(t,xgtt)
+% Finalize figure
+grid on
+xlabel('Time (sec)')
+ylabel('Acceleration (g)')
+
+%% Perform IDA analysis
+% Switch
+sw='ida';
+%%
+% Eigenperiod
+T=1;
+%%
+% Scaling factors
+lambdaF=logspace(log10(0.001),log10(10),100);
+%%
+% Type of IDA analysis
+IM_DM='Sa_disp';
+%%
+% Mass
+m=1;
+%%
+% Yield displacement
+uy = 0.082*9.81/(2*pi/T)^2;
+%%
+% Post yield stiffness factor
+pysf=0.01;
+%%
+% Fraction of critical viscous damping
+ksi=0.05;
+%%
+% Apply OpenSeismoMatlab
+S5=OpenSeismoMatlab(dt,xgtt,sw,T,lambdaF,IM_DM,m,uy,pysf,ksi);
+
+%% Plot the displacement time histories
+
+% Initialize figure
+figure()
+% Plot the response curve of the incremental dynamic analysis
+plot(S5.DM*1000,S5.IM/9.81,'k','LineWidth',1)
+% Finalize figure
+grid on
+xlabel('Displacement (mm)')
+ylabel('Sa(T1,5%)[g]')
+xlim([0,350])
+ylim([0,0.7])
+
+%% Copyright
+%
+% Copyright (c) 2018-2022 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

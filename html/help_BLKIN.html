@@ -1,0 +1,187 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>BLKIN</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="help_BLKIN.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>BLKIN</h1><!--introduction--><p>Documentation of the BLKIN function.</p><!--/introduction--><pre class="codeinput">helpFun(<span class="string">'BLKIN'</span>)
+</pre><pre class="codeoutput">
+ Bilinear kinematic hysteretic model with elastic viscous damping
+
+ [F,K,C,K_STATUS,D] = BLKIN(U,UT,K_HI,K_LO,UY,M,KSI,K_STATUS,D)
+
+ Description
+     Define the internal force vector, tangent stiffness matrix and
+     tangent damping matrix of a bilinear elastoplastic hysteretic
+     structure with elastic damping as a function of displacement and
+     velocity.
+     The MDOF structure modeled with this function consists of lumped
+     masses connected with stiffness and damping elements in series. Each
+     lumped mass has one degree of freedom. The first degree of freedom is
+     at the top of the structure and the last at its fixed base. However,
+     the last degree of freedom is not included in the input arguments of
+     the function, i.e. not contained in ndof, as it is always fixed.
+     The nonlinear stiffness is virtually of the bilinear type, where an
+     initial stiffness and a post-yield stiffness are defined. The
+     unloading or reloading curve of this model are parallel to the
+     initial loading curve, and a hysteresis loop is created by
+     continuously loading and unloading the structure above its yield
+     limit. This behavior can be viewed as hardening of the kinematic
+     type.
+     An appropriate reference for this function definition is Hughes,
+     Pister &amp; Taylor (1979): "Implicit-explicit finite elements in
+     nonlinear transient analysis". This function should be defined in
+     accordance with equations (3.1), (3.2) and (3.3) of this paper. This
+     representation has as special cases nonlinear elasticity and a class
+     of nonlinear &#8220;rate-type&#8221; viscoelastic materials. Tangent stiffness
+     and tangent damping matrices are the "consistent" linearized
+     operators associated to f in the sense of [Hughes &amp; Pister,
+     "Consistent linearization in mechanics of solids", Computers and
+     Structures, 8 (1978) 391-397].
+
+ Input parameters
+     U [double(1 x 1)] is the absolute displacement.
+     UT [double(1 x 1)] is the absolute velocity.
+     K_HI [double(1 x 1)] is the initial stiffness of the system before
+         its first yield, i.e. the high stiffness.
+     K_LO [double(1 x 1)] is the post-yield stiffness of the system, i.e.
+         the low stiffness.
+     UY [double(1 x 1)] is the yield limit of the structure. The structure
+         is considered to yield, if the displacement exceeds uy(i).
+     M [double(1 x 1)] is the lumped mass.
+     KSI [double(1 x 1)] is the ratio of critical viscous damping of the
+         system, assumed to be unique for all damping elements of the
+         structure.
+     K_STATUS [double(1 x 1)] is the is the stiffness vector which takes
+         into account any plastic response of the structure. It is used to
+         record the status of the structure so that it is known before the
+         next application of this function at a next (time) step.
+         Initialize by setting K_STATUS=K_HI.
+     D [double(1 x 1)] is the is the equilibrium displacement vector which
+         takes into account any plastic response of the structure. It is
+         used to record the status of the structure so that it is known
+         before the next application of this function at a next (time)
+         step. Initialize by setting D=zeros(ndof,1).
+
+ Output parameters
+     F [double(1 x 1)] is the internal force vector of the structure (sum
+         of forces due to stiffness and damping) at displacement u and
+         velocity ut
+     K [double(1 x 1)] is the tangent stiffness matrix (nonlinear function
+         of displacement u and velocity ut). It is equivalent to the
+         derivative d(f)/d(u)
+     C [double(1 x 1)] is the tangent damping matrix (nonlinear function
+         of displacement u and velocity ut). It is equivalent to the
+         derivative d(f)/d(u)
+     K_STATUS [double(1 x 1)] is the is the stiffness vector which takes
+         into account any plastic response of the structure. It is used to
+         record the status of the structure so that it is known before the
+         next application of this function at a next (time) step.
+     D [double(1 x 1)] is the is the equilibrium displacement vector which
+         takes into account any plastic response of the structure. It is
+         used to record the status of the structure so that it is known
+         before the next application of this function at a next (time)
+         step.
+
+ Example
+     u=0:0.2:4;
+     u=[u,u(end:-1:1)];
+     u=[u,-u];
+     u=[u u];
+     ut=0.001*ones(1,numel(u));
+     ut=[ut,-ut];
+     ut=[ut,ut(end:-1:1)];
+     ut=[ut ut];
+     k_hi=1000;
+     k_lo=1;
+     uy=2;
+     M=1;
+     ksi=0.05;
+     k=k_hi;
+     d=0;
+     f=zeros(1,numel(u));
+     for i=1:numel(u)
+         [f(i),K,C,k,d] = BLKIN(u(i),ut(i),k_hi,k_lo,uy,M,ksi,k,d);
+     end
+     figure()
+     plot(u,f)
+
+__________________________________________________________________________
+ Copyright (c) 2018-2022
+     George Papazafeiropoulos
+     Major, Infrastructure Engineer, Hellenic Air Force
+     Civil Engineer, M.Sc., Ph.D.
+     Email: gpapazafeiropoulos@yahoo.gr
+ _________________________________________________________________________
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% BLKIN
+% Documentation of the BLKIN function.
+
+%% 
+helpFun('BLKIN')
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,223 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>CDReSp</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="example_CDReSp.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>CDReSp</h1><!--introduction--><p>Calculate constant ductility response spectra in OpenSeismoMatlab</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Earthquake motion</a></li><li><a href="#3">Setup parameters for CDReSp function</a></li><li><a href="#15">Calculate spectra and pseudospectra</a></li><li><a href="#16">Plot the spectra and pseudospectra</a></li><li><a href="#20">Copyright</a></li></ul></div><h2 id="1">Earthquake motion</h2><p>For reproducibility</p><pre class="codeinput">rng(0)
+</pre><p>Generate earthquake data</p><pre class="codeinput">dt=0.02;
+N=10;
+a=rand(N,1)-0.5;
+b=100*pi*rand(N,1);
+c=pi*(rand(N,1)-0.5);
+t=(0:dt:(100*dt))';
+xgtt=zeros(size(t));
+<span class="keyword">for</span> i=1:N
+    xgtt=xgtt+a(i)*sin(b(i)*t+c(i));
+<span class="keyword">end</span>
+</pre><h2 id="3">Setup parameters for CDReSp function</h2><p>Eigenperiods</p><pre class="codeinput">T=(0.04:0.04:4)';
+</pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
+</pre><p>Ductility</p><pre class="codeinput">mu=2;
+</pre><p>Maximum number of iterations</p><pre class="codeinput">n=50;
+</pre><p>Tolerance for convergence to target ductility</p><pre class="codeinput">tol=0.01;
+</pre><p>Post-yield stiffness factor</p><pre class="codeinput">pysf=0.1;
+</pre><p>Maximum ratio of the integration time step to the eigenperiod</p><pre class="codeinput">dtTol=0.02;
+</pre><p>Algorithm to be used for the time integration</p><pre class="codeinput">AlgID=<span class="string">'U0-V0-Opt'</span>;
+</pre><p>Minimum absolute value of the eigenvalues of the amplification matrix</p><pre class="codeinput">rinf=1;
+</pre><p>Maximum tolerance of convergence for time integration algorithm</p><pre class="codeinput">maxtol=0.01;
+</pre><p>Maximum number of iterations per integration time step</p><pre class="codeinput">jmax=200;
+</pre><p>Infinitesimal acceleration</p><pre class="codeinput">dak=eps;
+</pre><h2 id="15">Calculate spectra and pseudospectra</h2><p>Apply CDReSp</p><pre class="codeinput">[CDPSa,CDPSv,CDSd,CDSv,CDSa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,<span class="keyword">...</span>
+    mu,n,tol,pysf,dtTol,AlgID,rinf,maxtol,jmax,dak);
+</pre><h2 id="16">Plot the spectra and pseudospectra</h2><p>Constant ductility spectral displacement spectrum</p><pre class="codeinput">figure()
+plot(T,CDSd,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+ylabel(<span class="string">'Spectral displacement (m)'</span>)
+xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+</pre><img vspace="5" hspace="5" src="example_CDReSp_01.png" alt=""> <p>Constant ductility yield force spectrum</p><pre class="codeinput">figure()
+plot(T,fyK,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+ylabel(<span class="string">'Yield force (N)'</span>)
+xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+</pre><img vspace="5" hspace="5" src="example_CDReSp_02.png" alt=""> <p>Achieved ductility</p><pre class="codeinput">figure()
+plot(T,muK,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+ylabel(<span class="string">'Ductility (-)'</span>)
+xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+</pre><img vspace="5" hspace="5" src="example_CDReSp_03.png" alt=""> <p>Iterations</p><pre class="codeinput">figure()
+plot(T,iterK,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+ylabel(<span class="string">'Iterations (-)'</span>)
+xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+</pre><img vspace="5" hspace="5" src="example_CDReSp_04.png" alt=""> <h2 id="20">Copyright</h2><p>Copyright (c) 2018-2022 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% CDReSp
+% Calculate constant ductility response spectra in OpenSeismoMatlab
+
+%% Earthquake motion
+% For reproducibility
+rng(0)
+%%
+% Generate earthquake data
+dt=0.02;
+N=10;
+a=rand(N,1)-0.5;
+b=100*pi*rand(N,1);
+c=pi*(rand(N,1)-0.5);
+t=(0:dt:(100*dt))';
+xgtt=zeros(size(t));
+for i=1:N
+    xgtt=xgtt+a(i)*sin(b(i)*t+c(i));
+end
+
+%% Setup parameters for CDReSp function
+% Eigenperiods
+T=(0.04:0.04:4)';
+
+%%
+% Critical damping ratio
+ksi=0.05;
+
+%%
+% Ductility
+mu=2;
+
+%%
+% Maximum number of iterations
+n=50;
+
+%%
+% Tolerance for convergence to target ductility
+tol=0.01;
+
+%%
+% Post-yield stiffness factor
+pysf=0.1;
+
+%%
+% Maximum ratio of the integration time step to the eigenperiod
+dtTol=0.02;
+
+%%
+% Algorithm to be used for the time integration
+AlgID='U0-V0-Opt';
+
+%%
+% Minimum absolute value of the eigenvalues of the amplification matrix
+rinf=1;
+
+%%
+% Maximum tolerance of convergence for time integration algorithm
+maxtol=0.01;
+
+%%
+% Maximum number of iterations per integration time step
+jmax=200;
+
+%%
+% Infinitesimal acceleration
+dak=eps;
+
+%% Calculate spectra and pseudospectra
+% Apply CDReSp
+[CDPSa,CDPSv,CDSd,CDSv,CDSa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,...
+    mu,n,tol,pysf,dtTol,AlgID,rinf,maxtol,jmax,dak);
+
+%% Plot the spectra and pseudospectra
+% Constant ductility spectral displacement spectrum
+figure()
+plot(T,CDSd,'k','LineWidth',1)
+ylabel('Spectral displacement (m)')
+xlabel('Eigenperiod (sec)')
+
+%%
+% Constant ductility yield force spectrum
+figure()
+plot(T,fyK,'k','LineWidth',1)
+ylabel('Yield force (N)')
+xlabel('Eigenperiod (sec)')
+
+%%
+% Achieved ductility
+figure()
+plot(T,muK,'k','LineWidth',1)
+ylabel('Ductility (-)')
+xlabel('Eigenperiod (sec)')
+
+%%
+% Iterations
+figure()
+plot(T,iterK,'k','LineWidth',1)
+ylabel('Iterations (-)')
+xlabel('Eigenperiod (sec)')
+
+%% Copyright
+%
+% Copyright (c) 2018-2022 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+##### SOURCE END #####
+--></body></html>
