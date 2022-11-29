@@ -26,6 +26,8 @@ OpenSeismoMatlab can calculate the following strong motion data processing outpu
 22) Highpass Butterworth-filtered acceleration time history
 23) Incremental Dynamic Analysis (IDA) of SDOF system excited with the input acceleration time history
 
-Related reference can be found in the following link:
-https://www.heliyon.com/article/e00784/
 
+OpenSeismoMatlab has been already published in an original research article:
+Papazafeiropoulos, G., & Plevris, V. (2018). OpenSeismoMatlab: A new open-source software for strong ground motion data processing. Heliyon, 4(9), e00784.
+DOI:10.1016/j.heliyon.2018.e00784
+https://www.heliyon.com/article/e00784/
