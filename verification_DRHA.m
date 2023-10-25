@@ -1,4 +1,4 @@
-%% Verify the dynamic response history analysis of OpenSeismoMatlab
+%% verification Dynamic response history analysis of OpenSeismoMatlab
 % Calculate linear dynamic response of a MDOF shear building
 
 %% Reference
@@ -146,7 +146,7 @@ title(['All modes, maxMb=',num2str(max(abs(MBeig/1e3))),' kNm'],...
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

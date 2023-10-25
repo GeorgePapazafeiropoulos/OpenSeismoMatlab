@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>CDReSp</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="help_CDReSp.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>doc CDReSp</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="help_CDReSp.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>CDReSp</h1><!--introduction--><p>Documentation of the CDReSp function.</p><!--/introduction--><pre class="codeinput">helpFun(<span class="string">'CDReSp'</span>)
+  </style></head><body><div class="content"><h1>doc CDReSp</h1><!--introduction--><p>Documentation of the CDReSp function.</p><!--/introduction--><pre class="codeinput">helpFun(<span class="string">'CDReSp'</span>)
 </pre><pre class="codeoutput">
  Constant Ductility Response Spectra
 
@@ -75,10 +76,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
  Description
      The constant ductility response spectra for a given time-history of
-     constant time step, a given eigenperiod range, a given viscous
-     damping ratio and a given ductility are computed. See section 7.5 in
-     Chopra (2012) and the notes "Inelastic Response Spectra" (CEE 541.
-     Structural Dynamics) by Henri P. Gavin.
+     constant time step, eigenperiod range, viscous damping ratio and
+     ductility are computed. See section 7.5 in Chopra (2012) and the
+     notes "Inelastic Response Spectra" (CEE 541. Structural Dynamics) by
+     Henri P. Gavin.
 
  Input parameters
      DT [double(1 x 1)] is the time step of the input acceleration time
@@ -178,6 +179,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
      for i=1:N
          xgtt=xgtt+a(i)*sin(b(i)*t+c(i));
      end
+     figure()
+     plot(t,xgtt)
      T=(0.04:0.04:4)';
      ksi=0.05;
      mu=2;
@@ -202,15 +205,15 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
      plot(T,iterK)
 
 __________________________________________________________________________
- Copyright (c) 2018-2022
+ Copyright (c) 2018-2023
      George Papazafeiropoulos
      Major, Infrastructure Engineer, Hellenic Air Force
      Civil Engineer, M.Sc., Ph.D.
      Email: gpapazafeiropoulos@yahoo.gr
  _________________________________________________________________________
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% CDReSp
+%% doc CDReSp
 % Documentation of the CDReSp function.
 
 %% 

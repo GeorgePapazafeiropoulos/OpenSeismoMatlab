@@ -1,0 +1,183 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>example PulseDecomp</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="example_PulseDecomp.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>example PulseDecomp</h1><!--introduction--><p>Pulse decomposition of a velocity time history in OpenSeismoMatlab</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Generate earthquake motion</a></li><li><a href="#3">Setup parameters for PulseDecomp function</a></li><li><a href="#7">Calculate Pulse and residual motion</a></li><li><a href="#8">Plot the initial, pulse and residual time histories</a></li><li><a href="#9">Copyright</a></li></ul></div><h2 id="1">Generate earthquake motion</h2><p>For reproducibility</p><pre class="codeinput">rng(0)
+</pre><p>Generate earthquake velocity time history with a pulse</p><pre class="codeinput">duration = 10;
+dt = 0.01;
+t = linspace(0, duration, duration /dt)';
+num_sin_components = 3;
+xgt = zeros(length(t),1);
+<span class="keyword">for</span> i = 1:num_sin_components
+    s = rand * sin(2 * pi * 0.5*rand * t + rand);
+    xgt = xgt + s;
+<span class="keyword">end</span>
+</pre><h2 id="3">Setup parameters for PulseDecomp function</h2><p>Wavelet family to be considered as the contained pulse</p><pre class="codeinput">wname = <span class="string">'db4'</span>;
+</pre><p>Minimum pulse period for the continuous 1-D wavelet transform</p><pre class="codeinput">TpMin = 0.25;
+</pre><p>Minimum pulse period for the continuous 1-D wavelet transform</p><pre class="codeinput">TpMax = 15;
+</pre><p>Number of pulse period values between TpMin and TpMax</p><pre class="codeinput">nScales = 50;
+</pre><h2 id="7">Calculate Pulse and residual motion</h2><p>Apply PulseDecomp</p><pre class="codeinput">[pulseTH,resTH,Tp,wavScale,wavCoef] = <span class="keyword">...</span>
+    PulseDecomp(dt,xgt,wname,TpMin,TpMax,nScales);
+</pre><h2 id="8">Plot the initial, pulse and residual time histories</h2><p>Initialize figure</p><pre class="codeinput">np = length(xgt);
+time = dt:dt:dt*np;
+fig = figure();
+<span class="comment">% Initial velocity time history</span>
+subplot(3,1,1)
+plot(time, xgt, <span class="string">'-k'</span>)
+legend(<span class="string">'Original ground motion'</span>,<span class="string">'location'</span>,<span class="string">'northwest'</span>)
+ylabel(<span class="string">'Velocity'</span>);
+set(gca, <span class="string">'xticklabel'</span>, [])
+<span class="comment">% Pulse velocity time history</span>
+subplot(3,1,2)
+plot(time, pulseTH, <span class="string">'-r'</span>)
+legend(<span class="string">'Extracted pulse'</span>,<span class="string">'location'</span>,<span class="string">'northwest'</span>)
+ylabel(<span class="string">'Velocity'</span>);
+set(gca, <span class="string">'xticklabel'</span>, [])
+<span class="comment">% Residual velocity time history</span>
+subplot(3,1,3)
+plot(time, resTH , <span class="string">'-k'</span>)
+legend(<span class="string">'Residual ground motion'</span>,<span class="string">'location'</span>,<span class="string">'northwest'</span>)
+hy = ylabel(<span class="string">'Velocity'</span>);
+hx = xlabel(<span class="string">'Time [s]'</span>);
+</pre><img vspace="5" hspace="5" src="example_PulseDecomp_01.png" alt=""> <h2 id="9">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% example PulseDecomp
+% Pulse decomposition of a velocity time history in OpenSeismoMatlab
+
+%% Generate earthquake motion
+% For reproducibility
+rng(0)
+%%
+% Generate earthquake velocity time history with a pulse
+duration = 10;
+dt = 0.01;
+t = linspace(0, duration, duration /dt)';
+num_sin_components = 3;
+xgt = zeros(length(t),1);
+for i = 1:num_sin_components
+    s = rand * sin(2 * pi * 0.5*rand * t + rand);
+    xgt = xgt + s;
+end
+
+%% Setup parameters for PulseDecomp function
+% Wavelet family to be considered as the contained pulse
+wname = 'db4';
+
+%%
+% Minimum pulse period for the continuous 1-D wavelet transform
+TpMin = 0.25;
+
+%%
+% Minimum pulse period for the continuous 1-D wavelet transform
+TpMax = 15;
+
+%%
+% Number of pulse period values between TpMin and TpMax
+nScales = 50;
+
+%% Calculate Pulse and residual motion
+% Apply PulseDecomp
+[pulseTH,resTH,Tp,wavScale,wavCoef] = ...
+    PulseDecomp(dt,xgt,wname,TpMin,TpMax,nScales);
+
+%% Plot the initial, pulse and residual time histories
+% Initialize figure
+np = length(xgt);
+time = dt:dt:dt*np;
+fig = figure();
+% Initial velocity time history
+subplot(3,1,1)
+plot(time, xgt, '-k')
+legend('Original ground motion','location','northwest')
+ylabel('Velocity');
+set(gca, 'xticklabel', [])
+% Pulse velocity time history
+subplot(3,1,2)
+plot(time, pulseTH, '-r')
+legend('Extracted pulse','location','northwest')
+ylabel('Velocity');
+set(gca, 'xticklabel', [])
+% Residual velocity time history
+subplot(3,1,3)
+plot(time, resTH , '-k')
+legend('Residual ground motion','location','northwest')
+hy = ylabel('Velocity');
+hx = xlabel('Time [s]');
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+##### SOURCE END #####
+--></body></html>

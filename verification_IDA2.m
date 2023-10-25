@@ -1,4 +1,4 @@
-%% Verify the incremental dynamic analysis for multiple motions
+%% verification Incremental dynamic analysis for multiple motions
 
 %% Reference
 % Deng, P., Pei, S., van de Lindt, J. W., Liu, H., & Zhang, C. (2017). An
@@ -108,7 +108,7 @@ ylim([0,2])
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

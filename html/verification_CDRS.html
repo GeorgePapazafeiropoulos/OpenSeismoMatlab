@@ -1,0 +1,194 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>verification Constant ductility response spectrum</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="verification_CDRS.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>verification Constant ductility response spectrum</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Calculate constant ductility response spectra of earthquake motion</a></li><li><a href="#10">Plot the constant ductility response spectra</a></li><li><a href="#11">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Chopra, A. K. (2020). Dynamics of structures, Theory and Applications to Earthquake Engineering, 5th edition. Prenctice Hall.</p><h2 id="2">Description</h2><p>The constant-ductility response spectra of Figure 7.5.2 of the above reference are verified. Elastic-perfectly plastic systems are considered. Damping is equal to 5% of its critical value. Target ductility factors equal to 1,1.5,2,4 and 8 are considered.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+text=textscan(fid,<span class="string">'%f %f'</span>);
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+</pre><h2 id="4">Calculate constant ductility response spectra of earthquake motion</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'cdrs'</span>;
+</pre><p>Eigenperiods</p><pre class="codeinput">T=logspace(log10(0.05),log10(3),20);
+</pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
+</pre><p>Ductilities</p><pre class="codeinput">mu1=1;
+mu2=1.5;
+mu3=2;
+mu4=4;
+mu5=8;
+</pre><p>Post-yield stiffness factor</p><pre class="codeinput">pysf=0.001;
+</pre><p>Apply OpenSeismoMatlab once for each target ductility value</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu1,pysf);
+S2=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu2,pysf);
+S3=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu3,pysf);
+S4=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu4,pysf);
+S5=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu5,pysf);
+</pre><h2 id="10">Plot the constant ductility response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
+hold <span class="string">on</span>
+<span class="comment">% Plot the constant ductility response spectra</span>
+plot(S1.Period,S1.fyK/9.81, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 2)
+plot(S2.Period,S2.fyK/9.81, <span class="string">'b-'</span>, <span class="string">'LineWidth'</span>, 2)
+plot(S3.Period,S3.fyK/9.81, <span class="string">'r-'</span>, <span class="string">'LineWidth'</span>, 2)
+plot(S4.Period,S4.fyK/9.81, <span class="string">'g-'</span>, <span class="string">'LineWidth'</span>, 2)
+plot(S5.Period,S5.fyK/9.81, <span class="string">'c-'</span>, <span class="string">'LineWidth'</span>, 2)
+hold <span class="string">off</span>
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'T (sec)'</span>)
+ylabel(<span class="string">'fy/w (-)'</span>)
+legend({<span class="string">'\mu=1'</span>,<span class="string">'\mu=1.5'</span>,<span class="string">'\mu=2'</span>,<span class="string">'\mu=4'</span>,<span class="string">'\mu=8'</span>})
+xlim([0,3])
+ylim([0,1])
+</pre><img vspace="5" hspace="5" src="verification_CDRS_01.png" alt=""> <h2 id="11">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% verification Constant ductility response spectrum
+
+%% Reference
+% Chopra, A. K. (2020). Dynamics of structures, Theory and Applications to
+% Earthquake Engineering, 5th edition. Prenctice Hall.
+
+%% Description
+% The constant-ductility response spectra of Figure 7.5.2 of the above
+% reference are verified. Elastic-perfectly plastic systems are considered.
+% Damping is equal to 5% of its critical value. Target ductility factors
+% equal to 1,1.5,2,4 and 8 are considered.
+
+%% Load earthquake data
+% Earthquake acceleration time history of the El Centro earthquake will be
+% used (El Centro, 1940, El Centro Terminal Substation Building)
+fid=fopen('elcentro.dat','r');
+text=textscan(fid,'%f %f');
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+
+%% Calculate constant ductility response spectra of earthquake motion
+% Switch
+sw='cdrs';
+
+%%
+% Eigenperiods
+T=logspace(log10(0.05),log10(3),20);
+
+%%
+% Critical damping ratio
+ksi=0.05;
+
+%%
+% Ductilities
+mu1=1;
+mu2=1.5;
+mu3=2;
+mu4=4;
+mu5=8;
+
+%%
+% Post-yield stiffness factor
+pysf=0.001;
+
+%%
+% Apply OpenSeismoMatlab once for each target ductility value
+S1=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu1,pysf);
+S2=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu2,pysf);
+S3=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu3,pysf);
+S4=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu4,pysf);
+S5=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,mu5,pysf);
+
+%% Plot the constant ductility response spectra
+% Initialize figure
+figure()
+hold on
+% Plot the constant ductility response spectra
+plot(S1.Period,S1.fyK/9.81, 'k-', 'LineWidth', 2)
+plot(S2.Period,S2.fyK/9.81, 'b-', 'LineWidth', 2)
+plot(S3.Period,S3.fyK/9.81, 'r-', 'LineWidth', 2)
+plot(S4.Period,S4.fyK/9.81, 'g-', 'LineWidth', 2)
+plot(S5.Period,S5.fyK/9.81, 'c-', 'LineWidth', 2)
+hold off
+% Finalize figure
+grid on
+xlabel('T (sec)')
+ylabel('fy/w (-)')
+legend({'\mu=1','\mu=1.5','\mu=2','\mu=4','\mu=8'})
+xlim([0,3])
+ylim([0,1])
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

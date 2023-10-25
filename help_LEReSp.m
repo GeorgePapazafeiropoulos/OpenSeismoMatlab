@@ -1,4 +1,4 @@
-%% LEReSp
+%% doc LEReSp
 % Documentation of the LEReSp function.
 
 %% 

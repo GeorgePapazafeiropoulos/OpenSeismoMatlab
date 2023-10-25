@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Comparison of constant ductility response spectra of RSN1044 for mu=2</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="example_Spectra_comparison_2.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>example Comparison of constant ductility response spectra of RSN1044 for mu=2</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="example_Spectra_comparison_2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Comparison of constant ductility response spectra of RSN1044 for mu=2</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Input</a></li><li><a href="#7">Results from OpenSeismoMatlab</a></li><li><a href="#10">Results from SeismoSignal</a></li><li><a href="#11">Output</a></li></ul></div><h2 id="1">Input</h2><p>Earthquake motions</p><pre class="codeinput">GMFileLoc = <span class="string">'input\'</span>;
+  </style></head><body><div class="content"><h1>example Comparison of constant ductility response spectra of RSN1044 for mu=2</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Input</a></li><li><a href="#7">Results from OpenSeismoMatlab</a></li><li><a href="#10">Results from SeismoSignal</a></li><li><a href="#11">Output</a></li><li><a href="#15">Copyright</a></li></ul></div><h2 id="1">Input</h2><p>Earthquake motions</p><pre class="codeinput">GMFileLoc = <span class="string">'input\'</span>;
 </pre><p>A text file containing the lists of GM names</p><pre class="codeinput">RecordList = [<span class="string">'input\Record_List.txt'</span>];
 </pre><p>Read E.Q. records name from the specifid list</p><pre class="codeinput">fid = fopen (RecordList,<span class="string">'r'</span>);
 records = textscan(fid, <span class="string">'%s'</span>); <span class="comment">% length = num of records*1, cell</span>
@@ -76,7 +77,7 @@ fclose (fid);
 </pre><p>Set the eigenperiod range for which the response spectra will be calculated.</p><pre class="codeinput">Tspectra=(0.05:0.05:4)';
 </pre><p>Set critical damping ratio of the response spectra to be calculated.</p><pre class="codeinput">ksi=0.02;
 </pre><h2 id="7">Results from OpenSeismoMatlab</h2><p>Set the target ductility</p><pre class="codeinput">mu=2; <span class="comment">% mu=1 equivalent to a linear SDoF</span>
-</pre><p>Extract constant ductility response spectra</p><pre class="codeinput">sw=<span class="string">'cds'</span>;
+</pre><p>Extract constant ductility response spectra</p><pre class="codeinput">sw=<span class="string">'cdrs'</span>;
 </pre><p>Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt{1},sw,Tspectra,ksi,mu);
 </pre><h2 id="10">Results from SeismoSignal</h2><pre class="codeinput">fileID = fopen(<span class="string">'input/RSN1044_Damping2.txt'</span>);
 <span class="keyword">for</span> idx = 1:5
@@ -102,7 +103,7 @@ legend(<span class="string">'CDS with mu=2'</span>,<span class="string">'SeismoS
 xlabel(<span class="string">'Period'</span>);
 ylabel(<span class="string">'Spectra Vel.'</span>)
 hold <span class="string">off</span>
-</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_02.png" alt=""> <p>Plot spectral displacement response spectra</p><pre class="codeinput">figure()
+</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_02.png" alt=""> <img vspace="5" hspace="5" src="example_Spectra_comparison_2_03.png" alt=""> <p>Plot spectral displacement response spectra</p><pre class="codeinput">figure()
 plot(S1.Period,S1.CDSd,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
 hold <span class="string">on</span>
 <span class="comment">%plot(S2.Period,S2.Sa,'r','LineWidth',1);</span>
@@ -111,13 +112,13 @@ legend(<span class="string">'CDS with mu=2'</span>,<span class="string">'SeismoS
 xlabel(<span class="string">'Period'</span>);
 ylabel(<span class="string">'Spectra Disp.'</span>)
 hold <span class="string">off</span>
-</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_03.png" alt=""> <p>Plot the achieved ductility for each eigenperiod. It should be equal or close to the target ductility mu=2</p><pre class="codeinput">figure()
+</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_04.png" alt=""> <p>Plot the achieved ductility for each eigenperiod. It should be equal or close to the target ductility mu=2</p><pre class="codeinput">figure()
 plot(S1.Period,S1.muK,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1);
 xlabel(<span class="string">'Period'</span>);
 ylabel(<span class="string">'Real mu values after iterations'</span>)
-</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_04.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_2_05.png" alt=""> <h2 id="15">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Comparison of constant ductility response spectra of RSN1044 for mu=2
+%% example Comparison of constant ductility response spectra of RSN1044 for mu=2
 
 %% Input
 % Earthquake motions
@@ -152,7 +153,7 @@ ksi=0.02;
 mu=2; % mu=1 equivalent to a linear SDoF
 %%
 % Extract constant ductility response spectra
-sw='cds';
+sw='cdrs';
 %%
 % Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
 S1=OpenSeismoMatlab(dt,xgtt{1},sw,Tspectra,ksi,mu);
@@ -206,6 +207,15 @@ figure()
 plot(S1.Period,S1.muK,'k','LineWidth',1);
 xlabel('Period');
 ylabel('Real mu values after iterations')
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
 
 
 ##### SOURCE END #####

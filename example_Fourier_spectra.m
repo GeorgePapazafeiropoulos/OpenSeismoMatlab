@@ -1,4 +1,4 @@
-%% Fourier spectra
+%% example Fourier spectra
 % Generate the Fourier spectra of an earthquake suite using
 % OpenSeismoMatlab
 
@@ -18,7 +18,7 @@ eqmotions={'Imperial Valley'; % Imperial valley 1979
 
 %%
 % Switch
-sw='fs';
+sw='fas';
 
 %% Extract fourier spectra
 % Initialize cell of Fourier spectra
@@ -43,14 +43,14 @@ for i=1:numel(eqmotions)
     plot(Fourier{i}(:,1),Fourier{i}(:,2),'k','LineWidth',1);
     set(gca,'FontName','Times New Roman')
     title(eqmotions{i},'FontName','Times New Roman')
-    ylabel('fs','FontName','Times New Roman')
+    ylabel('fas','FontName','Times New Roman')
     xlabel('Frequency (Hz)','FontName','Times New Roman')
     axis tight
 end
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

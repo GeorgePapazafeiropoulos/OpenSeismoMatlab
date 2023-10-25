@@ -1,4 +1,4 @@
-%% LIDA
+%% doc LIDA
 % Documentation of the LIDA function.
 
 %% 

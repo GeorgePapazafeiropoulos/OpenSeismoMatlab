@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Verify the dynamic response history analysis of OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="verification_DRHA.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>verification Dynamic response history analysis of OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="verification_DRHA.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Verify the dynamic response history analysis of OpenSeismoMatlab</h1><!--introduction--><p>Calculate linear dynamic response of a MDOF shear building</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Setup parameters for DRHA function</a></li><li><a href="#8">Calculation of structural properties</a></li><li><a href="#15">Calculate dynamic response</a></li><li><a href="#20">Roof displacement time history</a></li><li><a href="#21">Fifth-story shear time history</a></li><li><a href="#22">Base shear time history</a></li><li><a href="#23">Base moment time history</a></li><li><a href="#24">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Chopra, A. K. (2020). Dynamics of structures, Theory and Applications to Earthquake Engineering, 5th edition. Prenctice Hall.</p><h2 id="2">Description</h2><p>The example 13.2.6 (Example: Five-Story Shear Frame) of the above reference is solved in this example. Consider the five-story shear frame of Fig.12.8.1 of the above reference, subjected to the El Centro ground motion. The lumped masses are equal to 45 Mg at each floor, the lateral stiffness of each story is 54.82 kN/cm and the height of each story is 4 m. The damping ratio for all natural modes is 0.05.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+  </style></head><body><div class="content"><h1>verification Dynamic response history analysis of OpenSeismoMatlab</h1><!--introduction--><p>Calculate linear dynamic response of a MDOF shear building</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Setup parameters for DRHA function</a></li><li><a href="#8">Calculation of structural properties</a></li><li><a href="#15">Calculate dynamic response</a></li><li><a href="#20">Roof displacement time history</a></li><li><a href="#21">Fifth-story shear time history</a></li><li><a href="#22">Base shear time history</a></li><li><a href="#23">Base moment time history</a></li><li><a href="#24">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Chopra, A. K. (2020). Dynamics of structures, Theory and Applications to Earthquake Engineering, 5th edition. Prenctice Hall.</p><h2 id="2">Description</h2><p>The example 13.2.6 (Example: Five-Story Shear Frame) of the above reference is solved in this example. Consider the five-story shear frame of Fig.12.8.1 of the above reference, subjected to the El Centro ground motion. The lumped masses are equal to 45 Mg at each floor, the lateral stiffness of each story is 54.82 kN/cm and the height of each story is 4 m. The damping ratio for all natural modes is 0.05.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
 text=textscan(fid,<span class="string">'%f %f'</span>);
 fclose(fid);
 t=text{1,1};
@@ -128,9 +129,9 @@ xlabel(<span class="string">'Time (sec)'</span>,<span class="string">'FontSize'<
 ylabel(<span class="string">'Mb (kNm)'</span>,<span class="string">'FontSize'</span>,10);
 title([<span class="string">'All modes, maxMb='</span>,num2str(max(abs(MBeig/1e3))),<span class="string">' kNm'</span>],<span class="keyword">...</span>
     <span class="string">'FontSize'</span>,10)
-</pre><img vspace="5" hspace="5" src="verification_DRHA_04.png" alt=""> <h2 id="24">Copyright</h2><p>Copyright (c) 2018-2022 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="verification_DRHA_04.png" alt=""> <h2 id="24">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Verify the dynamic response history analysis of OpenSeismoMatlab
+%% verification Dynamic response history analysis of OpenSeismoMatlab
 % Calculate linear dynamic response of a MDOF shear building
 
 %% Reference
@@ -278,7 +279,7 @@ title(['All modes, maxMb=',num2str(max(abs(MBeig/1e3))),' kNm'],...
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

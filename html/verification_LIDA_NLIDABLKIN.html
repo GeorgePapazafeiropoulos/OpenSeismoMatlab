@@ -1,0 +1,252 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>verification of seismic input energy of linear SDOF oscillator</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="verification_LIDA_NLIDABLKIN.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>verification of seismic input energy of linear SDOF oscillator</h1><!--introduction--><p>Compare the output of LIDA.m and NLIDABLKIN.m for a linear SDOF oscillator in terms of seismic input energy per unit mass.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Setup parameters for NLIDABLKIN function for linear SDOF</a></li><li><a href="#16">Calculate dynamic response of linear SDOF using NLIDABLKIN.m</a></li><li><a href="#18">Plot the energy time histories of the linear SDOF</a></li><li><a href="#19">Calculate dynamic response of the linear SDOF using LIDA.m</a></li><li><a href="#20">Plot the energy time history of the nonlinear SDOF</a></li><li><a href="#21">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>None</p><h2 id="2">Description</h2><p>Calculate the time histories of the various energies that are absorbed by a linear elastic SDOF oscillator using the linear function LIDA.m and the nonlinear function NLIDABLKIN.m to which an infinite yield limit has been assigned. The time history of the seismic input energy per unit mass obtained by the LIDA.m function (Figure b) is compared to the sum of the strain, damping and kinetic energies per unit mass obtained by the NLIDABLKIN.m function (Figure a). The linear SDOF system has Tn=0.5 sec and ksi=5%.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+text=textscan(fid,<span class="string">'%f %f'</span>);
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+</pre><h2 id="4">Setup parameters for NLIDABLKIN function for linear SDOF</h2><p>Mass</p><pre class="codeinput">m=1;
+</pre><p>Eigenperiod</p><pre class="codeinput">Tn=0.5;
+</pre><p>Calculate the small-strain stiffness matrix</p><pre class="codeinput">omega=2*pi/Tn;
+k_hi=m*omega^2;
+</pre><p>Assign linear elastic properties</p><pre class="codeinput">k_lo=k_hi;
+uy1=1e10;
+</pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
+</pre><p>Initial displacement</p><pre class="codeinput">u0=0;
+</pre><p>Initial velocity</p><pre class="codeinput">ut0=0;
+</pre><p>Algorithm to be used for the time integration</p><pre class="codeinput">AlgID=<span class="string">'U0-V0-Opt'</span>;
+</pre><p>Minimum absolute value of the eigenvalues of the amplification matrix</p><pre class="codeinput">rinf=1;
+</pre><p>Maximum tolerance of convergence for time integration algorithm</p><pre class="codeinput">maxtol=0.01;
+</pre><p>Maximum number of iterations per integration time step</p><pre class="codeinput">jmax=200;
+</pre><p>Infinitesimal acceleration</p><pre class="codeinput">dak=eps;
+</pre><h2 id="16">Calculate dynamic response of linear SDOF using NLIDABLKIN.m</h2><p>Apply NLIDABLKIN</p><pre class="codeinput">[u,ut,utt,Fs,Ey,Es,Ed,jiter] = NLIDABLKIN(dt,xgtt,m,k_hi,k_lo,uy1,<span class="keyword">...</span>
+    ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
+</pre><p>Calculate the kinetic energy of SDOF</p><pre class="codeinput">Ek=1/2*m*ut.^2;
+</pre><h2 id="18">Plot the energy time histories of the linear SDOF</h2><p>Plot the damping energy, damping plus strain energy, damping plus strain plus kinetic energy of the linearly elastic SDOF system. Convert from m to cm</p><pre class="codeinput">figure()
+plot(t',cumsum(Ed)*1e4,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+hold <span class="string">on</span>
+plot(t',cumsum(Ed)*1e4+Es*1e4,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,1)
+plot(t',cumsum(Ed)*1e4+Es*1e4+Ek*1e4,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,1)
+hold <span class="string">off</span>
+xlim([0,30])
+ylim([0,8000])
+xlabel(<span class="string">'Time (sec)'</span>,<span class="string">'FontSize'</span>,10);
+ylabel(<span class="string">'Energy/unit mass (cm/s)^2'</span>,<span class="string">'FontSize'</span>,10);
+title(<span class="string">'(a)'</span>,<span class="string">'FontSize'</span>,10)
+grid <span class="string">on</span>
+legend({<span class="string">'Damping energy'</span>,<span class="string">'Damping+strain energy'</span>,<span class="keyword">...</span>
+    <span class="string">'Damping+strain+kinetic energy'</span>},<span class="string">'location'</span>,<span class="string">'northwest'</span>)
+</pre><img vspace="5" hspace="5" src="verification_LIDA_NLIDABLKIN_01.png" alt=""> <h2 id="19">Calculate dynamic response of the linear SDOF using LIDA.m</h2><p>Apply the LIDA.m function for the linear SDOF</p><pre class="codeinput">[u,ut,utt,Ei] = LIDA(dt,xgtt,omega,ksi,u0,ut0,AlgID,rinf);
+</pre><h2 id="20">Plot the energy time history of the nonlinear SDOF</h2><p>Plot the damping energy, the hysteretic energy and strain energy of the nonlinear SDOF system. Convert from m to cm.</p><pre class="codeinput">figure();
+plot(t,cumsum(Ei)*1e4,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,1)
+xlim([0,30])
+ylim([0,8000])
+xlabel(<span class="string">'Time (sec)'</span>,<span class="string">'FontSize'</span>,10);
+ylabel(<span class="string">'Energy/unit mass (cm/s)^2'</span>,<span class="string">'FontSize'</span>,10);
+title(<span class="string">'(b)'</span>,<span class="string">'FontSize'</span>,10)
+grid <span class="string">on</span>
+legend(<span class="string">'Input energy'</span>)
+</pre><img vspace="5" hspace="5" src="verification_LIDA_NLIDABLKIN_02.png" alt=""> <h2 id="21">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% verification of seismic input energy of linear SDOF oscillator
+% Compare the output of LIDA.m and NLIDABLKIN.m for a linear SDOF
+% oscillator in terms of seismic input energy per unit mass. 
+
+%% Reference
+% None
+
+%% Description
+% Calculate the time histories of the various energies that are absorbed by
+% a linear elastic SDOF oscillator using the linear function LIDA.m and the
+% nonlinear function NLIDABLKIN.m to which an infinite yield limit has been
+% assigned. The time history of the seismic input energy per unit mass
+% obtained by the LIDA.m function (Figure b) is compared to the sum of the
+% strain, damping and kinetic energies per unit mass obtained by the
+% NLIDABLKIN.m function (Figure a). The linear SDOF system has Tn=0.5 sec
+% and ksi=5%.
+
+%% Load earthquake data
+% Earthquake acceleration time history of the El Centro earthquake will be
+% used (El Centro, 1940, El Centro Terminal Substation Building)
+fid=fopen('elcentro.dat','r');
+text=textscan(fid,'%f %f');
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+
+%% Setup parameters for NLIDABLKIN function for linear SDOF
+% Mass
+m=1;
+
+%%
+% Eigenperiod
+Tn=0.5;
+
+%%
+% Calculate the small-strain stiffness matrix
+omega=2*pi/Tn;
+k_hi=m*omega^2;
+
+%%
+% Assign linear elastic properties
+k_lo=k_hi;
+uy1=1e10;
+
+%%
+% Critical damping ratio
+ksi=0.05;
+
+%%
+% Initial displacement
+u0=0;
+
+%%
+% Initial velocity
+ut0=0;
+
+%%
+% Algorithm to be used for the time integration
+AlgID='U0-V0-Opt';
+
+%%
+% Minimum absolute value of the eigenvalues of the amplification matrix
+rinf=1;
+
+%%
+% Maximum tolerance of convergence for time integration algorithm
+maxtol=0.01;
+
+%%
+% Maximum number of iterations per integration time step
+jmax=200;
+
+%%
+% Infinitesimal acceleration
+dak=eps;
+
+%% Calculate dynamic response of linear SDOF using NLIDABLKIN.m
+% Apply NLIDABLKIN
+[u,ut,utt,Fs,Ey,Es,Ed,jiter] = NLIDABLKIN(dt,xgtt,m,k_hi,k_lo,uy1,...
+    ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
+
+%%
+% Calculate the kinetic energy of SDOF
+Ek=1/2*m*ut.^2;
+
+%% Plot the energy time histories of the linear SDOF
+% Plot the damping energy, damping plus strain energy, damping plus strain
+% plus kinetic energy of the linearly elastic SDOF system. Convert from m
+% to cm
+figure()
+plot(t',cumsum(Ed)*1e4,'k','LineWidth',1)
+hold on
+plot(t',cumsum(Ed)*1e4+Es*1e4,'r','LineWidth',1)
+plot(t',cumsum(Ed)*1e4+Es*1e4+Ek*1e4,'b','LineWidth',1)
+hold off
+xlim([0,30])
+ylim([0,8000])
+xlabel('Time (sec)','FontSize',10);
+ylabel('Energy/unit mass (cm/s)^2','FontSize',10);
+title('(a)','FontSize',10)
+grid on
+legend({'Damping energy','Damping+strain energy',...
+    'Damping+strain+kinetic energy'},'location','northwest')
+
+%% Calculate dynamic response of the linear SDOF using LIDA.m
+% Apply the LIDA.m function for the linear SDOF
+[u,ut,utt,Ei] = LIDA(dt,xgtt,omega,ksi,u0,ut0,AlgID,rinf);
+
+%% Plot the energy time history of the nonlinear SDOF
+% Plot the damping energy, the hysteretic energy and strain energy of the
+% nonlinear SDOF system. Convert from m to cm.
+figure();
+plot(t,cumsum(Ei)*1e4,'b','LineWidth',1)
+xlim([0,30])
+ylim([0,8000])
+xlabel('Time (sec)','FontSize',10);
+ylabel('Energy/unit mass (cm/s)^2','FontSize',10);
+title('(b)','FontSize',10)
+grid on
+legend('Input energy')
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+##### SOURCE END #####
+--></body></html>

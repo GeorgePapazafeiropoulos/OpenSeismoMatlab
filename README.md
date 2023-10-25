@@ -31,5 +31,3 @@ OpenSeismoMatlab has been already published in an original research article:
 Papazafeiropoulos, G., & Plevris, V. (2018). OpenSeismoMatlab: A new open-source software for strong ground motion data processing. Heliyon, 4(9), e00784.
 DOI:10.1016/j.heliyon.2018.e00784
 https://www.heliyon.com/article/e00784/
-
-[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=GeorgePapazafeiropoulos/OpenSeismoMatlab)

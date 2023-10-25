@@ -1,4 +1,4 @@
-%% Linear elastic response spectra
+%% example Linear elastic response spectra
 % Generate the linear elastic response spectra of an earthquake suite using
 % OpenSeismoMatlab.
 
@@ -24,7 +24,7 @@ Tspectra=(0.01:0.01:4)';
 ksi=0.05;
 %%
 % Extract linear elastic response spectra
-sw='es';
+sw='elrs';
 
 %% Calculation
 % Initialize LERS
@@ -83,7 +83,7 @@ end
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

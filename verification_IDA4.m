@@ -1,4 +1,4 @@
-%% Verify the incremental dynamic analysis for ductility response
+%% verification Incremental dynamic analysis for ductility response
 
 %% Reference
 % De Luca, F., Vamvatsikos, D., & Iervolino, I. (2011, May). Near-optimal
@@ -104,7 +104,7 @@ ylim([0,6])
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

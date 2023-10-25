@@ -1,4 +1,4 @@
-%% CDReSp
+%% doc CDReSp
 % Documentation of the CDReSp function.
 
 %% 

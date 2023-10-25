@@ -1,4 +1,4 @@
-%% baselineCorr
+%% example baselineCorr
 % Apply baseline correction in OpenSeismoMatlab
 
 %% Earthquake motion
@@ -54,7 +54,7 @@ legend('Uncorrected','Corrected')
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

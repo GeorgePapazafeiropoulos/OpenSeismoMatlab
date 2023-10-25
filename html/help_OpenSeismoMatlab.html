@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="help_OpenSeismoMatlab.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>doc OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="help_OpenSeismoMatlab.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,22 +67,30 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>OpenSeismoMatlab</h1><!--introduction--><p>Documentation of the OpenSeismoMatlab function.</p><!--/introduction--><pre class="codeinput">helpFun(<span class="string">'OpenSeismoMatlab'</span>)
+  </style></head><body><div class="content"><h1>doc OpenSeismoMatlab</h1><!--introduction--><p>Documentation of the OpenSeismoMatlab function.</p><!--/introduction--><pre class="codeinput">helpFun(<span class="string">'OpenSeismoMatlab'</span>)
 </pre><pre class="codeoutput">
  Seismic parameters and processing of an acceleration time history
 
  Syntax
      PARAM=OpenSeismoMatlab(DT,XGTT,SW,__)
      PARAM=OpenSeismoMatlab(DT,XGTT,'PGA')
+     PARAM=OpenSeismoMatlab(DT,XGTT,'EPGA')
      PARAM=OpenSeismoMatlab(DT,XGTT,'PGV')
      PARAM=OpenSeismoMatlab(DT,XGTT,'PGD')
      PARAM=OpenSeismoMatlab(DT,XGTT,'ARIAS')
+     PARAM=OpenSeismoMatlab(DT,XGTT,'SIH1952')
+     PARAM=OpenSeismoMatlab(DT,XGTT,'SINH1984')
      PARAM=OpenSeismoMatlab(DT,XGTT,'TIMEHIST',BASELINESW)
      PARAM=OpenSeismoMatlab(DT,XGTT,'RESAMPLE',DTI)
-     PARAM=OpenSeismoMatlab(DT,XGTT,'ES',T,KSI,ALGID,RINF,DTTOL)
-     PARAM=OpenSeismoMatlab(DT,XGTT,'CDS',T,KSI,MU,PYSF,DTTOL,ALGID,...
+     PARAM=OpenSeismoMatlab(DT,XGT,'PULSEDECOMP',WNAME,TPMIN,TPMAX,...
+         NSCALES)
+     PARAM=OpenSeismoMatlab(DT,XGTT,'ELRS',T,KSI,ALGID,RINF,DTTOL)
+     PARAM=OpenSeismoMatlab(DT,XGTT,'RPSRS',CF,ALGID,RINF,MAXTOL,JMAX,DAK)
+     PARAM=OpenSeismoMatlab(DT,XGTT,'CDRS',T,KSI,MU,PYSF,DTTOL,ALGID,...
          RINF,MAXTOL,JMAX,DAK)
-     PARAM=OpenSeismoMatlab(DT,XGTT,'FS')
+     PARAM=OpenSeismoMatlab(DT,XGTT,'CSRS',T,KSI,FYR,PYSF,DTTOL,ALGID,...
+         RINF,MAXTOL,JMAX,DAK)
+     PARAM=OpenSeismoMatlab(DT,XGTT,'FAS')
      PARAM=OpenSeismoMatlab(DT,XGTT,'BUTTERWORTHHIGH',BORDER,FLC)
      PARAM=OpenSeismoMatlab(DT,XGTT,'BUTTERWORTHLOW',BORDER,FHC)
      PARAM=OpenSeismoMatlab(DT,XGTT,'IDA',T,LAMBDAF,IM_DM,M,UY,PYSF,...
@@ -94,38 +103,45 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
      spectra and performs various analyses from an acceleration time
      history. More specifically, it calculates the following:
      1) Peak ground acceleration
-     2) Peak ground velocity
-     3) Peak ground displacement
-     4) Total cumulative energy and normalized cumulative energy vs time
-     5) Significant duration D_5_95 according to Trifunac &amp; Brady (1975)
-     6) Significant duration D_5_75
-     7) Total Arias intensity (Ia)
-     8) Velocity time history (with baseline correction or not)
-     9) Displacement time history (with baseline correction or not)
-     10) Resampled acceleration time history (i.e. the input acceleration
+     2) Effective peak ground acceleration
+     3) Peak ground velocity
+     4) Peak ground displacement
+     5) Total cumulative energy and normalized cumulative energy vs time
+     6) Significant duration D_5_95 according to Trifunac &amp; Brady (1975)
+     7) Significant duration D_5_75
+     8) Total Arias intensity (Ia)
+     9) Velocity time history (with baseline correction or not)
+     10) Displacement time history (with baseline correction or not)
+     11) Resampled acceleration time history (i.e. the input acceleration
         time history with modified time step size)
-     11) Linear elastic pseudo-acceleration response spectrum
-     12) Linear elastic pseudo-velocity response spectrum
-     13) Linear elastic displacement response spectrum
-     14) Linear elastic velocity response spectrum
-     15) Linear elastic acceleration response spectrum
-     16) Constant ductility displacement response spectrum
-     17) Constant ductility velocity response spectrum
-     18) Constant ductility acceleration response spectrum
-     19) Fourier amplitude spectrum
-     20) Mean period (Tm)
-     21) Lowpass Butterworth-filtered acceleration time history
-     22) Highpass Butterworth-filtered acceleration time history
-     23) Incremental Dynamic Analysis (IDA) of SDOF system excited with
+     12) Linear elastic pseudo-acceleration response spectrum
+     13) Linear elastic pseudo-velocity response spectrum
+     14) Linear elastic displacement response spectrum
+     15) Linear elastic velocity response spectrum
+     16) Linear elastic acceleration response spectrum
+     17) Rigid plastic sliding displacement response spectrum
+     18) Rigid plastic sliding velocity response spectrum
+     19) Rigid plastic sliding acceleration response spectrum
+     20) Constant ductility displacement response spectrum
+     21) Constant ductility velocity response spectrum
+     22) Constant ductility acceleration response spectrum
+     23) Fourier amplitude spectrum
+     24) Mean period (Tm)
+     25) Lowpass Butterworth-filtered acceleration time history
+     26) Highpass Butterworth-filtered acceleration time history
+     27) Incremental Dynamic Analysis (IDA) of SDOF system excited with
          the input acceleration time history
+     28) Spectral intensity according to Housner (1952)
+     29) Spectral intensity according to Nau &amp; Hall (1984)
      Depending on the value of SW, which determines the type of analysis
      that OpenSeismoMatlab performs, various additional parameters are
      needed as input by the user. All possible syntaxes appear above.
-     
+
  Input parameters
      DT [double(1 x 1)] is the size of the time step of the input
          acceleration time history xgtt.
      XGTT [double(:inf x 1)] is the input acceleration time history.
+     XGT [double(:inf x 1)] is the input velocity time history.
      SW [char(1 x :inf)] is a string which determines which parameters,
          spectras or analyses of the input acceleration time history will
          be calculated. SW can take one of the following values (strings
@@ -140,29 +156,28 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
          'ARIAS': The total cumulative energy, significant duration
              D_5_95 according to Trifunac &amp; Brady (1975), significant
              duration D_5_75 and Arias intensity are calculated.
-         'ES': The linear elastic response spectra and pseudospectra are
+         'PULSEDECOMP': the (velocity) time history is decomposed into a
+             pulse and a residual motion
+         'ELRS': The linear elastic response spectra and pseudospectra are
              calculated.
-         'CDS': The constant ductility response spectra are calculated.
-         'FS': The Fourier amplitude spectrum and the mean period are
+         'RPSRS': The rigid plastic sliding response spectra are
+             calculated.
+         'CDRS': The constant ductility response spectra are calculated.
+         'CSRS': The constant strength response spectra are calculated.
+         'IDA': Incremental Dynamic Analysis of an elastoplastic SDOF
+             system excited by the input acceleration time history is
+             performed.
+         'FAS': The Fourier amplitude spectrum and the mean period are
              calculated.
          'BUTTERWORTHHIGH': The high-pass Butterworth filtered
              acceleration time history is calculated.
          'BUTTERWORTHLOW': The low-pass Butterworth filtered
              acceleration time history is calculated.
-         'IDA': Incremental Dynamic Analysis of an elastoplastic SDOF
-             system excited by the input acceleration time history is
-             performed.
+         'EPGA': Effective Peak Ground Acceleration.
+         'SIH1952': Spectral Intensity according to Housner (1952).
+         'SINH1984': Spectral Intensity according to Nau &amp; Hall (1984).
+
  Additional required parameters
-     BASELINESW [logical(1 x 1)] determines if baseline correction will be
-         applied for the calculation of the various time histories.
-     DTI [double(1 x 1)] is the new time step size for resampling of the
-         input acceleration time history.
-     T [double(:inf x 1)] contains the values of eigenperiods for
-         which the response spectra are requested. Its length is the
-         number of SDOF oscillators being analysed to produce the spectra.
-         T must be a vector if SW='ES' or SW='CDS'. T must be scalar if
-         SW='IDA'.
-     KSI [double(1 x 1)] is the fraction of critical viscous damping.
      ALGID [char(1 x :inf)] is the algorithm to be used for the time
          integration, if applicable. It can be one of the following
          strings for superior optimally designed algorithms (strings are
@@ -202,21 +217,28 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
              'Newmark BA': Newmark Backward Acceleration method
              'Fox-Goodwin': Fox-Goodwin formula
          Default value 'U0-V0-Opt'.
-     MU [double(1 x 1)] is the specified ductility for which the constant
-         ductility response spectra are calculated.
-     PYSF [double(1 x 1)] is the post-yield stiffness factor, i.e. the
-         ratio of the postyield stiffness to the initial stiffness. PYSF=0
-         is not recommended for simulation of an elastoplastic system; a
-         small positive value is always suggested due to numerical
-         reasons. PYSF is ignored if MU=1. Default value 0.01.
+     BASELINESW [logical(1 x 1)] determines if baseline correction will be
+         applied for the calculation of the various time histories.
      BORDER [double(1 x 1)] is the order of the Butterworth filter that is
          applied for filtering of the acceleration time history.
-     FLC [double(1 x 1)] is the low cutoff frequency for the high-pass
-         Butterworth filter.
+     CF [double(1:numSDOFs x 1)] contains the values of the Coulomb
+         friction coefficient for which the response spectra are
+         requested. numSDOFs is the number of SDOF oscillators being
+         analysed to produce the spectra.
+     DAK [double(1 x 1)] is the infinitesimal acceleration for the
+         calculation of the derivetive required for the convergence of the
+         Newton-Raphson iteration.
+     DTI [double(1 x 1)] is the new time step size for resampling of the
+         input acceleration time history.
+     DTTOL [double(1 x 1)] is the tolerance for resampling of the input
+         acceleration time history. For a given eigenperiod T, resampling
+         takes place if DT/T&gt;dtTol. Default value 0.02.
      FHC [double(1 x 1)] is the high cutoff frequency for the low-pass
          Butterworth filter.
-     LAMBDAF [double(:inf x 1)] contains the values of the scaling factor
-         (lambda factor) for the incremental dynamic analysis. 
+     FLC [double(1 x 1)] is the low cutoff frequency for the high-pass
+         Butterworth filter.
+     FYR [double(1 x 1)] is the yield strength ratio (yield shear to
+         weight, V/W).
      IM_DM [char(1 x :inf)] is the Intensity Measure (IM) - Damage Measure
          (DM) pair that is to be calculated from the incremental dynamic
          analysis. IM_DM can take one of the following values (strings are
@@ -237,102 +259,137 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
          'PGD_ACC': Peak displacement-acceleration
          'PGV_ACC': Peak velocity-acceleration
          'PGA_ACC': Peak acceleration-acceleration
-     M [double(1 x 1)] is the mass of the SDOF oscillator.
-     UY [double(1 x 1)] is the yield displacement of the SDOF oscillator.
-     U0 [double(1 x 1)] is the initial displacement of the SDOF
-         oscillator.
-     UT0 [double(1 x 1)] is the initial velocity of the SDOF oscillator.
-     RINF [double(1 x 1)] is the minimum absolute value of the eigenvalues
-         of the amplification matrix. For the amplification matrix see
-         eq.(61) in Zhou &amp; Tamma (2004). Default value 0.
-     MAXTOL [double(1 x 1)] is the maximum tolerance of convergence of the
-         Full Newton Raphson method for numerical computation of
-         acceleration.
      JMAX [double(1 x 1)] is the maximum number of iterations per
          increment. If JMAX=0 then iterations are not performed and the
          MAXTOL parameter is not taken into account.
-     DAK [double(1 x 1)] is the infinitesimal acceleration for the
-         calculation of the derivetive required for the convergence of the
-         Newton-Raphson iteration.
-     DTTOL [double(1 x 1)] is the tolerance for resampling of the input
-         acceleration time history. For a given eigenperiod T, resampling
-         takes place if DT/T&gt;dtTol. Default value 0.02.
+     KSI [double(1 x 1)] is the fraction of critical viscous damping.
+     LAMBDAF [double(:inf x 1)] contains the values of the scaling factor
+         (lambda factor) for the incremental dynamic analysis.
+     M [double(1 x 1)] is the mass of the SDOF oscillator.
+     MAXTOL [double(1 x 1)] is the maximum tolerance of convergence of the
+         Full Newton Raphson method for numerical computation of
+         acceleration.
+     MU [double(1 x 1)] is the specified ductility for which the constant
+         ductility response spectra are calculated.
+     NSCALES [double(1 x 1)] is the number of pulse period values between
+         TPMIN and TPMAX to be considered for the continuous 1-D wavelet
+         transform of XGT
+     PYSF [double(1 x 1)] is the post-yield stiffness factor, i.e. the
+         ratio of the postyield stiffness to the initial stiffness. PYSF=0
+         is not recommended for simulation of an elastoplastic system; a
+         small positive value is always suggested due to numerical
+         reasons. PYSF is ignored if MU=1. Default value 0.01.
+     RINF [double(1 x 1)] is the minimum absolute value of the eigenvalues
+         of the amplification matrix. For the amplification matrix see
+         eq.(61) in Zhou &amp; Tamma (2004). Default value 0.
+     T [double(:inf x 1)] contains the values of eigenperiods for
+         which the response spectra are requested. Its length is the
+         number of SDOF oscillators being analysed to produce the spectra.
+         T must be a vector if SW='ELRS' or SW='CDRS'. T must be scalar if
+         SW='IDA'.
+     TPMAX [double(1 x 1)] is the maximum pulse period to be considered
+         for the continuous 1-D wavelet transform of XGT
+     TPMIN [double(1 x 1)] is the minimum pulse period to be considered
+         for the continuous 1-D wavelet transform of XGT
+     U0 [double(1 x 1)] is the initial displacement of the SDOF
+         oscillator.
+     UT0 [double(1 x 1)] is the initial velocity of the SDOF oscillator.
+     UY [double(1 x 1)] is the yield displacement of the SDOF oscillator.
+     WNAME [char(1 x :inf)] is the wavelet family short name to be used
+         for the decomposition of the velocity time history. See the
+         Matlab function waveinfo.m for more details.
 
  Output parameters
      PARAM (structure) has the following fields:
-         PARAM.time [double(:inf x 1)] Time
          PARAM.acc [double(:inf x 1)] Acceleration time history
-         PARAM.vel [double(:inf x 1)] Velocity time history
-         PARAM.disp [double(:inf x 1)] Displacement time history
-         PARAM.PGA [double(1 x 1)] Peak ground acceleration
-         PARAM.PGV [double(1 x 1)] Peak ground velocity
-         PARAM.PGD [double(1 x 1)] Peak ground displacement
-         PARAM.Ecum [double(1 x 1)] Total cumulative energy
-         PARAM.EcumTH [double(:inf x 1)] normalized cumulative
-             energy vs time
-         PARAM.t_5_95 [double(1 x 2)] Time instants at which 5% and 95% of
-             cumulative energy have occurred
-         PARAM.Td_5_95 [double(1 x 1)] Time between when 5% and 95% of
-             cumulative energy has occurred (significant duration
-             according to Trifunac-Brady (1975))
-         PARAM.t_5_75 [double(1 x 2)] Time instants at which 5% and 75% of
-             cumulative energy have occurred
-         PARAM.Td_5_75 [double(1 x 1)] Time between when 5% and 75% of
-             cumulative energy has occurred
          PARAM.arias [double(1 x 1)] Total Arias intensity (Ia)
-         PARAM.PSa [double(:inf x 1)] Linear elastic pseudo-acceleration
-             response spectrum
-         PARAM.PSv [double(:inf x 1)] Linear elastic pseudo-velocity
-             response spectrum
-         PARAM.Sd [double(:inf x 1)] Linear elastic displacement response
-             spectrum
-         PARAM.Sv [double(:inf x 1)] Linear elastic velocity response
-             spectrum
-         PARAM.Sa [double(:inf x 1)] Linear elastic acceleration response
-             spectrum
-         PARAM.SievABS [double(:inf x 1)] Linear elastic absolute input
-             energy equivalent velocity spectrum
-         PARAM.SievREL [double(:inf x 1)] Linear elastic relative input
-             energy equivalent velocity spectrum
-         PARAM.PredPSa [double(1 x 1)] Predominant acceleration of the PSa
-             spectrum
-         PARAM.PredPeriod [double(1 x 1)] Predominant period of the PSa
-             spectrum
          PARAM.CDPSa [double(:inf x 1)] Constant ductility
              pseudo-acceleration response spectrum
          PARAM.CDPSv [double(:inf x 1)] Constant ductility pseudo-velocity
+             response spectrum
+         PARAM.CDSa [double(:inf x 1)] Constant ductility acceleration
              response spectrum
          PARAM.CDSd [double(:inf x 1)] Constant ductility displacement
              response spectrum
          PARAM.CDSv [double(:inf x 1)] Constant ductility velocity
              response spectrum
-         PARAM.CDSa [double(:inf x 1)] Constant ductility acceleration
-             response spectrum
-         PARAM.fyK [double(:inf x 1)] yield limit that each SDOF must have
-             in order to attain ductility equal to PARAM.muK.
-         PARAM.muK [double(:inf x 1)] achieved ductility for each period
-             (each SDOF).
-         PARAM.iterK [double(:inf x 1)] number of iterations needed for
-             convergence for each period (each SDOF).
-         PARAM.FAS [double(1:2^(nextpow2(length(xgtt))-1) x 1)] Fourier
-             amplitude spectrum
-         PARAM.Tm [double(1 x 1)] Mean period (Tm)
-         PARAM.Fm [double(1 x 1)] Mean frequency (Fm)
+         PARAM.disp [double(:inf x 1)] Displacement time history
          param.DM [double(:inf x 1)] is the damage measure (DM) of the
              incremental dynamic analysis
+         PARAM.Ecum [double(1 x 1)] Total cumulative energy
+         PARAM.EcumTH [double(:inf x 1)] Normalized cumulative
+             energy vs time
+         PARAM.EPGA [double(1 x 1)] Effective peak ground acceleration
+         PARAM.FAS [double(1:2^(nextpow2(length(xgtt))-1) x 1)] Fourier
+             amplitude spectrum
+         PARAM.Fm [double(1 x 1)] Mean frequency (Fm)
+         PARAM.fyK [double(:inf x 1)] yield limit that each SDOF must have
+             in order to attain ductility equal to PARAM.muK.
          param.IM [double(:inf x 1)] is the intensity measure (IM) of the
              incremental dynamic analysis
+         PARAM.iterK [double(:inf x 1)] number of iterations needed for
+             convergence for each period (each SDOF).
+         PARAM.muK [double(:inf x 1)] achieved ductility for each period
+             (each SDOF).
+         PARAM.PGA [double(1 x 1)] Peak ground acceleration
+         PARAM.PGD [double(1 x 1)] Peak ground displacement
+         PARAM.PGV [double(1 x 1)] Peak ground velocity
+         PARAM.PredPeriod [double(1 x 1)] Predominant period of the PSa
+             spectrum
+         PARAM.PredPSa [double(1 x 1)] Predominant acceleration of the PSa
+             spectrum
+         PARAM.PSa [double(:inf x 1)] Linear elastic pseudo-acceleration
+             response spectrum
+         PARAM.PSv [double(:inf x 1)] Linear elastic pseudo-velocity
+             response spectrum
+         PARAM.pulseTH [double(:inf x 1)] Time history of the pulse
+             contained in velocity time history
+         PARAM.resTH [double(:inf x 1)] Time history of the residual
+             motion after subtracting the pulse from the velocity time
+             history
+         PARAM.RPSSa [double(:inf x 1)] Rigid plastic sliding response
+             spectral acceleration
+         PARAM.RPSSd [double(:inf x 1)] Rigid plastic sliding response
+             spectral displacement
+         PARAM.RPSSv [double(:inf x 1)] Rigid plastic sliding response
+             spectral velocity
+         PARAM.Sa [double(:inf x 1)] Linear elastic acceleration response
+             spectrum
+         PARAM.Sd [double(:inf x 1)] Linear elastic displacement response
+             spectrum
+         PARAM.SI [double(1 x 1)] Spectral intensity
+         PARAM.Siev [double(:inf x 1)] Linear elastic relative input
+             energy equivalent velocity spectrum
+         PARAM.Sv [double(:inf x 1)] Linear elastic velocity response
+             spectrum
+         PARAM.t_5_75 [double(1 x 2)] Time instants at which 5% and 75% of
+             cumulative energy have occurred
+         PARAM.t_5_95 [double(1 x 2)] Time instants at which 5% and 95% of
+             cumulative energy have occurred
+         PARAM.Td_5_75 [double(1 x 1)] Time between when 5% and 75% of
+             cumulative energy has occurred
+         PARAM.Td_5_95 [double(1 x 1)] Time between when 5% and 95% of
+             cumulative energy has occurred (significant duration
+             according to Trifunac-Brady (1975))
+         PARAM.time [double(:inf x 1)] Time
+         PARAM.Tm [double(1 x 1)] Mean period (Tm)
+         PARAM.Tp [double(1 x 1)] Period of the pulse
+         PARAM.vel [double(:inf x 1)] Velocity time history
+         PARAM.wavCoefs [double(1 x 1)] Coefficient for the extracted
+             wavelet
+         PARAM.wavScale [double(1 x 1)] Scale at which the largest wavelet
+             was found
 
 __________________________________________________________________________
- Copyright (c) 2018-2022
+ Copyright (c) 2018-2023
      George Papazafeiropoulos
      Major, Infrastructure Engineer, Hellenic Air Force
      Civil Engineer, M.Sc., Ph.D.
      Email: gpapazafeiropoulos@yahoo.gr
  _________________________________________________________________________
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% OpenSeismoMatlab
+%% doc OpenSeismoMatlab
 % Documentation of the OpenSeismoMatlab function.
 
 %% 

@@ -1,4 +1,4 @@
-%% LEReSp
+%% example LEReSp
 % Calculate linear elastic response spectra in OpenSeismoMatlab
 
 %% Generate earthquake motion
@@ -47,7 +47,7 @@ rinf=1;
 
 %% Calculate spectra and pseudospectra
 % Apply LEReSp
-[PSa,PSv,Sd,Sv,Sa,SievABS,SievREL]=LEReSp(dt,xgtt,T,ksi,dtTol,AlgID,rinf);
+[PSa,PSv,Sd,Sv,Sa,Siev]=LEReSp(dt,xgtt,T,ksi,dtTol,AlgID,rinf);
 
 %% Plot the spectra and pseudospectra
 % Pseudoacceleration spectrum
@@ -85,22 +85,15 @@ ylabel('Acceleration (m/s2)')
 xlabel('Eigenperiod (sec)')
 
 %%
-% Equivalent absolute input energy velocity
-figure()
-plot(T,SievABS,'k','LineWidth',1)
-ylabel('Equivalent absolute input energy velocity (m/s)')
-xlabel('Eigenperiod (sec)')
-
-%%
 % Equivalent relative input energy velocity
 figure()
-plot(T,SievREL,'k','LineWidth',1)
+plot(T,Siev,'k','LineWidth',1)
 ylabel('Equivalent relative input energy velocity (m/s)')
 xlabel('Eigenperiod (sec)')
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

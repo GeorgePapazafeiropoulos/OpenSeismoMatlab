@@ -1,4 +1,4 @@
-%% Comparison of constant ductility response spectra of RSN1044 for mu=2
+%% example Comparison of constant ductility response spectra of RSN1044 for mu=2
 
 %% Input
 % Earthquake motions
@@ -33,7 +33,7 @@ ksi=0.02;
 mu=2; % mu=1 equivalent to a linear SDoF
 %%
 % Extract constant ductility response spectra
-sw='cds';
+sw='cdrs';
 %%
 % Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
 S1=OpenSeismoMatlab(dt,xgtt{1},sw,Tspectra,ksi,mu);
@@ -87,4 +87,13 @@ figure()
 plot(S1.Period,S1.muK,'k','LineWidth',1);
 xlabel('Period');
 ylabel('Real mu values after iterations')
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
 

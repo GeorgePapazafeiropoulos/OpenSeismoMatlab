@@ -1,4 +1,4 @@
-%% Verify the incremental dynamic analysis of OpenSeismoMatlab
+%% verification Incremental dynamic analysis of OpenSeismoMatlab
 
 %% Reference
 % Mashayekhi, M., Harati, M., Darzi, A., & Estekanchi, H. E. (2020).
@@ -60,7 +60,7 @@ S2.Td_5_75
 
 %% Scale earthquake motion to have Sa(1 sec)=0.382g
 % Switch
-sw='es';
+sw='elrs';
 %%
 % Critical damping ratio
 ksi=0.05;
@@ -81,7 +81,7 @@ xgtt=xgtt*scaleF;
 
 %% Calculate spectral acceleration of scaled earthquake motion
 % Switch
-sw='es';
+sw='elrs';
 %%
 % Critical damping ratio
 ksi=0.05;
@@ -149,7 +149,7 @@ ylim([0,0.7])
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

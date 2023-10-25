@@ -1,4 +1,4 @@
-%% IDA
+%% doc IDA
 % Documentation of the IDA function.
 
 %% 

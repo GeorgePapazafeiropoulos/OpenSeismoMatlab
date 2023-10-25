@@ -1,4 +1,4 @@
-%% baselineCorr
+%% doc baselineCorr
 % Documentation of the baselineCorr function.
 
 %% 

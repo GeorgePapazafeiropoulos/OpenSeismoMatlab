@@ -1,4 +1,4 @@
-%% CDReSp
+%% example CDReSp
 % Calculate constant ductility response spectra in OpenSeismoMatlab
 
 %% Earthquake motion
@@ -70,8 +70,8 @@ dak=eps;
 [CDPSa,CDPSv,CDSd,CDSv,CDSa,fyK,muK,iterK]=CDReSp(dt,xgtt,T,ksi,...
     mu,n,tol,pysf,dtTol,AlgID,rinf,maxtol,jmax,dak);
 
-%% Plot the spectra and pseudospectra
-% Constant ductility spectral displacement spectrum
+%% Plot the spectra
+% Constant ductility displacement spectrum
 figure()
 plot(T,CDSd,'k','LineWidth',1)
 ylabel('Spectral displacement (m)')
@@ -100,7 +100,7 @@ xlabel('Eigenperiod (sec)')
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

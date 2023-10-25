@@ -1,4 +1,4 @@
-%% Verify the linear dynamic response of SDOF oscillator
+%% verification Linear dynamic response of SDOF oscillator
 % Calculate the dynamic response of a linear SDOF oscillator. This example
 % verifies Figure 6.6.1 in Chopra for Tn=1sec
 
@@ -52,7 +52,7 @@ D=max(abs(u))*100
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

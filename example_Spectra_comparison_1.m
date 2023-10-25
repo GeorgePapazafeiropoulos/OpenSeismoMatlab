@@ -1,4 +1,4 @@
-%% Comparison of elastic and constant ductility response spectra for mu=1
+%% example Comparison of elastic and constant ductility response spectra for mu=1
 % Compare the linear elastic acceleration response spectrum and the
 % constant ductility response spectrum for mu=1 (degenerates to linear
 % elastic). Also, compare with corresponding results of SeismoSignal
@@ -23,14 +23,14 @@ ksi=0.05;
 mu=1; % mu=1 equivalent to a linear SDoF
 %%
 % Extract constant ductility response spectra
-sw='cds';
+sw='cdrs';
 %%
 % Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
 S1=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi,mu);
 
 %% Next we use ES to calculate linear response
 % Extract linear elastic response spectra
-sw='es';
+sw='elrs';
 %%
 % Initialize LERS
 LERS=cell(numel(eqmotions),1);
@@ -56,5 +56,14 @@ plot(C{1},C{2})
 legend('CDS with mu=1','LinearSpectrum','SeismoSignal');
 xlabel('Period');
 ylabel('Spectra Acc.')
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
 
 

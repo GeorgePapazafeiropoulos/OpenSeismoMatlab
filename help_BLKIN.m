@@ -1,4 +1,4 @@
-%% BLKIN
+%% doc BLKIN
 % Documentation of the BLKIN function.
 
 %% 

@@ -1,4 +1,4 @@
-%% OpenSeismoMatlab
+%% doc OpenSeismoMatlab
 % Documentation of the OpenSeismoMatlab function.
 
 %% 

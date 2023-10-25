@@ -6,8 +6,8 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Comparison of elastic and constant ductility response spectra for mu=1</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-11-27"><meta name="DC.source" content="example_Spectra_comparison_1.m"><style type="text/css">
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+      --><title>example Comparison of elastic and constant ductility response spectra for mu=1</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="example_Spectra_comparison_1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
 html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -52,6 +52,7 @@ span.comment { color:#228B22 }
 span.string { color:#A020F0 }
 span.untermstring { color:#B20000 }
 span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
 
 .footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
 .footer p { margin:0px; }
@@ -66,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Comparison of elastic and constant ductility response spectra for mu=1</h1><!--introduction--><p>Compare the linear elastic acceleration response spectrum and the constant ductility response spectrum for mu=1 (degenerates to linear elastic). Also, compare with corresponding results of SeismoSignal software</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Input</a></li><li><a href="#4">First we use the CDS to calculate linear response</a></li><li><a href="#7">Next we use ES to calculate linear response</a></li><li><a href="#10">Results from SeismoSignal</a></li><li><a href="#11">Output</a></li></ul></div><h2 id="1">Input</h2><p>Earthquake motion</p><pre class="codeinput">eqmotions={<span class="string">'Imperial Valley'</span>}; <span class="comment">% Imperial valley 1979</span>
+  </style></head><body><div class="content"><h1>example Comparison of elastic and constant ductility response spectra for mu=1</h1><!--introduction--><p>Compare the linear elastic acceleration response spectrum and the constant ductility response spectrum for mu=1 (degenerates to linear elastic). Also, compare with corresponding results of SeismoSignal software</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Input</a></li><li><a href="#4">First we use the CDS to calculate linear response</a></li><li><a href="#7">Next we use ES to calculate linear response</a></li><li><a href="#10">Results from SeismoSignal</a></li><li><a href="#11">Output</a></li><li><a href="#12">Copyright</a></li></ul></div><h2 id="1">Input</h2><p>Earthquake motion</p><pre class="codeinput">eqmotions={<span class="string">'Imperial Valley'</span>}; <span class="comment">% Imperial valley 1979</span>
 data=load([eqmotions{1},<span class="string">'.dat'</span>]);
 t=data(:,1);
 dt=t(2)-t(1);
@@ -74,9 +75,9 @@ xgtt=data(:,2);
 </pre><p>Set the eigenperiod range for which the response spectra will be calculated.</p><pre class="codeinput">Tspectra=(0.05:0.05:4)';
 </pre><p>Set critical damping ratio of the response spectra to be calculated.</p><pre class="codeinput">ksi=0.05;
 </pre><h2 id="4">First we use the CDS to calculate linear response</h2><p>Set the target ductility</p><pre class="codeinput">mu=1; <span class="comment">% mu=1 equivalent to a linear SDoF</span>
-</pre><p>Extract constant ductility response spectra</p><pre class="codeinput">sw=<span class="string">'cds'</span>;
+</pre><p>Extract constant ductility response spectra</p><pre class="codeinput">sw=<span class="string">'cdrs'</span>;
 </pre><p>Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi,mu);
-</pre><h2 id="7">Next we use ES to calculate linear response</h2><p>Extract linear elastic response spectra</p><pre class="codeinput">sw=<span class="string">'es'</span>;
+</pre><h2 id="7">Next we use ES to calculate linear response</h2><p>Extract linear elastic response spectra</p><pre class="codeinput">sw=<span class="string">'elrs'</span>;
 </pre><p>Initialize LERS</p><pre class="codeinput">LERS=cell(numel(eqmotions),1);
 </pre><p>Calculation LERS{i}=[S.Period,S.Sd,S.PSv,S.PSa];</p><pre class="codeinput">S2=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi);
 </pre><h2 id="10">Results from SeismoSignal</h2><pre class="codeinput">fileID = fopen(<span class="string">'SeismoSignal_Imperial Valley.txt'</span>);
@@ -92,9 +93,9 @@ plot(C{1},C{2})
 legend(<span class="string">'CDS with mu=1'</span>,<span class="string">'LinearSpectrum'</span>,<span class="string">'SeismoSignal'</span>);
 xlabel(<span class="string">'Period'</span>);
 ylabel(<span class="string">'Spectra Acc.'</span>)
-</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_1_01.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="example_Spectra_comparison_1_01.png" alt=""> <h2 id="12">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-%% Comparison of elastic and constant ductility response spectra for mu=1
+%% example Comparison of elastic and constant ductility response spectra for mu=1
 % Compare the linear elastic acceleration response spectrum and the
 % constant ductility response spectrum for mu=1 (degenerates to linear
 % elastic). Also, compare with corresponding results of SeismoSignal
@@ -119,14 +120,14 @@ ksi=0.05;
 mu=1; % mu=1 equivalent to a linear SDoF
 %%
 % Extract constant ductility response spectra
-sw='cds';
+sw='cdrs';
 %%
 % Calculation CDRS{i}=[S.Period,S.CDSd,S.CDSv,S.CDPSa,S.fyK,S.muK,S.iterK];
 S1=OpenSeismoMatlab(dt,xgtt,sw,Tspectra,ksi,mu);
 
 %% Next we use ES to calculate linear response
 % Extract linear elastic response spectra
-sw='es';
+sw='elrs';
 %%
 % Initialize LERS
 LERS=cell(numel(eqmotions),1);
@@ -152,6 +153,15 @@ plot(C{1},C{2})
 legend('CDS with mu=1','LinearSpectrum','SeismoSignal');
 xlabel('Period');
 ylabel('Spectra Acc.')
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
 
 
 

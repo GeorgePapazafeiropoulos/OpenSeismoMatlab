@@ -1,0 +1,357 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>verification Energy time histories of nonlinear SDOF oscillator</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="verification_NLIDABLKIN2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>verification Energy time histories of nonlinear SDOF oscillator</h1><!--introduction--><p>Calculate the time histories of the energy dissipated by damping, the energy dissipated by yielding, as well as the energy that is input to two SDOF oscillators with two different eigenperiods.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Setup parameters for NLIDABLKIN function for nonlinear SDOF with T=0.2s</a></li><li><a href="#17">Calculate dynamic response of the nonlinear SDOF with T=0.2s</a></li><li><a href="#19">Plot the energy time histories of the nonlinear SDOF with T=0.2s</a></li><li><a href="#21">Setup parameters for NLIDABLKIN function for nonlinear SDOF with T=0.5s</a></li><li><a href="#34">Calculate dynamic response of the nonlinear SDOF with T=0.5s</a></li><li><a href="#36">Plot the energy time histories of the nonlinear SDOF with T=0.5s</a></li><li><a href="#38">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Uang, C. M., &amp; Bertero, V. V. (1990). Evaluation of seismic energy in structures. Earthquake engineering &amp; structural dynamics, 19(1), 77-90.</p><h2 id="2">Description</h2><p>Figure 3(b) of the above reference is reproduced in this example, for both linear elastic-perfectly plastic SDOF systems (short period and long period). Thetwo eigenperiods considered are T=0.2 sec and T=5.0 sec. The damping ratio is 5% of the critical value and the ductility ratio achieved is equal to 5 for both SDOF systems. Figure 3(b) is verified in terms of damping energy (noted as E_ksi in the Figure), yielding energy (noted as E_h in the Figure) and input energy (noted as Ei in the Figure).</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the 1986 San Salvador earthquake will be used (San Salvador, 10/10/1986, Geotech Investigation Center, component 90)</p><pre class="codeinput">fid=fopen(<span class="string">'SanSalvador1986GIC090.txt'</span>,<span class="string">'r'</span>);
+text=textscan(fid,<span class="string">'%f %f'</span>);
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+</pre><h2 id="4">Setup parameters for NLIDABLKIN function for nonlinear SDOF with T=0.2s</h2><p>Mass</p><pre class="codeinput">m=1;
+</pre><p>Eigenperiod</p><pre class="codeinput">T=0.2;
+</pre><p>Calculate the small-strain stiffness matrix</p><pre class="codeinput">omega=2*pi/T;
+k_hi=m*omega^2;
+</pre><p>Assign post-yield stiffness</p><pre class="codeinput">k_lo=0.0001*k_hi;
+</pre><p>Assign yield limit</p><pre class="codeinput">uy=0.004875;
+</pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
+</pre><p>Initial displacement</p><pre class="codeinput">u0=0;
+</pre><p>Initial velocity</p><pre class="codeinput">ut0=0;
+</pre><p>Algorithm to be used for the time integration</p><pre class="codeinput">AlgID=<span class="string">'U0-V0-Opt'</span>;
+</pre><p>Minimum absolute value of the eigenvalues of the amplification matrix</p><pre class="codeinput">rinf=1;
+</pre><p>Maximum tolerance of convergence for time integration algorithm</p><pre class="codeinput">maxtol=0.01;
+</pre><p>Maximum number of iterations per integration time step</p><pre class="codeinput">jmax=200;
+</pre><p>Infinitesimal acceleration</p><pre class="codeinput">dak=eps;
+</pre><h2 id="17">Calculate dynamic response of the nonlinear SDOF with T=0.2s</h2><p>Apply NLIDABLKIN</p><pre class="codeinput">[u,ut,utt,Fs,Ey,Es,Ed,jiter] = NLIDABLKIN(dt,xgtt,m,k_hi,k_lo,uy,<span class="keyword">...</span>
+    ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
+</pre><p>Calculate the kinetic energy of SDOF</p><pre class="codeinput">Ek=1/2*m*ut.^2;
+</pre><h2 id="19">Plot the energy time histories of the nonlinear SDOF with T=0.2s</h2><p>Plot the damping energy, yielding energy and input energy</p><pre class="codeinput">figure()
+plot(t',cumsum(Ed),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+hold <span class="string">on</span>
+plot(t',cumsum(Ed)+cumsum(Ey)-Es,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,1)
+plot(t',cumsum(Ed)+cumsum(Ey)+Ek,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,1)
+hold <span class="string">off</span>
+xlim([0,10])
+ylim([0,0.6])
+xlabel(<span class="string">'Time (sec)'</span>,<span class="string">'FontSize'</span>,10);
+ylabel(<span class="string">'Energy/unit mass (N*m/kg)'</span>,<span class="string">'FontSize'</span>,10);
+<span class="comment">%title('(a)','FontSize',10)</span>
+grid <span class="string">on</span>
+legend(<span class="string">'Damping energy'</span>,<span class="string">'Damping+yielding energy'</span>,<span class="string">'Input energy'</span>)
+</pre><img vspace="5" hspace="5" src="verification_NLIDABLKIN2_01.png" alt=""> <p>Show the achieved ductility factor (must be equal to 5 according to the above reference)</p><pre class="codeinput">max(abs(u))/uy
+</pre><pre class="codeoutput">
+ans =
+
+   5.000748299360105
+
+</pre><h2 id="21">Setup parameters for NLIDABLKIN function for nonlinear SDOF with T=0.5s</h2><p>Mass</p><pre class="codeinput">m=1;
+</pre><p>Eigenperiod</p><pre class="codeinput">T=5;
+</pre><p>Calculate the small-strain stiffness matrix</p><pre class="codeinput">omega=2*pi/T;
+k_hi=m*omega^2;
+</pre><p>Assign post-yield stiffness</p><pre class="codeinput">k_lo=0.0001*k_hi;
+</pre><p>Assign yield limit</p><pre class="codeinput">uy=0.023;
+</pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
+</pre><p>Initial displacement</p><pre class="codeinput">u0=0;
+</pre><p>Initial velocity</p><pre class="codeinput">ut0=0;
+</pre><p>Algorithm to be used for the time integration</p><pre class="codeinput">AlgID=<span class="string">'U0-V0-Opt'</span>;
+</pre><p>Minimum absolute value of the eigenvalues of the amplification matrix</p><pre class="codeinput">rinf=1;
+</pre><p>Maximum tolerance of convergence for time integration algorithm</p><pre class="codeinput">maxtol=0.01;
+</pre><p>Maximum number of iterations per integration time step</p><pre class="codeinput">jmax=200;
+</pre><p>Infinitesimal acceleration</p><pre class="codeinput">dak=eps;
+</pre><h2 id="34">Calculate dynamic response of the nonlinear SDOF with T=0.5s</h2><p>Apply NLIDABLKIN</p><pre class="codeinput">[u,ut,utt,Fs,Ey,Es,Ed,jiter] = NLIDABLKIN(dt,xgtt,m,k_hi,k_lo,uy,<span class="keyword">...</span>
+    ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
+</pre><p>Calculate the kinetic energy of SDOF</p><pre class="codeinput">Ek=1/2*m*ut.^2;
+</pre><h2 id="36">Plot the energy time histories of the nonlinear SDOF with T=0.5s</h2><p>Plot the damping energy, yielding energy and input energy</p><pre class="codeinput">figure()
+plot(t',cumsum(Ed),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
+hold <span class="string">on</span>
+plot(t',cumsum(Ed)+cumsum(Ey)-Es,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,1)
+plot(t',cumsum(Ed)+cumsum(Ey)+Ek,<span class="string">'r'</span>,<span class="string">'LineWidth'</span>,1)
+hold <span class="string">off</span>
+xlim([0,10])
+<span class="comment">%ylim([0,0.6])</span>
+xlabel(<span class="string">'Time (sec)'</span>,<span class="string">'FontSize'</span>,10);
+ylabel(<span class="string">'Energy/unit mass (N*m/kg)'</span>,<span class="string">'FontSize'</span>,10);
+<span class="comment">%title('(a)','FontSize',10)</span>
+grid <span class="string">on</span>
+legend(<span class="string">'Damping energy'</span>,<span class="string">'Damping+yielding energy'</span>,<span class="string">'Input energy'</span>)
+</pre><img vspace="5" hspace="5" src="verification_NLIDABLKIN2_02.png" alt=""> <p>Show the achieved ductility factor (must be equal to 5 according to the above reference)</p><pre class="codeinput">max(abs(u))/uy
+</pre><pre class="codeoutput">
+ans =
+
+   4.991904059608555
+
+</pre><h2 id="38">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% verification Energy time histories of nonlinear SDOF oscillator
+% Calculate the time histories of the energy dissipated by damping, the
+% energy dissipated by yielding, as well as the energy that is input to two
+% SDOF oscillators with two different eigenperiods.
+
+%% Reference
+% Uang, C. M., & Bertero, V. V. (1990). Evaluation of seismic energy in
+% structures. Earthquake engineering & structural dynamics, 19(1), 77-90.
+
+%% Description
+% Figure 3(b) of the above reference is reproduced in this example, for
+% both linear elastic-perfectly plastic SDOF systems (short period and long
+% period). Thetwo eigenperiods considered are T=0.2 sec and T=5.0 sec. The
+% damping ratio is 5% of the critical value and the ductility ratio
+% achieved is equal to 5 for both SDOF systems. Figure 3(b) is verified in
+% terms of damping energy (noted as E_ksi in the Figure), yielding energy
+% (noted as E_h in the Figure) and input energy (noted as Ei in the
+% Figure).
+
+%% Load earthquake data
+% Earthquake acceleration time history of the 1986 San Salvador earthquake
+% will be used (San Salvador, 10/10/1986, Geotech Investigation Center,
+% component 90)
+fid=fopen('SanSalvador1986GIC090.txt','r');
+text=textscan(fid,'%f %f');
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=text{1,2};
+
+%% Setup parameters for NLIDABLKIN function for nonlinear SDOF with T=0.2s
+% Mass
+m=1;
+
+%%
+% Eigenperiod
+T=0.2;
+
+%%
+% Calculate the small-strain stiffness matrix
+omega=2*pi/T;
+k_hi=m*omega^2;
+
+%%
+% Assign post-yield stiffness
+k_lo=0.0001*k_hi;
+
+%%
+% Assign yield limit
+uy=0.004875;
+
+%%
+% Critical damping ratio
+ksi=0.05;
+
+%%
+% Initial displacement
+u0=0;
+
+%%
+% Initial velocity
+ut0=0;
+
+%%
+% Algorithm to be used for the time integration
+AlgID='U0-V0-Opt';
+
+%%
+% Minimum absolute value of the eigenvalues of the amplification matrix
+rinf=1;
+
+%%
+% Maximum tolerance of convergence for time integration algorithm
+maxtol=0.01;
+
+%%
+% Maximum number of iterations per integration time step
+jmax=200;
+
+%%
+% Infinitesimal acceleration
+dak=eps;
+
+%% Calculate dynamic response of the nonlinear SDOF with T=0.2s
+% Apply NLIDABLKIN
+[u,ut,utt,Fs,Ey,Es,Ed,jiter] = NLIDABLKIN(dt,xgtt,m,k_hi,k_lo,uy,...
+    ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
+
+%%
+% Calculate the kinetic energy of SDOF
+Ek=1/2*m*ut.^2;
+
+%% Plot the energy time histories of the nonlinear SDOF with T=0.2s
+% Plot the damping energy, yielding energy and input energy
+figure()
+plot(t',cumsum(Ed),'k','LineWidth',1)
+hold on
+plot(t',cumsum(Ed)+cumsum(Ey)-Es,'b','LineWidth',1)
+plot(t',cumsum(Ed)+cumsum(Ey)+Ek,'r','LineWidth',1)
+hold off
+xlim([0,10])
+ylim([0,0.6])
+xlabel('Time (sec)','FontSize',10);
+ylabel('Energy/unit mass (N*m/kg)','FontSize',10);
+%title('(a)','FontSize',10)
+grid on
+legend('Damping energy','Damping+yielding energy','Input energy')
+
+%%
+% Show the achieved ductility factor (must be equal to 5 according to the
+% above reference)
+max(abs(u))/uy
+
+%% Setup parameters for NLIDABLKIN function for nonlinear SDOF with T=0.5s
+% Mass
+m=1;
+
+%%
+% Eigenperiod
+T=5;
+
+%%
+% Calculate the small-strain stiffness matrix
+omega=2*pi/T;
+k_hi=m*omega^2;
+
+%%
+% Assign post-yield stiffness
+k_lo=0.0001*k_hi;
+
+%%
+% Assign yield limit
+uy=0.023;
+
+%%
+% Critical damping ratio
+ksi=0.05;
+
+%%
+% Initial displacement
+u0=0;
+
+%%
+% Initial velocity
+ut0=0;
+
+%%
+% Algorithm to be used for the time integration
+AlgID='U0-V0-Opt';
+
+%%
+% Minimum absolute value of the eigenvalues of the amplification matrix
+rinf=1;
+
+%%
+% Maximum tolerance of convergence for time integration algorithm
+maxtol=0.01;
+
+%%
+% Maximum number of iterations per integration time step
+jmax=200;
+
+%%
+% Infinitesimal acceleration
+dak=eps;
+
+%% Calculate dynamic response of the nonlinear SDOF with T=0.5s
+% Apply NLIDABLKIN
+[u,ut,utt,Fs,Ey,Es,Ed,jiter] = NLIDABLKIN(dt,xgtt,m,k_hi,k_lo,uy,...
+    ksi,AlgID,u0,ut0,rinf,maxtol,jmax,dak);
+
+%%
+% Calculate the kinetic energy of SDOF
+Ek=1/2*m*ut.^2;
+
+%% Plot the energy time histories of the nonlinear SDOF with T=0.5s
+% Plot the damping energy, yielding energy and input energy
+figure()
+plot(t',cumsum(Ed),'k','LineWidth',1)
+hold on
+plot(t',cumsum(Ed)+cumsum(Ey)-Es,'b','LineWidth',1)
+plot(t',cumsum(Ed)+cumsum(Ey)+Ek,'r','LineWidth',1)
+hold off
+xlim([0,10])
+%ylim([0,0.6])
+xlabel('Time (sec)','FontSize',10);
+ylabel('Energy/unit mass (N*m/kg)','FontSize',10);
+%title('(a)','FontSize',10)
+grid on
+legend('Damping energy','Damping+yielding energy','Input energy')
+
+%%
+% Show the achieved ductility factor (must be equal to 5 according to the
+% above reference)
+max(abs(u))/uy
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+##### SOURCE END #####
+--></body></html>

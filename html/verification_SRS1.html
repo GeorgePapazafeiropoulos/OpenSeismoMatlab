@@ -1,0 +1,267 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>verification Rigid plastic sliding response spectrum</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="verification_SRS1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>verification Rigid plastic sliding response spectrum</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Earthquake motions</a></li><li><a href="#6">Calculate rigid plastic sliding response spectrum of earthquake motion</a></li><li><a href="#9">Plot the acceleration time histories of the earthquake motions</a></li><li><a href="#12">Plot the rigid plastic sliding response spectra</a></li><li><a href="#13">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Garini, E., &amp; Gazetas, G. (2016). Rocking and Sliding Potential of the 2014 Cephalonia, Greece Earthquakes. In ICONHIC2016 1st international conference on natural hazards &amp; infrastructure June, Chania, Greece.</p><h2 id="2">Description</h2><p>The rigid plastic sliding response spectra are extracted for various acceleration time histories of the 3 Feb 2014 13.34 EST Cephalonia earthquake. Three records are used: Chavriata (EW), Lixouri (EW) and Lixouri (NS). The oscillator is considered to be ideally rigid-plastic sliding on horizontal plane, as shown in Figure 4(a) of the above reference. The acceleration time histories that are used for the extraction of the spectra are plotted in this example and also shown in Figure 2 of the above reference [Chavriata (3 February) EW, Lixouri (3 February) EW, Lixouri (3 February) NS]. The rigid plastic sliding response spectra extracted in this example are compared to the corresponding spectra that appear in Figure 6 of the above reference.</p><h2 id="3">Earthquake motions</h2><p>Load earthquake data of Chavriata EW record</p><pre class="codeinput">eqmotion={<span class="string">'CHV1-20140203E'</span>};
+data=load([eqmotion{1},<span class="string">'.txt'</span>]);
+t1=data(:,1);
+dt1=t1(2)-t1(1);
+xgtt1=data(:,2)/100;
+<span class="comment">% Truncate the record</span>
+ind=t1&gt;23 &amp; t1&lt;33;
+xgtt1=xgtt1(ind);
+t1=t1(ind);
+</pre><p>Load earthquake data of Lixouri EW record</p><pre class="codeinput">eqmotion={<span class="string">'LXR1-20140203E'</span>};
+data=load([eqmotion{1},<span class="string">'.txt'</span>]);
+t2=data(:,1);
+dt2=t2(2)-t2(1);
+xgtt2=data(:,2)/100;
+<span class="comment">% Truncate the record</span>
+ind=t2&gt;23 &amp; t2&lt;33;
+xgtt2=xgtt2(ind);
+t2=t2(ind);
+</pre><p>Load earthquake data of Lixouri NS record</p><pre class="codeinput">eqmotion={<span class="string">'LXR1-20140203N'</span>};
+data=load([eqmotion{1},<span class="string">'.txt'</span>]);
+t3=data(:,1);
+dt3=t3(2)-t3(1);
+xgtt3=data(:,2)/100;
+<span class="comment">% Truncate the record</span>
+ind=t3&gt;23 &amp; t3&lt;33;
+xgtt3=xgtt3(ind);
+t3=t3(ind);
+</pre><h2 id="6">Calculate rigid plastic sliding response spectrum of earthquake motion</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'rpsrs'</span>;
+</pre><p>Coulomb friction coefficients</p><pre class="codeinput">CF=[0.05;0.1;0.2;0.4;0.5];
+</pre><p>Apply OpenSeismoMatlab once for each record</p><pre class="codeinput">S1=OpenSeismoMatlab(dt1,xgtt1,sw,CF);
+S2=OpenSeismoMatlab(dt2,xgtt2,sw,CF);
+S3=OpenSeismoMatlab(dt3,xgtt3,sw,CF);
+</pre><h2 id="9">Plot the acceleration time histories of the earthquake motions</h2><p>Initialize figure</p><pre class="codeinput">figure()
+<span class="comment">% Plot the acceleration time history</span>
+plot(t1,xgtt1)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+title(<span class="string">'CHV1-20140203E'</span>)
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
+</pre><img vspace="5" hspace="5" src="verification_SRS1_01.png" alt=""> <p>Initialize figure</p><pre class="codeinput">figure()
+<span class="comment">% Plot the acceleration time history</span>
+plot(t2,xgtt2)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+title(<span class="string">'LXR1-20140203E'</span>)
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
+</pre><img vspace="5" hspace="5" src="verification_SRS1_02.png" alt=""> <p>Initialize figure</p><pre class="codeinput">figure()
+<span class="comment">% Plot the acceleration time history</span>
+plot(t3,xgtt3)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+title(<span class="string">'LXR1-20140203N'</span>)
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
+</pre><img vspace="5" hspace="5" src="verification_SRS1_03.png" alt=""> <h2 id="12">Plot the rigid plastic sliding response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
+hold <span class="string">on</span>
+<span class="comment">% Plot the rigid plastic sliding response spectra</span>
+plot(S1.CF,S1.RPSSd, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 2)
+plot(S2.CF,S2.RPSSd, <span class="string">'r-'</span>, <span class="string">'LineWidth'</span>, 2)
+plot(S3.CF,S3.RPSSd, <span class="string">'b-'</span>, <span class="string">'LineWidth'</span>, 2)
+hold <span class="string">off</span>
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'Coulomb friction coefficient (-)'</span>)
+ylabel(<span class="string">'Yielding displacement (m)'</span>)
+legend({<span class="string">'Chavriata (EW)'</span>,<span class="string">'Lixouri (EW)'</span>,<span class="string">'Lixouri (NS)'</span>})
+xlim([0,0.5])
+</pre><img vspace="5" hspace="5" src="verification_SRS1_04.png" alt=""> <h2 id="13">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% verification Rigid plastic sliding response spectrum
+
+%% Reference
+% Garini, E., & Gazetas, G. (2016). Rocking and Sliding Potential of the
+% 2014 Cephalonia, Greece Earthquakes. In ICONHIC2016 1st international
+% conference on natural hazards & infrastructure June, Chania, Greece.
+
+%% Description
+% The rigid plastic sliding response spectra are extracted for various
+% acceleration time histories of the 3 Feb 2014 13.34 EST Cephalonia
+% earthquake. Three records are used: Chavriata (EW), Lixouri (EW) and
+% Lixouri (NS). The oscillator is considered to be ideally rigid-plastic
+% sliding on horizontal plane, as shown in Figure 4(a) of the above
+% reference. The acceleration time histories that are used for the
+% extraction of the spectra are plotted in this example and also shown in
+% Figure 2 of the above reference [Chavriata (3 February) EW, Lixouri (3
+% February) EW, Lixouri (3 February) NS]. The rigid plastic sliding
+% response spectra extracted in this example are compared to the
+% corresponding spectra that appear in Figure 6 of the above reference.
+
+%% Earthquake motions
+% Load earthquake data of Chavriata EW record
+eqmotion={'CHV1-20140203E'};
+data=load([eqmotion{1},'.txt']);
+t1=data(:,1);
+dt1=t1(2)-t1(1);
+xgtt1=data(:,2)/100;
+% Truncate the record
+ind=t1>23 & t1<33;
+xgtt1=xgtt1(ind);
+t1=t1(ind);
+%%
+% Load earthquake data of Lixouri EW record
+eqmotion={'LXR1-20140203E'};
+data=load([eqmotion{1},'.txt']);
+t2=data(:,1);
+dt2=t2(2)-t2(1);
+xgtt2=data(:,2)/100;
+% Truncate the record
+ind=t2>23 & t2<33;
+xgtt2=xgtt2(ind);
+t2=t2(ind);
+%%
+% Load earthquake data of Lixouri NS record
+eqmotion={'LXR1-20140203N'};
+data=load([eqmotion{1},'.txt']);
+t3=data(:,1);
+dt3=t3(2)-t3(1);
+xgtt3=data(:,2)/100;
+% Truncate the record
+ind=t3>23 & t3<33;
+xgtt3=xgtt3(ind);
+t3=t3(ind);
+
+%% Calculate rigid plastic sliding response spectrum of earthquake motion
+% Switch
+sw='rpsrs';
+%%
+% Coulomb friction coefficients
+CF=[0.05;0.1;0.2;0.4;0.5];
+%%
+% Apply OpenSeismoMatlab once for each record
+S1=OpenSeismoMatlab(dt1,xgtt1,sw,CF);
+S2=OpenSeismoMatlab(dt2,xgtt2,sw,CF);
+S3=OpenSeismoMatlab(dt3,xgtt3,sw,CF);
+
+%% Plot the acceleration time histories of the earthquake motions
+% Initialize figure
+figure()
+% Plot the acceleration time history
+plot(t1,xgtt1)
+% Finalize figure
+grid on
+title('CHV1-20140203E')
+xlabel('Time (sec)')
+ylabel('Acceleration (m/s^2)')
+%%
+% Initialize figure
+figure()
+% Plot the acceleration time history
+plot(t2,xgtt2)
+% Finalize figure
+grid on
+title('LXR1-20140203E')
+xlabel('Time (sec)')
+ylabel('Acceleration (m/s^2)')
+%%
+% Initialize figure
+figure()
+% Plot the acceleration time history
+plot(t3,xgtt3)
+% Finalize figure
+grid on
+title('LXR1-20140203N')
+xlabel('Time (sec)')
+ylabel('Acceleration (m/s^2)')
+
+%% Plot the rigid plastic sliding response spectra
+% Initialize figure
+figure()
+hold on
+% Plot the rigid plastic sliding response spectra
+plot(S1.CF,S1.RPSSd, 'k-', 'LineWidth', 2)
+plot(S2.CF,S2.RPSSd, 'r-', 'LineWidth', 2)
+plot(S3.CF,S3.RPSSd, 'b-', 'LineWidth', 2)
+hold off
+% Finalize figure
+grid on
+xlabel('Coulomb friction coefficient (-)')
+ylabel('Yielding displacement (m)')
+legend({'Chavriata (EW)','Lixouri (EW)','Lixouri (NS)'})
+xlim([0,0.5])
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

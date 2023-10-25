@@ -1,4 +1,4 @@
-%% Verify the energy time history of SDOF oscillator
+%% verification Energy time history of SDOF oscillator
 % Calculate the time history of the strain energy and the energy dissipated
 % by viscous damping and yielding of a linear and a nonlinear SDOF
 % oscillator
@@ -8,11 +8,10 @@
 % Earthquake Engineering, 5th edition. Prenctice Hall.
 
 %% Description
-% Figure 7.9.1 of the above
-% reference is reproduced in this example, for both the linear elastic and
-% the elastoplastic SDOF systems. The linear system has Tn=0.5 sec and
-% ksi=5%, whereas the elastoplastic system has Tn=0.5 sec, ksi=5% and
-% fybar=0.25.
+% Figure 7.9.1 of the above reference is reproduced in this example, for
+% both the linear elastic and the elastoplastic SDOF systems. The linear
+% system has Tn=0.5 sec and ksi=5%, whereas the elastoplastic system has
+% Tn=0.5 sec, ksi=5% and fybar=0.25.
 
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
@@ -90,7 +89,7 @@ hold off
 xlim([0,30])
 ylim([0,8000])
 xlabel('Time (sec)','FontSize',10);
-ylabel('Energy/umit mass (cm/s)^2','FontSize',10);
+ylabel('Energy/unit mass (cm/s)^2','FontSize',10);
 title('(a)','FontSize',10)
 grid on
 legend('Damping energy','Damping+strain energy')
@@ -129,7 +128,7 @@ hold off
 xlim([0,30])
 ylim([0,8000])
 xlabel('Time (sec)','FontSize',10);
-ylabel('Energy/umit mass (cm/s)^2','FontSize',10);
+ylabel('Energy/unit mass (cm/s)^2','FontSize',10);
 title('(b)','FontSize',10)
 grid on
 legend('Damping energy','Damping+yielding energy',...
@@ -137,7 +136,7 @@ legend('Damping energy','Damping+yielding energy',...
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

@@ -1,4 +1,4 @@
-%% Verify the Fourier amplitude spectrum of OpenSeismoMatlab
+%% verification Fourier amplitude spectrum of OpenSeismoMatlab
 
 %% Reference
 % Analyses of strong motion earthquake accelerograms, Volume IV - Fourier
@@ -21,7 +21,7 @@ xgtt=100*data(:,2);
 
 %% Calculate the Fourier amplitude spectrum
 % Switch
-sw='fs';
+sw='fas';
 %%
 % Apply OpenSeismoMatlab
 S1=OpenSeismoMatlab(dt,xgtt,sw);
@@ -54,7 +54,7 @@ xlim([-2,2])
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

@@ -1,4 +1,4 @@
-%% Verify the incremental dynamic analysis for ductility response
+%% verification Incremental dynamic analysis for ductility response
 
 %% Reference
 % Vamvatsikos, D., & Cornell, C. A. (2002). Incremental dynamic analysis.
@@ -86,7 +86,7 @@ ylim([0,3.5])
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

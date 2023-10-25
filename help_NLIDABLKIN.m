@@ -1,4 +1,4 @@
-%% NLIDABLKIN
+%% doc NLIDABLKIN
 % Documentation of the NLIDABLKIN function.
 
 %% 

@@ -1,4 +1,4 @@
-%% Verify the low- and high- pass Butterworth filter of OpenSeismoMatlab
+%% verification Low- and high- pass Butterworth filter of OpenSeismoMatlab
 
 %% Reference
 % Graizer, V. (2012, September). Effect of low-pass filtering and
@@ -79,7 +79,7 @@ ylabel('Acc, g')
 
 %% Calculate the Fourier spectra
 % Switch
-sw='fs';
+sw='fas';
 %%
 % Apply OpenSeismoMatlab to the initial ground motion
 S3=OpenSeismoMatlab(dt,xgtt,sw);
@@ -111,7 +111,7 @@ ylabel('Fourier spectra, g*sec')
 
 %% Calculate the acceleration response spectra
 % Switch
-sw='es';
+sw='elrs';
 %%
 % Critical damping ratio
 ksi=0.05;
@@ -145,7 +145,7 @@ ylabel('Spectral acceleration, g')
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

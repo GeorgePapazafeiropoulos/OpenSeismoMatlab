@@ -1,0 +1,192 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>verification Constant strength response spectrum</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="verification_CSRS2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>verification Constant strength response spectrum</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Calculate constant strength response spectra of earthquake motion</a></li><li><a href="#10">Plot the ductility demand response spectra</a></li><li><a href="#11">Plot the displacement demand response spectra</a></li><li><a href="#12">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Tena-Colunga, A. (1999). Simplified seismic evaluation of existing structures, 8th Canadian Conference on Earthquake Engineering, Vancouver, Canada, 317-322.</p><h2 id="2">Description</h2><p>In the above reference, a new type of spectrum is proposed, the constant strength response spectrum (CSRS). A displacement ductility demand spectrum (DDDS) relates peak displacement ductility demands (and other important response quantities, i.e., displacements) with structural periods of nonlinear elastic-perfectly-plastic hysteretic SDOF systems with given yield strengths. Figure 1 of the above reference is verified in this example. The SDOF system has a yield strength ratio equal to V/W=0.15 and the acceleration time history of the SCT-EW component recorded during the 1985 Michoacan earthquake is considered.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the 1985 Michoacan earthquake will be used (SCT-EW component). The txt file contains the following columns: time, acceleration N-S, acceleration E-W, acceleration V</p><pre class="codeinput">fid=fopen(<span class="string">'sct190985.txt'</span>,<span class="string">'r'</span>);
+text=textscan(fid,<span class="string">'%f %f %f %f'</span>);
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=9.81*text{1,3};
+</pre><h2 id="4">Calculate constant strength response spectra of earthquake motion</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'csrs'</span>;
+</pre><p>Eigenperiods</p><pre class="codeinput">T=linspace(0.05,5,50);
+</pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
+</pre><p>Strength ratios</p><pre class="codeinput">fyR=0.10;
+</pre><p>Post-yield stiffness factor</p><pre class="codeinput">pysf=0.001;
+</pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,fyR,pysf);
+</pre><h2 id="10">Plot the ductility demand response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
+<span class="comment">% Plot the constant strength ductility demand response spectra</span>
+plot(S1.Period,S1.CSSmu, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 1)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'T (sec)'</span>)
+ylabel(<span class="string">'\mu (-)'</span>)
+xlim([0,5])
+ylim([0,30])
+</pre><img vspace="5" hspace="5" src="verification_CSRS2_01.png" alt=""> <h2 id="11">Plot the displacement demand response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
+<span class="comment">% Plot the constant strength displacement demand response spectra</span>
+plot(S1.Period,100*S1.CSSd, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 1)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'T (sec)'</span>)
+ylabel(<span class="string">'\Delta (cm)'</span>)
+xlim([0,5])
+ylim([0,80])
+</pre><img vspace="5" hspace="5" src="verification_CSRS2_02.png" alt=""> <h2 id="12">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% verification Constant strength response spectrum
+
+%% Reference
+% Tena-Colunga, A. (1999). Simplified seismic evaluation of existing
+% structures, 8th Canadian Conference on Earthquake Engineering, Vancouver,
+% Canada, 317-322.
+
+%% Description
+% In the above reference, a new type of spectrum is proposed, the constant
+% strength response spectrum (CSRS). A displacement ductility demand
+% spectrum (DDDS) relates peak displacement ductility demands (and other
+% important response quantities, i.e., displacements) with structural
+% periods of nonlinear elastic-perfectly-plastic hysteretic SDOF systems
+% with given yield strengths. Figure 1 of the above reference is verified
+% in this example. The SDOF system has a yield strength ratio equal to
+% V/W=0.15 and the acceleration time history of the SCT-EW component
+% recorded during the 1985 Michoacan earthquake is considered.
+
+%% Load earthquake data
+% Earthquake acceleration time history of the 1985 Michoacan earthquake
+% will be used (SCT-EW component). The txt file contains the following
+% columns: time, acceleration N-S, acceleration E-W, acceleration V
+fid=fopen('sct190985.txt','r');
+text=textscan(fid,'%f %f %f %f');
+fclose(fid);
+t=text{1,1};
+dt=t(2)-t(1);
+xgtt=9.81*text{1,3};
+
+%% Calculate constant strength response spectra of earthquake motion
+% Switch
+sw='csrs';
+
+%%
+% Eigenperiods
+T=linspace(0.05,5,50);
+
+%%
+% Critical damping ratio
+ksi=0.05;
+
+%%
+% Strength ratios
+fyR=0.10;
+
+%%
+% Post-yield stiffness factor
+pysf=0.001;
+
+%%
+% Apply OpenSeismoMatlab
+S1=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,fyR,pysf);
+
+%% Plot the ductility demand response spectra
+% Initialize figure
+figure()
+% Plot the constant strength ductility demand response spectra
+plot(S1.Period,S1.CSSmu, 'k-', 'LineWidth', 1)
+% Finalize figure
+grid on
+xlabel('T (sec)')
+ylabel('\mu (-)')
+xlim([0,5])
+ylim([0,30])
+
+%% Plot the displacement demand response spectra
+% Initialize figure
+figure()
+% Plot the constant strength displacement demand response spectra
+plot(S1.Period,100*S1.CSSd, 'k-', 'LineWidth', 1)
+% Finalize figure
+grid on
+xlabel('T (sec)')
+ylabel('\Delta (cm)')
+xlim([0,5])
+ylim([0,80])
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

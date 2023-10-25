@@ -1,4 +1,4 @@
-%% Constant ductility response spectra
+%% example Constant ductility response spectra
 % Generate the constant ductility response spectra and associated results
 % of an earthquake suite using OpenSeismoMatlab.
 
@@ -30,7 +30,7 @@ mu=2;
 p=[0.02;0.01;0.02;0.01;0.01;0.01;0.02;0.01;0.01;0.01;0.01];
 %%
 % Extract nonlinear response spectra
-sw='cds';
+sw='cdrs';
 
 %% Calculation
 % Initialize CDRS
@@ -128,7 +128,7 @@ end
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

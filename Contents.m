@@ -15,13 +15,19 @@
 %%
 % <help_BLKIN.html BLKIN.m>
 %
-% Bilinear elastoplastic hysteretic model with elastic viscous damping
+% Bilinear kinematic hysteretic model with elastic viscous damping
 %
 % -
 %%
 % <help_CDReSp.html CDReSp.m>
 %
 % Constant Ductility Response Spectra
+%
+% -
+%%
+% <help_CSReSp.html CSReSp.m>
+%
+% Constant Strength Response Spectra
 %
 % -
 %%
@@ -37,15 +43,27 @@
 %
 % -
 %%
+% <help_ffft.html ffft.m>
+%
+% Fast Finite Fourier Transform
+%
+% -
+%%
 % <help_HalfStep.html HalfStep.m>
 %
-% Reproduce a signal with half time step
+% Reproduce signal with half time step
 %
 % -
 %%
 % <help_IDA.html IDA.m>
 %
 % Incremental Dynamic Analysis
+%
+% -
+%%
+% <help_iffft.html iffft.m>
+%
+% Inverse Fast Finite Fourier Transform
 %
 % -
 %%
@@ -63,13 +81,26 @@
 %%
 % <help_NLIDABLKIN.html NLIDABLKIN.m>
 %
-% Non Linear Implicit Dynamic Analysis of a bilinear kinematic hardening
-%
+% Non Linear Implicit Dynamic Analysis of a BiLinear KINematic hardening
+% hysteretic structure with elastic damping
+% 
 % -
 %%
 % <help_OpenSeismoMatlab.html OpenSeismoMatlab.m>
 %
-% Seismic parameters and analyses of an acceleration time history
+% Seismic parameters and processing of an acceleration time history
+%
+% -
+%%
+% <help_PulseDecomp.html PulseDecomp.m>
+%
+% Pulse decomposition of a velocity time history
+%
+% -
+%%
+% <help_RPSReSp.html RPSReSp.m>
+%
+% Rigid Plastic Sliding Response Spectra
 %
 % -
 %% Examples
@@ -100,7 +131,7 @@
 %%
 % <example_Fourier_spectra.html example_Fourier_spectra>
 %
-% Calculate Fourier spectra of an acceleration time history
+% Calculate Fourier spectra of a suite of ground motions
 %
 % -
 %%
@@ -124,6 +155,18 @@
 %
 % -
 %%
+% <example_PulseDecomp.html PulseDecomp.m>
+%
+% Pulse decomposition of a velocity time history
+%
+% -
+%%
+% <example_RPSReSp.html RPSReSp.m>
+%
+% Calculate rigid plastic sliding response spectra
+%
+% -
+%%
 % <example_Spectra_comparison_1.html example_Spectra_comparison_1.m>
 %
 % Comparison of elastic and constant ductility response spectra for mu=1
@@ -135,9 +178,39 @@
 % Comparison of constant ductility response spectra for mu=2
 %
 % -
+
+
+
+
+
+
 %% Verification
 % Validation of OpenSeismoMatlab results against the literature
 %
+%%
+% <verification_CDRS.html verification_CDRS>
+%
+% Verification of a constant ductility response spectrum
+%
+% Reference: Chopra (2020)
+%
+% -
+%%
+% <verification_CSRS1.html verification_CSRS1>
+%
+% Verification of a constant strength response spectrum
+%
+% Reference: Tena-Colunga, A. (1999)
+%
+% -
+%%
+% <verification_CSRS2.html verification_CSRS2>
+%
+% Verification of a constant strength response spectrum
+%
+% Reference: Tena-Colunga, A. (1999)
+%
+% -
 %%
 % <verification_DRHA.html verification_DRHA>
 %
@@ -225,6 +298,15 @@
 %
 % -
 %%
+% <verification_LIDA_NLIDABLKIN.html verification_LIDA_NLIDABLKIN>
+%
+% Compare the output of LIDA.m and NLIDABLKIN.m for a linear SDOF
+% oscillator in terms of seismic input energy per unit mass.
+%
+% Reference: None
+%
+% -
+%%
 % <verification_NLIDABLKIN.html verification_NLIDABLKIN>
 %
 % Verify the energy time history of SDOF oscillator
@@ -232,10 +314,68 @@
 % Reference: Chopra (2020)
 %
 % -
+%%
+% <verification_NLIDABLKIN2.html verification_NLIDABLKIN2>
+%
+% Verify the energy time histories of a nonlinear SDOF oscillator
+%
+% Reference: Uang, C. M., & Bertero, V. V. (1990)
+%
+% -
+%%
+% <verification_NLIDABLKIN3.html verification_NLIDABLKIN3>
+%
+% Verify the strength ductility relation of an elastoplastic system
+%
+% Reference: Mahin, S. A., & Lin, J. (1983)
+%
+% -
+%%
+% <verification_PulseDecomp1.html verification_PulseDecomp1>
+%
+% Verify the extraction of the velocity pulse of a strong motion velocity
+% time history 
+%
+% Reference: Baker, J. W. (2007)
+%
+% -
+%%
+% <verification_PulseDecomp2.html verification_PulseDecomp2>
+%
+% Verify the extraction of the velocity pulses of a strong motion velocity
+% time history and sum them to reconstruct the original ground motion
+%
+% Reference: Shahi, S. K., & Baker, J. W. (2014)
+%
+% -
+%%
+% <verification_SIH1952.html verification_SIH1952>
+%
+% Calculate the spectral intensity as defined by Housner (1952)
+%
+% Reference: Housner, G. W. (1952)
+%
+% -
+%%
+% <verification_SRS1.html verification_SRS1>
+%
+% Calculate the rigid plastic sliding response spectrum
+%
+% Reference: Garini, E., & Gazetas, G. (2016)
+%
+% -
+%%
+% <verification_SRS2.html verification_SRS2>
+%
+% Calculate the rigid plastic sliding response spectrum
+%
+% Reference: Paglietti, A., & Porcu, M. C. (2001)
+%
+% -
 
 %% Copyright
 %
-% Copyright (c) 2018-2022 by George Papazafeiropoulos
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
 %
 % * Major, Infrastructure Engineer, Hellenic Air Force
 % * Civil Engineer, M.Sc., Ph.D.

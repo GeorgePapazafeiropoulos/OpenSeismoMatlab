@@ -1,0 +1,296 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>verification Pulse Decomposition of OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="verification_PulseDecomp1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>verification Pulse Decomposition of OpenSeismoMatlab</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Earthquake motion</a></li><li><a href="#5">Perform pulse decomposition of earthquake motion</a></li><li><a href="#8">Plot the velocity time histories (initial motion and largest pulse)</a></li><li><a href="#10">Plot the velocity time histories (residual motion and 2nd largest pulse)</a></li><li><a href="#11">Sum the 10 largest pulses extracted from the input motion</a></li><li><a href="#12">Plot the velocity pulse using 10 largest pulses</a></li><li><a href="#13">Plot the final residual ground motion</a></li><li><a href="#14">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Baker, J. W. (2007). Quantitative classification of near-fault ground motions using wavelet analysis. Bulletin of the seismological society of America, 97(5), 1486-1501.</p><h2 id="2">Description</h2><p>The velocity pulse of a strong motion velocity time history is extracted according to Figure 4 of the above reference. The velocity time history of the fault-normal component of the 1994 Northridge, Rinaldi, recording is considered. The Daubechies wavelet of order 4, shown in Figure 2c, is used as the mother wavelet. Initially, the largest velocity pulse is identified (Figure 4b). For the ground motion under consideration, the ten largest velocity pulses are extracted, the combination of which is shown in Figure 4c, and the residual ground motion after the pulses have been removed is shown (Figure 4d).</p><h2 id="3">Earthquake motion</h2><p>Load earthquake data of fault-normal component of the 1994 Northridge, Rinaldi, recording</p><pre class="codeinput">eqmotion={<span class="string">'RSN1063_NORTHR_RRS228.txt'</span>};
+data=load(eqmotion{1});
+t=data(:,1);
+dt=t(2)-t(1);
+xgt=data(:,2);
+</pre><p>Perform modification so that the initial velocity time history agrees with the plot of Figure 4a of the above reference.</p><pre class="codeinput">xgt=-xgt;
+</pre><h2 id="5">Perform pulse decomposition of earthquake motion</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'pulsedecomp'</span>;
+</pre><p>Wavelet family of Daubechies wavelet of order 4</p><pre class="codeinput">wname = <span class="string">'db4'</span>;
+</pre><p>Apply OpenSeismoMatlab for 1st largest pulse decomposition</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgt,sw,wname);
+</pre><h2 id="8">Plot the velocity time histories (initial motion and largest pulse)</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
+    <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
+    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+hold <span class="string">on</span>
+<span class="comment">% Plot the velocity time history of the initial ground motion</span>
+plot(t,xgt, <span class="string">'Color'</span>, [0 0 0], <span class="string">'LineWidth'</span>, 2)
+<span class="comment">% Plot the time history of the largest velocity pulse</span>
+plot(t,S1.pulseTH, <span class="string">'Color'</span>, [0.7 0.7 0.7], <span class="string">'LineWidth'</span>, 2)
+<span class="comment">% Finalize figure</span>
+hold <span class="string">off</span>
+grid <span class="string">on</span>
+title(<span class="string">'Northridge Rinaldi recording, 1994'</span>)
+ylim([-200,200])
+xlim([0,20])
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Velocity (cm/s)'</span>)
+legend({<span class="string">'Original ground motion'</span>,<span class="string">'Largest wavelet'</span>})
+</pre><img vspace="5" hspace="5" src="verification_PulseDecomp1_01.png" alt=""> <p>Apply OpenSeismoMatlab for extracting the 2nd up to 10th largest pulses from the residual motion after extracting the 1st pulse as above</p><pre class="codeinput">Sout{1}=S1;
+<span class="keyword">for</span> i=2:10
+    S1=OpenSeismoMatlab(dt,S1.resTH,sw,wname);
+    Sout{i}=S1;
+<span class="keyword">end</span>
+</pre><h2 id="10">Plot the velocity time histories (residual motion and 2nd largest pulse)</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
+    <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
+    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+hold <span class="string">on</span>
+<span class="comment">% Plot the velocity time history of the residual ground motion</span>
+plot(t,Sout{1}.resTH, <span class="string">'Color'</span>, [0 0 0], <span class="string">'LineWidth'</span>, 2)
+<span class="comment">% Plot the time history of the largest velocity pulse</span>
+plot(t,Sout{2}.pulseTH, <span class="string">'Color'</span>, [0.7 0.7 0.7], <span class="string">'LineWidth'</span>, 2)
+<span class="comment">% Finalize figure</span>
+hold <span class="string">off</span>
+grid <span class="string">on</span>
+title(<span class="string">'Northridge Rinaldi recording, 1994'</span>)
+ylim([-200,200])
+xlim([0,20])
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Velocity (cm/s)'</span>)
+legend({<span class="string">'Residual after 1st wavelet removed'</span>,<span class="string">'2nd largest wavelet'</span>})
+</pre><img vspace="5" hspace="5" src="verification_PulseDecomp1_02.png" alt=""> <h2 id="11">Sum the 10 largest pulses extracted from the input motion</h2><pre class="codeinput">sum10=zeros(size(S1.pulseTH));
+<span class="keyword">for</span> i=1:10
+    sum10=sum10+Sout{i}.pulseTH;
+<span class="keyword">end</span>
+</pre><h2 id="12">Plot the velocity pulse using 10 largest pulses</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
+    <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
+    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+<span class="comment">% Plot the time history of the largest velocity pulse</span>
+plot(t,sum10, <span class="string">'Color'</span>, [0.7 0.7 0.7], <span class="string">'LineWidth'</span>, 2)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+title(<span class="string">'Northridge Rinaldi recording, 1994'</span>)
+ylim([-200,200])
+xlim([0,20])
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Velocity (cm/s)'</span>)
+legend({<span class="string">'Sum of 10 largest pulses'</span>})
+</pre><img vspace="5" hspace="5" src="verification_PulseDecomp1_03.png" alt=""> <h2 id="13">Plot the final residual ground motion</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
+    <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
+    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+<span class="comment">% Plot the time history of the largest velocity pulse</span>
+plot(t,S1.resTH, <span class="string">'Color'</span>, [0 0 0], <span class="string">'LineWidth'</span>, 2)
+<span class="comment">% Finalize figure</span>
+grid <span class="string">on</span>
+title(<span class="string">'Northridge Rinaldi recording, 1994'</span>)
+ylim([-200,200])
+xlim([0,20])
+xlabel(<span class="string">'Time (sec)'</span>)
+ylabel(<span class="string">'Velocity (cm/s)'</span>)
+legend({<span class="string">'Final residual ground motion'</span>})
+</pre><img vspace="5" hspace="5" src="verification_PulseDecomp1_04.png" alt=""> <h2 id="14">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% verification Pulse Decomposition of OpenSeismoMatlab
+
+%% Reference
+% Baker, J. W. (2007). Quantitative classification of near-fault ground
+% motions using wavelet analysis. Bulletin of the seismological society of
+% America, 97(5), 1486-1501.
+
+%% Description
+% The velocity pulse of a strong motion velocity time history is extracted
+% according to Figure 4 of the above reference. The velocity time history
+% of the fault-normal component of the 1994 Northridge, Rinaldi, recording
+% is considered. The Daubechies wavelet of order 4, shown in Figure 2c, is
+% used as the mother wavelet. Initially, the largest velocity pulse is
+% identified (Figure 4b). For the ground motion under consideration, the
+% ten largest velocity pulses are extracted, the combination of which is
+% shown in Figure 4c, and the residual ground motion after the pulses have
+% been removed is shown (Figure 4d).
+%
+
+%% Earthquake motion
+% Load earthquake data of fault-normal component of the 1994 Northridge,
+% Rinaldi, recording
+eqmotion={'RSN1063_NORTHR_RRS228.txt'};
+data=load(eqmotion{1});
+t=data(:,1);
+dt=t(2)-t(1);
+xgt=data(:,2);
+
+%%
+% Perform modification so that the initial velocity time history agrees
+% with the plot of Figure 4a of the above reference.
+xgt=-xgt;
+
+%% Perform pulse decomposition of earthquake motion
+% Switch
+sw='pulsedecomp';
+
+%%
+% Wavelet family of Daubechies wavelet of order 4
+wname = 'db4';
+
+%%
+% Apply OpenSeismoMatlab for 1st largest pulse decomposition
+S1=OpenSeismoMatlab(dt,xgt,sw,wname);
+
+%% Plot the velocity time histories (initial motion and largest pulse)
+% Initialize figure
+figure('Position',[7.4,508.2,1517.6,253.8],...
+    'InnerPosition',[7.4,508.2,1517.6,253.8],...
+    'OuterPosition',[0.2,501,1532,343.2])
+hold on
+% Plot the velocity time history of the initial ground motion
+plot(t,xgt, 'Color', [0 0 0], 'LineWidth', 2)
+% Plot the time history of the largest velocity pulse
+plot(t,S1.pulseTH, 'Color', [0.7 0.7 0.7], 'LineWidth', 2)
+% Finalize figure
+hold off
+grid on
+title('Northridge Rinaldi recording, 1994')
+ylim([-200,200])
+xlim([0,20])
+xlabel('Time (sec)')
+ylabel('Velocity (cm/s)')
+legend({'Original ground motion','Largest wavelet'})
+
+%%
+% Apply OpenSeismoMatlab for extracting the 2nd up to 10th largest pulses
+% from the residual motion after extracting the 1st pulse as above
+Sout{1}=S1;
+for i=2:10
+    S1=OpenSeismoMatlab(dt,S1.resTH,sw,wname);
+    Sout{i}=S1;
+end
+
+%% Plot the velocity time histories (residual motion and 2nd largest pulse)
+% Initialize figure
+figure('Position',[7.4,508.2,1517.6,253.8],...
+    'InnerPosition',[7.4,508.2,1517.6,253.8],...
+    'OuterPosition',[0.2,501,1532,343.2])
+hold on
+% Plot the velocity time history of the residual ground motion
+plot(t,Sout{1}.resTH, 'Color', [0 0 0], 'LineWidth', 2)
+% Plot the time history of the largest velocity pulse
+plot(t,Sout{2}.pulseTH, 'Color', [0.7 0.7 0.7], 'LineWidth', 2)
+% Finalize figure
+hold off
+grid on
+title('Northridge Rinaldi recording, 1994')
+ylim([-200,200])
+xlim([0,20])
+xlabel('Time (sec)')
+ylabel('Velocity (cm/s)')
+legend({'Residual after 1st wavelet removed','2nd largest wavelet'})
+
+%% Sum the 10 largest pulses extracted from the input motion
+sum10=zeros(size(S1.pulseTH));
+for i=1:10
+    sum10=sum10+Sout{i}.pulseTH;
+end
+
+%% Plot the velocity pulse using 10 largest pulses
+% Initialize figure
+figure('Position',[7.4,508.2,1517.6,253.8],...
+    'InnerPosition',[7.4,508.2,1517.6,253.8],...
+    'OuterPosition',[0.2,501,1532,343.2])
+% Plot the time history of the largest velocity pulse
+plot(t,sum10, 'Color', [0.7 0.7 0.7], 'LineWidth', 2)
+% Finalize figure
+grid on
+title('Northridge Rinaldi recording, 1994')
+ylim([-200,200])
+xlim([0,20])
+xlabel('Time (sec)')
+ylabel('Velocity (cm/s)')
+legend({'Sum of 10 largest pulses'})
+
+%% Plot the final residual ground motion
+% Initialize figure
+figure('Position',[7.4,508.2,1517.6,253.8],...
+    'InnerPosition',[7.4,508.2,1517.6,253.8],...
+    'OuterPosition',[0.2,501,1532,343.2])
+% Plot the time history of the largest velocity pulse
+plot(t,S1.resTH, 'Color', [0 0 0], 'LineWidth', 2)
+% Finalize figure
+grid on
+title('Northridge Rinaldi recording, 1994')
+ylim([-200,200])
+xlim([0,20])
+xlabel('Time (sec)')
+ylabel('Velocity (cm/s)')
+legend({'Final residual ground motion'})
+
+
+%% Copyright
+%
+% Copyright (c) 2018-2023 by George Papazafeiropoulos
+%
+% * Major, Infrastructure Engineer, Hellenic Air Force
+% * Civil Engineer, M.Sc., Ph.D.
+% * Email: gpapazafeiropoulos@yahoo.gr
+%
+
+
+
+
+##### SOURCE END #####
+--></body></html>

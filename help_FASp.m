@@ -1,4 +1,4 @@
-%% FASp
+%% doc FASp
 % Documentation of the FASp function.
 
 %% 
