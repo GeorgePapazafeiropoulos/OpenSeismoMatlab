@@ -1,5 +1,5 @@
 # OpenSeismoMatlab
-Open source software for strong ground motion data processing
+Software for strong ground motion data processing
 
 See the file Contents.html for more details
 
