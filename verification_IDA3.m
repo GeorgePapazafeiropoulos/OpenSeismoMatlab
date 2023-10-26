@@ -72,7 +72,6 @@ S1=OpenSeismoMatlab(dt,xgtt,sw,T,lambdaF,IM_DM,m,uy,pysf,ksi,AlgID,...
     u0,ut0,rinf,maxtol,jmax,dak);
 
 %% Plot the IDA curve
-
 % Initialize figure
 figure()
 % Plot the IDA curve
@@ -83,6 +82,8 @@ xlabel('Ductility, \mu')
 ylabel('Spectral acceleration Sa(T1,5%) (g)')
 xlim([0,3])
 ylim([0,3.5])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

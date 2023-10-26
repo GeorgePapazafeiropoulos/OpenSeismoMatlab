@@ -76,6 +76,8 @@ figure()
 plot(T,CDSd,'k','LineWidth',1)
 ylabel('Spectral displacement (m)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %%
 % Constant ductility yield force spectrum
@@ -83,6 +85,8 @@ figure()
 plot(T,fyK,'k','LineWidth',1)
 ylabel('Yield force (N)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %%
 % Achieved ductility
@@ -90,6 +94,8 @@ figure()
 plot(T,muK,'k','LineWidth',1)
 ylabel('Ductility (-)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %%
 % Iterations
@@ -97,6 +103,8 @@ figure()
 plot(T,iterK,'k','LineWidth',1)
 ylabel('Iterations (-)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

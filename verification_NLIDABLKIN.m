@@ -16,7 +16,7 @@
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, El Centro Terminal Substation Building)
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};
@@ -93,6 +93,8 @@ ylabel('Energy/unit mass (cm/s)^2','FontSize',10);
 title('(a)','FontSize',10)
 grid on
 legend('Damping energy','Damping+strain energy')
+drawnow;
+pause(0.1)
 
 %% Setup parameters for NLIDABLKIN function for nonlinear SDOF
 % The properties of the nonlinear SDOF system are identical to those of the
@@ -133,6 +135,8 @@ title('(b)','FontSize',10)
 grid on
 legend('Damping energy','Damping+yielding energy',...
     'Damping+yielding+strain energy')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

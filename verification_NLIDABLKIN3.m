@@ -16,7 +16,7 @@
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, NS component)
-fid=fopen('elcentro_NS.dat','r');
+fid=fopen('elcentro_NS_full.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};
@@ -99,6 +99,8 @@ xlabel('Displacement Ductility (-)','FontSize',10);
 ylabel('\eta-Value (-)','FontSize',10);
 grid on
 legend({'ksi=0.05'})
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

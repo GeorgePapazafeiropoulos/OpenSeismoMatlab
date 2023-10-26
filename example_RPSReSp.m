@@ -21,9 +21,11 @@ end
 % 
 figure()
 plot(t,xgtt,'k','LineWidth',1)
-ylabel('Acceleration (m/s2)')
+ylabel('Acceleration (m/s^2)')
 xlabel('Time (sec)')
 title('Artificial acceleration time history')
+drawnow;
+pause(0.1)
 
 %% Setup parameters for RPSReSp function
 % Coulomb friction coefficients
@@ -59,6 +61,8 @@ figure()
 plot(CF,Sd,'k','LineWidth',1)
 ylabel('Displacement (m)')
 xlabel('Coulomb friction coefficient (-)')
+drawnow;
+pause(0.1)
 
 %%
 % Velocity spectrum
@@ -66,13 +70,17 @@ figure()
 plot(CF,Sv,'k','LineWidth',1)
 ylabel('Velocity (m/s)')
 xlabel('Coulomb friction coefficient (-)')
+drawnow;
+pause(0.1)
 
 %%
 % Acceleration spectrum
 figure()
 plot(CF,Sa,'k','LineWidth',1)
-ylabel('Acceleration (m/s2)')
+ylabel('Acceleration (m/s^2)')
 xlabel('Coulomb friction coefficient (-)')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

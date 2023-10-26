@@ -26,9 +26,11 @@ plot(time,xgtt1,'k','LineWidth',1)
 hold on
 plot(time,xgtt2,'r','LineWidth',1)
 hold off
-ylabel('Acceleration (m/s2)')
+ylabel('Acceleration (m/s^2)')
 xlabel('Time (sec)')
 legend('Uncorrected','Corrected')
+drawnow;
+pause(0.1)
 
 %% Plot corrected and uncorrected velocity
 %
@@ -40,6 +42,8 @@ hold off
 ylabel('Velocity (m/s)')
 xlabel('Time (sec)')
 legend('Uncorrected','Corrected')
+drawnow;
+pause(0.1)
 
 %% Plot corrected and uncorrected displacement
 %
@@ -51,6 +55,8 @@ hold off
 ylabel('Displacement (m)')
 xlabel('Time (sec)')
 legend('Uncorrected','Corrected')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

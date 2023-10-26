@@ -27,7 +27,6 @@ sw='fas';
 S1=OpenSeismoMatlab(dt,xgtt,sw);
 
 %% Plot the Fourier amplitude spectrum
-
 % Initialize figure
 figure()
 % Plot the Fourier amplitude spectrum on page 14 of the above reference
@@ -38,9 +37,10 @@ xlabel('Frequency - CPS')
 ylabel('Fourier amplitude spectrum - cm/sec')
 ylim([0,200])
 xlim([0,25])
+drawnow;
+pause(0.1)
 
 %% Plot the Fourier amplitude spectrum in logarithmic scale
-
 % Initialize figure
 figure()
 % Plot the Fourier amplitude spectrum on page 15 of the above reference
@@ -51,6 +51,8 @@ xlabel('Log of frequency - CPS')
 ylabel('Log of Fourier amplitude spectrum - cm/sec')
 ylim([-2,3])
 xlim([-2,2])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

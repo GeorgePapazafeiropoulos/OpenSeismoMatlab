@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>verification of seismic input energy of linear SDOF oscillator</h1><!--introduction--><p>Compare the output of LIDA.m and NLIDABLKIN.m for a linear SDOF oscillator in terms of seismic input energy per unit mass.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Setup parameters for NLIDABLKIN function for linear SDOF</a></li><li><a href="#16">Calculate dynamic response of linear SDOF using NLIDABLKIN.m</a></li><li><a href="#18">Plot the energy time histories of the linear SDOF</a></li><li><a href="#19">Calculate dynamic response of the linear SDOF using LIDA.m</a></li><li><a href="#20">Plot the energy time history of the nonlinear SDOF</a></li><li><a href="#21">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>None</p><h2 id="2">Description</h2><p>Calculate the time histories of the various energies that are absorbed by a linear elastic SDOF oscillator using the linear function LIDA.m and the nonlinear function NLIDABLKIN.m to which an infinite yield limit has been assigned. The time history of the seismic input energy per unit mass obtained by the LIDA.m function (Figure b) is compared to the sum of the strain, damping and kinetic energies per unit mass obtained by the NLIDABLKIN.m function (Figure a). The linear SDOF system has Tn=0.5 sec and ksi=5%.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+  </style></head><body><div class="content"><h1>verification of seismic input energy of linear SDOF oscillator</h1><!--introduction--><p>Compare the output of LIDA.m and NLIDABLKIN.m for a linear SDOF oscillator in terms of seismic input energy per unit mass.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Setup parameters for NLIDABLKIN function for linear SDOF</a></li><li><a href="#16">Calculate dynamic response of linear SDOF using NLIDABLKIN.m</a></li><li><a href="#18">Plot the energy time histories of the linear SDOF</a></li><li><a href="#19">Calculate dynamic response of the linear SDOF using LIDA.m</a></li><li><a href="#20">Plot the energy time history of the nonlinear SDOF</a></li><li><a href="#21">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>None</p><h2 id="2">Description</h2><p>Calculate the time histories of the various energies that are absorbed by a linear elastic SDOF oscillator using the linear function LIDA.m and the nonlinear function NLIDABLKIN.m to which an infinite yield limit has been assigned. The time history of the seismic input energy per unit mass obtained by the LIDA.m function (Figure b) is compared to the sum of the strain, damping and kinetic energies per unit mass obtained by the NLIDABLKIN.m function (Figure a). The linear SDOF system has Tn=0.5 sec and ksi=5%.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro_NS_trunc.dat'</span>,<span class="string">'r'</span>);
 text=textscan(fid,<span class="string">'%f %f'</span>);
 fclose(fid);
 t=text{1,1};
@@ -104,6 +104,8 @@ title(<span class="string">'(a)'</span>,<span class="string">'FontSize'</span>,1
 grid <span class="string">on</span>
 legend({<span class="string">'Damping energy'</span>,<span class="string">'Damping+strain energy'</span>,<span class="keyword">...</span>
     <span class="string">'Damping+strain+kinetic energy'</span>},<span class="string">'location'</span>,<span class="string">'northwest'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_LIDA_NLIDABLKIN_01.png" alt=""> <h2 id="19">Calculate dynamic response of the linear SDOF using LIDA.m</h2><p>Apply the LIDA.m function for the linear SDOF</p><pre class="codeinput">[u,ut,utt,Ei] = LIDA(dt,xgtt,omega,ksi,u0,ut0,AlgID,rinf);
 </pre><h2 id="20">Plot the energy time history of the nonlinear SDOF</h2><p>Plot the damping energy, the hysteretic energy and strain energy of the nonlinear SDOF system. Convert from m to cm.</p><pre class="codeinput">figure();
 plot(t,cumsum(Ei)*1e4,<span class="string">'b'</span>,<span class="string">'LineWidth'</span>,1)
@@ -114,6 +116,8 @@ ylabel(<span class="string">'Energy/unit mass (cm/s)^2'</span>,<span class="stri
 title(<span class="string">'(b)'</span>,<span class="string">'FontSize'</span>,10)
 grid <span class="string">on</span>
 legend(<span class="string">'Input energy'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_LIDA_NLIDABLKIN_02.png" alt=""> <h2 id="21">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification of seismic input energy of linear SDOF oscillator
@@ -136,7 +140,7 @@ legend(<span class="string">'Input energy'</span>)
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, El Centro Terminal Substation Building)
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};
@@ -220,6 +224,8 @@ title('(a)','FontSize',10)
 grid on
 legend({'Damping energy','Damping+strain energy',...
     'Damping+strain+kinetic energy'},'location','northwest')
+drawnow;
+pause(0.1)
 
 %% Calculate dynamic response of the linear SDOF using LIDA.m
 % Apply the LIDA.m function for the linear SDOF
@@ -237,6 +243,8 @@ ylabel('Energy/unit mass (cm/s)^2','FontSize',10);
 title('(b)','FontSize',10)
 grid on
 legend('Input energy')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

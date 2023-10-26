@@ -85,8 +85,7 @@ xgtt=xgtt/9.81;
 </pre><p>Cut-off frequency</p><pre class="codeinput">fuc=25;
 </pre><p>Apply OpenSeismoMatlab to high pass filtered filtered acceleration</p><pre class="codeinput">S2=OpenSeismoMatlab(dt,cxgtt,sw,bOrder,fuc);
 </pre><p>Filtered acceleration</p><pre class="codeinput">cxgtt=S2.acc;
-</pre><h2 id="14">Plot the acceleration time histories</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
-figure()
+</pre><h2 id="14">Plot the acceleration time histories</h2><p>Initialize figure</p><pre class="codeinput">figure()
 hold <span class="string">on</span>
 plot(t,zeros(size(t)),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 <span class="comment">% Plot the acceleration time history of the initial ground motion</span>
@@ -99,11 +98,12 @@ grid <span class="string">on</span>
 legend([p1,p2],{<span class="string">'Initial'</span>,<span class="string">'Filtered'</span>})
 xlabel(<span class="string">'Time, sec'</span>)
 ylabel(<span class="string">'Acc, g'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_filter2_01.png" alt=""> <h2 id="15">Calculate the Fourier spectra</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'fas'</span>;
 </pre><p>Apply OpenSeismoMatlab to the initial ground motion</p><pre class="codeinput">S3=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><p>Apply OpenSeismoMatlab to the filtered ground motion</p><pre class="codeinput">S4=OpenSeismoMatlab(dt,cxgtt,sw);
-</pre><h2 id="18">Plot the Fourier spectra</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
-figure()
+</pre><h2 id="18">Plot the Fourier spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
 loglog(1,1,<span class="string">'w'</span>)
 hold <span class="string">on</span>
 <span class="comment">% Plot the Fourier spectrum of the initial ground motion in logarithmic</span>
@@ -121,14 +121,15 @@ ylim([1e-4,1])
 legend([p1,p2],{<span class="string">'Initial'</span>,<span class="string">'Filtered'</span>})
 xlabel(<span class="string">'Frequency, Hz'</span>)
 ylabel(<span class="string">'Fourier spectra, g*sec'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_filter2_02.png" alt=""> <h2 id="19">Calculate the acceleration response spectra</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'elrs'</span>;
 </pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
 <span class="comment">% Period range for which the response spectrum is queried</span>
 T=logspace(1,-2,100);
 </pre><p>Apply OpenSeismoMatlab to the initial ground motion</p><pre class="codeinput">S5=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
 </pre><p>Apply OpenSeismoMatlab to the filtered ground motion</p><pre class="codeinput">S6=OpenSeismoMatlab(dt,cxgtt,sw,T,ksi);
-</pre><h2 id="23">Plot the acceleration response spectra</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
-figure()
+</pre><h2 id="23">Plot the acceleration response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
 semilogx(1,1,<span class="string">'w'</span>)
 hold <span class="string">on</span>
 <span class="comment">% Plot the acceleration response spectrum of the initial ground motion in</span>
@@ -143,6 +144,8 @@ grid <span class="string">on</span>
 legend([p1,p2],{<span class="string">'Initial'</span>,<span class="string">'Filtered'</span>})
 xlabel(<span class="string">'Frequency, Hz'</span>)
 ylabel(<span class="string">'Spectral acceleration, g'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_filter2_03.png" alt=""> <h2 id="24">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Low- and high- pass Butterworth filter of OpenSeismoMatlab
@@ -208,7 +211,6 @@ S2=OpenSeismoMatlab(dt,cxgtt,sw,bOrder,fuc);
 cxgtt=S2.acc;
 
 %% Plot the acceleration time histories
-
 % Initialize figure
 figure()
 hold on
@@ -223,6 +225,8 @@ grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Time, sec')
 ylabel('Acc, g')
+drawnow;
+pause(0.1)
 
 %% Calculate the Fourier spectra
 % Switch
@@ -235,7 +239,6 @@ S3=OpenSeismoMatlab(dt,xgtt,sw);
 S4=OpenSeismoMatlab(dt,cxgtt,sw);
 
 %% Plot the Fourier spectra
-
 % Initialize figure
 figure()
 loglog(1,1,'w')
@@ -255,6 +258,8 @@ ylim([1e-4,1])
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Frequency, Hz')
 ylabel('Fourier spectra, g*sec')
+drawnow;
+pause(0.1)
 
 %% Calculate the acceleration response spectra
 % Switch
@@ -272,7 +277,6 @@ S5=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
 S6=OpenSeismoMatlab(dt,cxgtt,sw,T,ksi);
 
 %% Plot the acceleration response spectra
-
 % Initialize figure
 figure()
 semilogx(1,1,'w')
@@ -289,6 +293,8 @@ grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Frequency, Hz')
 ylabel('Spectral acceleration, g')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

@@ -37,7 +37,6 @@ S1=OpenSeismoMatlab(dt,xgtt,sw,bOrder,flc);
 cxgtt=S1.acc;
 
 %% Plot the time history of the initial ground motion
-
 % Initialize figure
 figure()
 hold on
@@ -48,7 +47,9 @@ plot(t,xgtt,'k','LineWidth',1)
 hold off
 grid on
 xlabel('Time (sec)')
-ylabel('Acc. (cm/sec2)')
+ylabel('Acc. (cm/sec^2)')
+drawnow;
+pause(0.1)
 
 %% Obtain displacement and velocity time histories
 % Switch
@@ -64,7 +65,6 @@ S2=OpenSeismoMatlab(dt,xgtt,sw,baselineSw);
 S3=OpenSeismoMatlab(dt,cxgtt,sw,baselineSw);
 
 %% Plot the displacement time histories
-
 % Initialize figure
 figure()
 hold on
@@ -79,9 +79,10 @@ grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Time (sec)')
 ylabel('Disp. (cm)')
+drawnow;
+pause(0.1)
 
 %% Plot the velocity time histories
-
 % Initialize figure
 figure()
 hold on
@@ -96,6 +97,8 @@ grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Time (sec)')
 ylabel('Vel. (cm/sec)')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

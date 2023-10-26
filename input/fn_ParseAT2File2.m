@@ -58,7 +58,7 @@ for r = 1:length (records{1})
     
     PGA=max(abs(recd_acc));             %unit: g
     
-    recd_acc=gravity.*recd_acc;         %unit: m/s2
+    recd_acc=gravity.*recd_acc;         %unit: m/s^2
     Acc_all{r} = recd_acc;   
  
     % Write Input Info. into a Matrix

@@ -13,7 +13,7 @@
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, El Centro Terminal Substation Building)
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};
@@ -70,6 +70,8 @@ ylabel('fy/w (-)')
 legend({'\mu=1','\mu=1.5','\mu=2','\mu=4','\mu=8'})
 xlim([0,3])
 ylim([0,1])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

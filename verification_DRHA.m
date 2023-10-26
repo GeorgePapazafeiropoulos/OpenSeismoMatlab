@@ -16,7 +16,7 @@
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, El Centro Terminal Substation Building)
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};
@@ -101,6 +101,8 @@ xlabel('Time (sec)','FontSize',10);
 ylabel('U5 (cm)','FontSize',10);
 title(['All modes, maxU5=',num2str(max(abs(100*Ueig))),' cm'],...
     'FontSize',10)
+drawnow;
+pause(0.1)
 
 %% Fifth-story shear time history
 % Plot the fifth-story shear time history. Convert forces from N to kN.
@@ -115,6 +117,8 @@ xlabel('Time (sec)','FontSize',10);
 ylabel('V5 (kN)','FontSize',10);
 title(['All modes, maxV5=',num2str(max(abs(Feig/1e3))),' kN'],...
     'FontSize',10)
+drawnow;
+pause(0.1)
 
 %% Base shear time history
 % Plot the base shear time history. Convert forces from N to kN. Verify
@@ -129,6 +133,8 @@ xlabel('Time (sec)','FontSize',10);
 ylabel('Vb (kN)','FontSize',10);
 title(['All modes, maxVb=',num2str(max(abs(FBeig/1e3))),' kN'],...
     'FontSize',10)
+drawnow;
+pause(0.1)
 
 %% Base moment time history
 % Plot the base moment time history. Convert moments from Nm to kNm. Verify
@@ -143,6 +149,8 @@ xlabel('Time (sec)','FontSize',10);
 ylabel('Mb (kNm)','FontSize',10);
 title(['All modes, maxMb=',num2str(max(abs(MBeig/1e3))),' kNm'],...
     'FontSize',10)
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

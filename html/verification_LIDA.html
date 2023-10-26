@@ -68,7 +68,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>verification Linear dynamic response of SDOF oscillator</h1><!--introduction--><p>Calculate the dynamic response of a linear SDOF oscillator. This example verifies Figure 6.6.1 in Chopra for Tn=1sec</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Earthquake motion</a></li><li><a href="#3">Setup parameters for LIDA function</a></li><li><a href="#9">Calculate dynamic response</a></li><li><a href="#11">Results</a></li><li><a href="#12">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Chopra, A. K. (2020). Dynamics of structures, Theory and Applications to Earthquake Engineering, 5th edition. Prenctice Hall.</p><h2 id="2">Earthquake motion</h2><p>Load earthquake data</p><pre class="codeinput">dt=0.02;
-fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+fid=fopen(<span class="string">'elcentro_NS_trunc.dat'</span>,<span class="string">'r'</span>);
 text=textscan(fid,<span class="string">'%f %f'</span>);
 fclose(fid);
 xgtt=text{1,2};
@@ -84,7 +84,7 @@ xgtt=text{1,2};
 </pre><pre class="codeoutput">
 D =
 
-  15.063275193038429
+          15.0632751930384
 
 </pre><h2 id="12">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -99,7 +99,7 @@ D =
 %% Earthquake motion
 % Load earthquake data
 dt=0.02;
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 xgtt=text{1,2};

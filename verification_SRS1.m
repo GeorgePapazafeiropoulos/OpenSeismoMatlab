@@ -74,6 +74,8 @@ grid on
 title('CHV1-20140203E')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 %%
 % Initialize figure
 figure()
@@ -84,6 +86,8 @@ grid on
 title('LXR1-20140203E')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 %%
 % Initialize figure
 figure()
@@ -94,6 +98,8 @@ grid on
 title('LXR1-20140203N')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 
 %% Plot the rigid plastic sliding response spectra
 % Initialize figure
@@ -110,6 +116,8 @@ xlabel('Coulomb friction coefficient (-)')
 ylabel('Yielding displacement (m)')
 legend({'Chavriata (EW)','Lixouri (EW)','Lixouri (NS)'})
 xlim([0,0.5])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

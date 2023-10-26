@@ -62,6 +62,8 @@ xlabel('T (sec)')
 ylabel('\mu (-)')
 xlim([0,5])
 ylim([0,10])
+drawnow;
+pause(0.1)
 
 %% Plot the displacement demand response spectra
 % Initialize figure
@@ -74,6 +76,8 @@ xlabel('T (sec)')
 ylabel('\Delta (cm)')
 xlim([0,5])
 ylim([0,100])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

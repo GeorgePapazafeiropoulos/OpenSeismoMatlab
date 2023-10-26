@@ -80,9 +80,11 @@ xgtt=zeros(size(t));
 <span class="keyword">end</span>
 </pre><h2 id="3">Plot the generated time history</h2><pre class="codeinput">figure()
 plot(t,xgtt,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
-ylabel(<span class="string">'Acceleration (m/s2)'</span>)
+ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
 xlabel(<span class="string">'Time (sec)'</span>)
 title(<span class="string">'Artificial acceleration time history'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_RPSReSp_01.png" alt=""> <h2 id="4">Setup parameters for RPSReSp function</h2><p>Coulomb friction coefficients</p><pre class="codeinput">CF=linspace(0.05,0.5,1000)';
 </pre><p>Algorithm to be used for the time integration</p><pre class="codeinput">AlgID=<span class="string">'U0-V0-Opt'</span>;
 </pre><p>Minimum absolute value of the eigenvalues of the amplification matrix</p><pre class="codeinput">rinf=1;
@@ -94,14 +96,20 @@ title(<span class="string">'Artificial acceleration time history'</span>)
 plot(CF,Sd,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 ylabel(<span class="string">'Displacement (m)'</span>)
 xlabel(<span class="string">'Coulomb friction coefficient (-)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_RPSReSp_02.png" alt=""> <p>Velocity spectrum</p><pre class="codeinput">figure()
 plot(CF,Sv,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 ylabel(<span class="string">'Velocity (m/s)'</span>)
 xlabel(<span class="string">'Coulomb friction coefficient (-)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_RPSReSp_03.png" alt=""> <p>Acceleration spectrum</p><pre class="codeinput">figure()
 plot(CF,Sa,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
-ylabel(<span class="string">'Acceleration (m/s2)'</span>)
+ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
 xlabel(<span class="string">'Coulomb friction coefficient (-)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_RPSReSp_04.png" alt=""> <h2 id="14">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% example RPSReSp
@@ -127,9 +135,11 @@ end
 % 
 figure()
 plot(t,xgtt,'k','LineWidth',1)
-ylabel('Acceleration (m/s2)')
+ylabel('Acceleration (m/s^2)')
 xlabel('Time (sec)')
 title('Artificial acceleration time history')
+drawnow;
+pause(0.1)
 
 %% Setup parameters for RPSReSp function
 % Coulomb friction coefficients
@@ -165,6 +175,8 @@ figure()
 plot(CF,Sd,'k','LineWidth',1)
 ylabel('Displacement (m)')
 xlabel('Coulomb friction coefficient (-)')
+drawnow;
+pause(0.1)
 
 %%
 % Velocity spectrum
@@ -172,13 +184,17 @@ figure()
 plot(CF,Sv,'k','LineWidth',1)
 ylabel('Velocity (m/s)')
 xlabel('Coulomb friction coefficient (-)')
+drawnow;
+pause(0.1)
 
 %%
 % Acceleration spectrum
 figure()
 plot(CF,Sa,'k','LineWidth',1)
-ylabel('Acceleration (m/s2)')
+ylabel('Acceleration (m/s^2)')
 xlabel('Coulomb friction coefficient (-)')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

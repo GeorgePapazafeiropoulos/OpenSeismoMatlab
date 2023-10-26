@@ -85,7 +85,6 @@ jmax=200;
 dak=eps;
 
 %% Construct and plot the IDA curves in a loop
-
 % Initialize figure
 figure()
 hold on
@@ -101,6 +100,8 @@ xlabel('DM-Displacement (m)')
 ylabel('IM-Sa(T,5%) (g)')
 xlim([0,0.7])
 ylim([0,6])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

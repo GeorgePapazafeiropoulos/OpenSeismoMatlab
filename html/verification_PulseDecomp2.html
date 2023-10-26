@@ -86,7 +86,7 @@ Sout{1}=S1;
 <span class="keyword">end</span>
 </pre><h2 id="8">Plot the velocity time histories (original and reconstructed)</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
     <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
-    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+    <span class="string">'OuterPosition'</span>,[0.2,501,1000,343.2])
 hold <span class="string">on</span>
 <span class="comment">% Plot the velocity time history of the original ground motion</span>
 plot(t,xgt, <span class="string">'Color'</span>, [0 0 0], <span class="string">'LineWidth'</span>, 2)
@@ -101,9 +101,11 @@ xlim([0,40])
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Velocity (cm/s)'</span>)
 legend({<span class="string">'Original ground motion'</span>,<span class="string">'Reconstructed ground motion'</span>})
-</pre><h2 id="9">Plot the 30 velocity pulses in a single plot</h2><p>Verify with the middle plot of Figure 3 Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[5	50.6	1524.8	731.2],<span class="keyword">...</span>
+drawnow;
+pause(0.1)
+</pre><img vspace="5" hspace="5" src="verification_PulseDecomp2_01.png" alt=""> <h2 id="9">Plot the 30 velocity pulses in a single plot</h2><p>Verify with the middle plot of Figure 3 Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[5	50.6	1524.8	731.2],<span class="keyword">...</span>
     <span class="string">'InnerPosition'</span>,[5	50.6	1524.8	731.2],<span class="keyword">...</span>
-    <span class="string">'OuterPosition'</span>,[-2.20	43.4	1539.2	820.8])
+    <span class="string">'OuterPosition'</span>,[-2.20	43.4	1000	820.8])
 hold <span class="string">on</span>
 offSet=0;
 <span class="keyword">for</span> i=1:30
@@ -120,7 +122,9 @@ set(gca, <span class="string">'YDir'</span>,<span class="string">'reverse'</span
 xlim([0,40])
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Velocity (cm/s)'</span>)
-</pre><h2 id="10">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+drawnow;
+pause(0.1)
+</pre><img vspace="5" hspace="5" src="verification_PulseDecomp2_02.png" alt=""> <h2 id="10">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Pulse Decomposition of OpenSeismoMatlab
 
@@ -174,7 +178,7 @@ end
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 hold on
 % Plot the velocity time history of the original ground motion
 plot(t,xgt, 'Color', [0 0 0], 'LineWidth', 2)
@@ -189,13 +193,15 @@ xlim([0,40])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Original ground motion','Reconstructed ground motion'})
+drawnow;
+pause(0.1)
 
 %% Plot the 30 velocity pulses in a single plot
 % Verify with the middle plot of Figure 3
 % Initialize figure
 figure('Position',[5	50.6	1524.8	731.2],...
     'InnerPosition',[5	50.6	1524.8	731.2],...
-    'OuterPosition',[-2.20	43.4	1539.2	820.8])
+    'OuterPosition',[-2.20	43.4	1000	820.8])
 hold on
 offSet=0;
 for i=1:30
@@ -212,6 +218,8 @@ set(gca, 'YDir','reverse')
 xlim([0,40])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
+drawnow;
+pause(0.1)
 
 
 %% Copyright

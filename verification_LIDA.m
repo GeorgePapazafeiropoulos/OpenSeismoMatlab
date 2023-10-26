@@ -9,7 +9,7 @@
 %% Earthquake motion
 % Load earthquake data
 dt=0.02;
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 xgtt=text{1,2};

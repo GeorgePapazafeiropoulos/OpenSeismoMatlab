@@ -107,6 +107,8 @@ grid <span class="string">on</span>
 title(<span class="string">'CHV1-20140203E'</span>)
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_SRS1_01.png" alt=""> <p>Initialize figure</p><pre class="codeinput">figure()
 <span class="comment">% Plot the acceleration time history</span>
 plot(t2,xgtt2)
@@ -115,6 +117,8 @@ grid <span class="string">on</span>
 title(<span class="string">'LXR1-20140203E'</span>)
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_SRS1_02.png" alt=""> <p>Initialize figure</p><pre class="codeinput">figure()
 <span class="comment">% Plot the acceleration time history</span>
 plot(t3,xgtt3)
@@ -123,6 +127,8 @@ grid <span class="string">on</span>
 title(<span class="string">'LXR1-20140203N'</span>)
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_SRS1_03.png" alt=""> <h2 id="12">Plot the rigid plastic sliding response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
 hold <span class="string">on</span>
 <span class="comment">% Plot the rigid plastic sliding response spectra</span>
@@ -136,6 +142,8 @@ xlabel(<span class="string">'Coulomb friction coefficient (-)'</span>)
 ylabel(<span class="string">'Yielding displacement (m)'</span>)
 legend({<span class="string">'Chavriata (EW)'</span>,<span class="string">'Lixouri (EW)'</span>,<span class="string">'Lixouri (NS)'</span>})
 xlim([0,0.5])
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_SRS1_04.png" alt=""> <h2 id="13">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Rigid plastic sliding response spectrum
@@ -214,6 +222,8 @@ grid on
 title('CHV1-20140203E')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 %%
 % Initialize figure
 figure()
@@ -224,6 +234,8 @@ grid on
 title('LXR1-20140203E')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 %%
 % Initialize figure
 figure()
@@ -234,6 +246,8 @@ grid on
 title('LXR1-20140203N')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 
 %% Plot the rigid plastic sliding response spectra
 % Initialize figure
@@ -250,6 +264,8 @@ xlabel('Coulomb friction coefficient (-)')
 ylabel('Yielding displacement (m)')
 legend({'Chavriata (EW)','Lixouri (EW)','Lixouri (NS)'})
 xlim([0,0.5])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>verification Spectral Intensity according to Housner (1952)</h1><!--introduction--><p>Calculate the spectral intensity as defined by Housner (1952) using OpenSeismoMatlab</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Calculate Housner Spectral Intensity</a></li><li><a href="#9">Spectral intensities in ft</a></li><li><a href="#12">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Housner, G. W. (1952). Intensity of ground motion during strong earthquakes. California Institute of Technology, Second technical report, Office of naval research, task order 25, project NR-081-095.</p><h2 id="2">Description</h2><p>Table II on page 15 of the above reference is verified for the case of the El Centro, 1940 earthquake.The spectral intensity according to this table is 8.35ft for damping 0.0, 2.71ft for damping 0.2 and 1,89ft for damping 0.4. These values are verified with the present example</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+  </style></head><body><div class="content"><h1>verification Spectral Intensity according to Housner (1952)</h1><!--introduction--><p>Calculate the spectral intensity as defined by Housner (1952) using OpenSeismoMatlab</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Calculate Housner Spectral Intensity</a></li><li><a href="#9">Spectral intensities in ft</a></li><li><a href="#12">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Housner, G. W. (1952). Intensity of ground motion during strong earthquakes. California Institute of Technology, Second technical report, Office of naval research, task order 25, project NR-081-095.</p><h2 id="2">Description</h2><p>Table II on page 15 of the above reference is verified for the case of the El Centro, 1940 earthquake.The spectral intensity according to this table is 8.35ft for damping 0.0, 2.71ft for damping 0.2 and 1,89ft for damping 0.4. These values are verified with the present example</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro_NS_trunc.dat'</span>,<span class="string">'r'</span>);
 text=textscan(fid,<span class="string">'%f %f'</span>);
 fclose(fid);
 t=text{1,1};
@@ -84,19 +84,19 @@ S3=OpenSeismoMatlab(dt,xgtt,sw,ksi3);
 </pre><pre class="codeoutput">
 ans =
 
-   8.006346083310637
+          8.00634608331064
 
 </pre><p>For damping 0.2</p><pre class="codeinput">S2.SI*3.28084
 </pre><pre class="codeoutput">
 ans =
 
-   2.336223180564445
+          2.33622318056444
 
 </pre><p>For damping 0.4</p><pre class="codeinput">S3.SI*3.28084
 </pre><pre class="codeoutput">
 ans =
 
-   1.634620664234585
+          1.63462066423459
 
 </pre><h2 id="12">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -118,7 +118,7 @@ ans =
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, El Centro Terminal Substation Building)
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};

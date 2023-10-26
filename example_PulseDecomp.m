@@ -60,6 +60,8 @@ plot(time, resTH , '-k')
 legend('Residual ground motion','location','northwest')
 hy = ylabel('Velocity');
 hx = xlabel('Time [s]');
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

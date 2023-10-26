@@ -75,7 +75,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     <span class="string">'Spitak'</span>;
     <span class="string">'Cape Mendocino'</span>;
     <span class="string">'ChiChi'</span>;
-    <span class="string">'El Centro'</span>; <span class="comment">% Imperial valley 1940</span>
+    <span class="string">'elcentro_NS_trunc'</span>; <span class="comment">% Imperial valley 1940</span>
     <span class="string">'Hollister'</span>;
     <span class="string">'Kobe'</span>};
 </pre><p>Set the eigenperiod range for which the response spectra will be calculated.</p><pre class="codeinput">Tspectra=(0.01:0.01:4)';
@@ -102,6 +102,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
     axis <span class="string">tight</span>
 <span class="keyword">end</span>
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_Linear_elastic_response_spectra_01.png" alt=""> <p>Plot pseudo-velocity response spectra</p><pre class="codeinput">Fig2 = figure(<span class="string">'units'</span>, <span class="string">'centimeters'</span>, <span class="string">'Position'</span>, [0,0, 20/sqrt(2), 20]);
 <span class="comment">% Scan all subplots</span>
 <span class="keyword">for</span> i=1:numel(eqmotions)
@@ -113,6 +115,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
     axis <span class="string">tight</span>
 <span class="keyword">end</span>
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_Linear_elastic_response_spectra_02.png" alt=""> <p>Plot pseudo-acceleration response spectra</p><pre class="codeinput">Fig3 = figure(<span class="string">'units'</span>, <span class="string">'centimeters'</span>, <span class="string">'Position'</span>, [0,0, 20/sqrt(2), 20]);
 <span class="comment">% Scan all subplots</span>
 <span class="keyword">for</span> i=1:numel(eqmotions)
@@ -124,6 +128,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
     xlabel(<span class="string">'Period (s)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times New Roman'</span>)
     axis <span class="string">tight</span>
 <span class="keyword">end</span>
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_Linear_elastic_response_spectra_03.png" alt=""> <h2 id="10">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% example Linear elastic response spectra
@@ -140,7 +146,7 @@ eqmotions={'Imperial Valley'; % Imperial valley 1979
     'Spitak';
     'Cape Mendocino';
     'ChiChi';
-    'El Centro'; % Imperial valley 1940
+    'elcentro_NS_trunc'; % Imperial valley 1940
     'Hollister';
     'Kobe'};
 %%
@@ -182,6 +188,8 @@ for i=1:numel(eqmotions)
     xlabel('Period (s)','FontName','Times New Roman')
     axis tight
 end
+drawnow;
+pause(0.1)
 %%
 % Plot pseudo-velocity response spectra
 Fig2 = figure('units', 'centimeters', 'Position', [0,0, 20/sqrt(2), 20]);
@@ -195,6 +203,8 @@ for i=1:numel(eqmotions)
     xlabel('Period (s)','FontName','Times New Roman')
     axis tight
 end
+drawnow;
+pause(0.1)
 %%
 % Plot pseudo-acceleration response spectra
 Fig3 = figure('units', 'centimeters', 'Position', [0,0, 20/sqrt(2), 20]);
@@ -208,6 +218,8 @@ for i=1:numel(eqmotions)
     xlabel('Period (s)','FontName','Times New Roman')
     axis tight
 end
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

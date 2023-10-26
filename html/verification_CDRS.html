@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>verification Constant ductility response spectrum</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Calculate constant ductility response spectra of earthquake motion</a></li><li><a href="#10">Plot the constant ductility response spectra</a></li><li><a href="#11">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Chopra, A. K. (2020). Dynamics of structures, Theory and Applications to Earthquake Engineering, 5th edition. Prenctice Hall.</p><h2 id="2">Description</h2><p>The constant-ductility response spectra of Figure 7.5.2 of the above reference are verified. Elastic-perfectly plastic systems are considered. Damping is equal to 5% of its critical value. Target ductility factors equal to 1,1.5,2,4 and 8 are considered.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+  </style></head><body><div class="content"><h1>verification Constant ductility response spectrum</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Calculate constant ductility response spectra of earthquake motion</a></li><li><a href="#10">Plot the constant ductility response spectra</a></li><li><a href="#11">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Chopra, A. K. (2020). Dynamics of structures, Theory and Applications to Earthquake Engineering, 5th edition. Prenctice Hall.</p><h2 id="2">Description</h2><p>The constant-ductility response spectra of Figure 7.5.2 of the above reference are verified. Elastic-perfectly plastic systems are considered. Damping is equal to 5% of its critical value. Target ductility factors equal to 1,1.5,2,4 and 8 are considered.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro_NS_trunc.dat'</span>,<span class="string">'r'</span>);
 text=textscan(fid,<span class="string">'%f %f'</span>);
 fclose(fid);
 t=text{1,1};
@@ -103,6 +103,8 @@ ylabel(<span class="string">'fy/w (-)'</span>)
 legend({<span class="string">'\mu=1'</span>,<span class="string">'\mu=1.5'</span>,<span class="string">'\mu=2'</span>,<span class="string">'\mu=4'</span>,<span class="string">'\mu=8'</span>})
 xlim([0,3])
 ylim([0,1])
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_CDRS_01.png" alt=""> <h2 id="11">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Constant ductility response spectrum
@@ -120,7 +122,7 @@ ylim([0,1])
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, El Centro Terminal Substation Building)
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};
@@ -177,6 +179,8 @@ ylabel('fy/w (-)')
 legend({'\mu=1','\mu=1.5','\mu=2','\mu=4','\mu=8'})
 xlim([0,3])
 ylim([0,1])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

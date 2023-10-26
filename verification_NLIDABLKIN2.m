@@ -105,6 +105,8 @@ ylabel('Energy/unit mass (N*m/kg)','FontSize',10);
 %title('(a)','FontSize',10)
 grid on
 legend('Damping energy','Damping+yielding energy','Input energy')
+drawnow;
+pause(0.1)
 
 %%
 % Show the achieved ductility factor (must be equal to 5 according to the
@@ -188,6 +190,8 @@ ylabel('Energy/unit mass (N*m/kg)','FontSize',10);
 %title('(a)','FontSize',10)
 grid on
 legend('Damping energy','Damping+yielding energy','Input energy')
+drawnow;
+pause(0.1)
 
 %%
 % Show the achieved ductility factor (must be equal to 5 according to the

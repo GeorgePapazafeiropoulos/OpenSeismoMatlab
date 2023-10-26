@@ -103,11 +103,13 @@ ylabel(<span class="string">'Energy/unit mass (N*m/kg)'</span>,<span class="stri
 <span class="comment">%title('(a)','FontSize',10)</span>
 grid <span class="string">on</span>
 legend(<span class="string">'Damping energy'</span>,<span class="string">'Damping+yielding energy'</span>,<span class="string">'Input energy'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_NLIDABLKIN2_01.png" alt=""> <p>Show the achieved ductility factor (must be equal to 5 according to the above reference)</p><pre class="codeinput">max(abs(u))/uy
 </pre><pre class="codeoutput">
 ans =
 
-   5.000748299360105
+          5.00074829936011
 
 </pre><h2 id="21">Setup parameters for NLIDABLKIN function for nonlinear SDOF with T=0.5s</h2><p>Mass</p><pre class="codeinput">m=1;
 </pre><p>Eigenperiod</p><pre class="codeinput">T=5;
@@ -139,11 +141,13 @@ ylabel(<span class="string">'Energy/unit mass (N*m/kg)'</span>,<span class="stri
 <span class="comment">%title('(a)','FontSize',10)</span>
 grid <span class="string">on</span>
 legend(<span class="string">'Damping energy'</span>,<span class="string">'Damping+yielding energy'</span>,<span class="string">'Input energy'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_NLIDABLKIN2_02.png" alt=""> <p>Show the achieved ductility factor (must be equal to 5 according to the above reference)</p><pre class="codeinput">max(abs(u))/uy
 </pre><pre class="codeoutput">
 ans =
 
-   4.991904059608555
+          4.99190405960856
 
 </pre><h2 id="38">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -254,6 +258,8 @@ ylabel('Energy/unit mass (N*m/kg)','FontSize',10);
 %title('(a)','FontSize',10)
 grid on
 legend('Damping energy','Damping+yielding energy','Input energy')
+drawnow;
+pause(0.1)
 
 %%
 % Show the achieved ductility factor (must be equal to 5 according to the
@@ -337,6 +343,8 @@ ylabel('Energy/unit mass (N*m/kg)','FontSize',10);
 %title('(a)','FontSize',10)
 grid on
 legend('Damping energy','Damping+yielding energy','Input energy')
+drawnow;
+pause(0.1)
 
 %%
 % Show the achieved ductility factor (must be equal to 5 according to the

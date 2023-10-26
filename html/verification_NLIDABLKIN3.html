@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>verification Strength ductility relation of elastoplastic system</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Setup parameters for NLIDABLKIN function for linear SDOF</a></li><li><a href="#17">Calculate dynamic response of the linear SDOF</a></li><li><a href="#18">Plot the energy time history of the linear SDOF</a></li><li><a href="#19">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Mahin, S. A., &amp; Lin, J. (1983). Construction of inelastic response spectra for single-degree-of-freedom systems. Earthquake Engineering Center, University of California, Berkeley.</p><h2 id="2">Description</h2><p>Figure 15 of the above reference is reproduced in this example, for an elastic perfectly plastic (EPP) system with eigenperiod equal to 0.7 sec and damping ratio equal to 0.05. The NS component of the El Centro earthquake (1940) is considered. It is demonstrated that there can be more than one values of strength corresponding to a given displacement ductility.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, NS component)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro_NS.dat'</span>,<span class="string">'r'</span>);
+  </style></head><body><div class="content"><h1>verification Strength ductility relation of elastoplastic system</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Setup parameters for NLIDABLKIN function for linear SDOF</a></li><li><a href="#17">Calculate dynamic response of the linear SDOF</a></li><li><a href="#18">Plot the energy time history of the linear SDOF</a></li><li><a href="#19">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Mahin, S. A., &amp; Lin, J. (1983). Construction of inelastic response spectra for single-degree-of-freedom systems. Earthquake Engineering Center, University of California, Berkeley.</p><h2 id="2">Description</h2><p>Figure 15 of the above reference is reproduced in this example, for an elastic perfectly plastic (EPP) system with eigenperiod equal to 0.7 sec and damping ratio equal to 0.05. The NS component of the El Centro earthquake (1940) is considered. It is demonstrated that there can be more than one values of strength corresponding to a given displacement ductility.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, NS component)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro_NS_full.dat'</span>,<span class="string">'r'</span>);
 text=textscan(fid,<span class="string">'%f %f'</span>);
 fclose(fid);
 t=text{1,1};
@@ -104,6 +104,8 @@ xlabel(<span class="string">'Displacement Ductility (-)'</span>,<span class="str
 ylabel(<span class="string">'\eta-Value (-)'</span>,<span class="string">'FontSize'</span>,10);
 grid <span class="string">on</span>
 legend({<span class="string">'ksi=0.05'</span>})
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_NLIDABLKIN3_01.png" alt=""> <h2 id="19">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Strength ductility relation of elastoplastic system
@@ -124,7 +126,7 @@ legend({<span class="string">'ksi=0.05'</span>})
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, NS component)
-fid=fopen('elcentro_NS.dat','r');
+fid=fopen('elcentro_NS_full.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};
@@ -207,6 +209,8 @@ xlabel('Displacement Ductility (-)','FontSize',10);
 ylabel('\eta-Value (-)','FontSize',10);
 grid on
 legend({'ksi=0.05'})
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

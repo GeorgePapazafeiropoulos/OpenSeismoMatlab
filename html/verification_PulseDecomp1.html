@@ -78,7 +78,7 @@ xgt=data(:,2);
 </pre><p>Apply OpenSeismoMatlab for 1st largest pulse decomposition</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgt,sw,wname);
 </pre><h2 id="8">Plot the velocity time histories (initial motion and largest pulse)</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
     <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
-    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+    <span class="string">'OuterPosition'</span>,[0.2,501,1000,343.2])
 hold <span class="string">on</span>
 <span class="comment">% Plot the velocity time history of the initial ground motion</span>
 plot(t,xgt, <span class="string">'Color'</span>, [0 0 0], <span class="string">'LineWidth'</span>, 2)
@@ -93,6 +93,8 @@ xlim([0,20])
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Velocity (cm/s)'</span>)
 legend({<span class="string">'Original ground motion'</span>,<span class="string">'Largest wavelet'</span>})
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_PulseDecomp1_01.png" alt=""> <p>Apply OpenSeismoMatlab for extracting the 2nd up to 10th largest pulses from the residual motion after extracting the 1st pulse as above</p><pre class="codeinput">Sout{1}=S1;
 <span class="keyword">for</span> i=2:10
     S1=OpenSeismoMatlab(dt,S1.resTH,sw,wname);
@@ -100,7 +102,7 @@ legend({<span class="string">'Original ground motion'</span>,<span class="string
 <span class="keyword">end</span>
 </pre><h2 id="10">Plot the velocity time histories (residual motion and 2nd largest pulse)</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
     <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
-    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+    <span class="string">'OuterPosition'</span>,[0.2,501,1000,343.2])
 hold <span class="string">on</span>
 <span class="comment">% Plot the velocity time history of the residual ground motion</span>
 plot(t,Sout{1}.resTH, <span class="string">'Color'</span>, [0 0 0], <span class="string">'LineWidth'</span>, 2)
@@ -115,13 +117,15 @@ xlim([0,20])
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Velocity (cm/s)'</span>)
 legend({<span class="string">'Residual after 1st wavelet removed'</span>,<span class="string">'2nd largest wavelet'</span>})
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_PulseDecomp1_02.png" alt=""> <h2 id="11">Sum the 10 largest pulses extracted from the input motion</h2><pre class="codeinput">sum10=zeros(size(S1.pulseTH));
 <span class="keyword">for</span> i=1:10
     sum10=sum10+Sout{i}.pulseTH;
 <span class="keyword">end</span>
 </pre><h2 id="12">Plot the velocity pulse using 10 largest pulses</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
     <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
-    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+    <span class="string">'OuterPosition'</span>,[0.2,501,1000,343.2])
 <span class="comment">% Plot the time history of the largest velocity pulse</span>
 plot(t,sum10, <span class="string">'Color'</span>, [0.7 0.7 0.7], <span class="string">'LineWidth'</span>, 2)
 <span class="comment">% Finalize figure</span>
@@ -132,9 +136,11 @@ xlim([0,20])
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Velocity (cm/s)'</span>)
 legend({<span class="string">'Sum of 10 largest pulses'</span>})
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_PulseDecomp1_03.png" alt=""> <h2 id="13">Plot the final residual ground motion</h2><p>Initialize figure</p><pre class="codeinput">figure(<span class="string">'Position'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
     <span class="string">'InnerPosition'</span>,[7.4,508.2,1517.6,253.8],<span class="keyword">...</span>
-    <span class="string">'OuterPosition'</span>,[0.2,501,1532,343.2])
+    <span class="string">'OuterPosition'</span>,[0.2,501,1000,343.2])
 <span class="comment">% Plot the time history of the largest velocity pulse</span>
 plot(t,S1.resTH, <span class="string">'Color'</span>, [0 0 0], <span class="string">'LineWidth'</span>, 2)
 <span class="comment">% Finalize figure</span>
@@ -145,6 +151,8 @@ xlim([0,20])
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Velocity (cm/s)'</span>)
 legend({<span class="string">'Final residual ground motion'</span>})
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_PulseDecomp1_04.png" alt=""> <h2 id="14">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Pulse Decomposition of OpenSeismoMatlab
@@ -196,7 +204,7 @@ S1=OpenSeismoMatlab(dt,xgt,sw,wname);
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 hold on
 % Plot the velocity time history of the initial ground motion
 plot(t,xgt, 'Color', [0 0 0], 'LineWidth', 2)
@@ -211,6 +219,8 @@ xlim([0,20])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Original ground motion','Largest wavelet'})
+drawnow;
+pause(0.1)
 
 %%
 % Apply OpenSeismoMatlab for extracting the 2nd up to 10th largest pulses
@@ -225,7 +235,7 @@ end
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 hold on
 % Plot the velocity time history of the residual ground motion
 plot(t,Sout{1}.resTH, 'Color', [0 0 0], 'LineWidth', 2)
@@ -240,6 +250,8 @@ xlim([0,20])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Residual after 1st wavelet removed','2nd largest wavelet'})
+drawnow;
+pause(0.1)
 
 %% Sum the 10 largest pulses extracted from the input motion
 sum10=zeros(size(S1.pulseTH));
@@ -251,7 +263,7 @@ end
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 % Plot the time history of the largest velocity pulse
 plot(t,sum10, 'Color', [0.7 0.7 0.7], 'LineWidth', 2)
 % Finalize figure
@@ -262,12 +274,14 @@ xlim([0,20])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Sum of 10 largest pulses'})
+drawnow;
+pause(0.1)
 
 %% Plot the final residual ground motion
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 % Plot the time history of the largest velocity pulse
 plot(t,S1.resTH, 'Color', [0 0 0], 'LineWidth', 2)
 % Finalize figure
@@ -278,7 +292,8 @@ xlim([0,20])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Final residual ground motion'})
-
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

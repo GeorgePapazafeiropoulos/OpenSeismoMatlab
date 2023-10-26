@@ -96,7 +96,6 @@ S4=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
 S4.Sa
 
 %% Plot the acceleration time history
-
 % Initialize figure
 figure()
 % Plot the acceleration time history of the adjusted motion
@@ -105,6 +104,8 @@ plot(t,xgtt)
 grid on
 xlabel('Time (sec)')
 ylabel('Acceleration (g)')
+drawnow;
+pause(0.1)
 
 %% Perform IDA analysis
 % Switch
@@ -135,7 +136,6 @@ ksi=0.05;
 S5=OpenSeismoMatlab(dt,xgtt,sw,T,lambdaF,IM_DM,m,uy,pysf,ksi);
 
 %% Plot the displacement time histories
-
 % Initialize figure
 figure()
 % Plot the response curve of the incremental dynamic analysis
@@ -146,6 +146,8 @@ xlabel('Displacement (mm)')
 ylabel('Sa(T1,5%)[g]')
 xlim([0,350])
 ylim([0,0.7])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

@@ -25,7 +25,7 @@ dt1=t1(2)-t1(1);
 xgtt1=data(:,2);
 %%
 % Load earthquake data of El Centro 1940 record
-eqmotion={'elcentro'};
+eqmotion={'elcentro_NS_trunc'};
 data=load([eqmotion{1},'.dat']);
 t2=data(:,1);
 dt2=t2(2)-t2(1);
@@ -54,6 +54,8 @@ grid on
 title('Northridge Sylmar County 1994')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 %%
 % Initialize figure
 figure()
@@ -64,6 +66,8 @@ grid on
 title('El Centro 1940')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 
 %% Plot the rigid plastic sliding response spectra
 % Initialize figure
@@ -76,6 +80,8 @@ xlabel('Coulomb friction coefficient (-)')
 ylabel('Yielding displacement (m)')
 title('Northridge Sylmar County 1994')
 xlim([0,1])
+drawnow;
+pause(0.1)
 %%
 % Initialize figure
 figure()
@@ -87,6 +93,8 @@ xlabel('Coulomb friction coefficient (-)')
 ylabel('Yielding displacement (m)')
 title('El Centro 1940')
 xlim([0,0.5])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

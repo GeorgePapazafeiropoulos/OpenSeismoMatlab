@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>example General demonstration of the OpenSeismoMatlab capabilities</h1><!--introduction--><p>This is to demonstrate the capabilities of OpenSeismoMatlab and also to verify that OpenSeismoMatlab works properly for all of its possible options and types of application, and yields meaningful results. <b>All</b> capabilities of OpenSeismoMatlab are tested in this example</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load earthquake data</a></li><li><a href="#2">Time histories without baseline correction</a></li><li><a href="#6">Time histories with baseline correction</a></li><li><a href="#10">Resample acceleration time history from 0.02 sec to 0.01 sec.</a></li><li><a href="#12">PGA</a></li><li><a href="#14">PGV</a></li><li><a href="#16">PGD</a></li><li><a href="#18">Total cumulative energy, Arias intensity and significant duration</a></li><li><a href="#26">Pulse decomposition</a></li><li><a href="#32">Linear elastic response spectra and pseudospectra</a></li><li><a href="#41">Rigid plastic sliding displacement response spectra</a></li><li><a href="#45">Constant ductility response spectra and pseudospectra</a></li><li><a href="#54">Constant strength response spectra</a></li><li><a href="#61">Fourier amplitude spectrum and mean period</a></li><li><a href="#65">High pass Butterworth filter</a></li><li><a href="#67">Low pass Butterworth filter</a></li><li><a href="#69">Incremental dynamic analysis</a></li><li><a href="#71">Effective peak ground acceleration</a></li><li><a href="#73">Spectral intensity according to Housner (1952)</a></li><li><a href="#75">Spectral intensity according to Nau &amp; Hall (1984)</a></li><li><a href="#77">Copyright</a></li></ul></div><h2 id="1">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro.dat'</span>,<span class="string">'r'</span>);
+  </style></head><body><div class="content"><h1>example General demonstration of the OpenSeismoMatlab capabilities</h1><!--introduction--><p>This is to demonstrate the capabilities of OpenSeismoMatlab and also to verify that OpenSeismoMatlab works properly for all of its possible options and types of application, and yields meaningful results. <b>All</b> capabilities of OpenSeismoMatlab are tested in this example</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load earthquake data</a></li><li><a href="#2">Time histories without baseline correction</a></li><li><a href="#6">Time histories with baseline correction</a></li><li><a href="#10">Resample acceleration time history from 0.02 sec to 0.01 sec.</a></li><li><a href="#12">PGA</a></li><li><a href="#14">PGV</a></li><li><a href="#16">PGD</a></li><li><a href="#18">Total cumulative energy, Arias intensity and significant duration</a></li><li><a href="#26">Pulse decomposition</a></li><li><a href="#32">Linear elastic response spectra and pseudospectra</a></li><li><a href="#41">Rigid plastic sliding displacement response spectra</a></li><li><a href="#45">Constant ductility response spectra and pseudospectra</a></li><li><a href="#54">Constant strength response spectra</a></li><li><a href="#61">Fourier amplitude spectrum and mean period</a></li><li><a href="#65">High pass Butterworth filter</a></li><li><a href="#67">Low pass Butterworth filter</a></li><li><a href="#69">Incremental dynamic analysis</a></li><li><a href="#71">Effective peak ground acceleration</a></li><li><a href="#73">Spectral intensity according to Housner (1952)</a></li><li><a href="#75">Spectral intensity according to Nau &amp; Hall (1984)</a></li><li><a href="#77">Copyright</a></li></ul></div><h2 id="1">Load earthquake data</h2><p>Earthquake acceleration time history of the El Centro earthquake will be used (El Centro, 1940, El Centro Terminal Substation Building)</p><pre class="codeinput">fid=fopen(<span class="string">'elcentro_NS_trunc.dat'</span>,<span class="string">'r'</span>);
 text=textscan(fid,<span class="string">'%f %f'</span>);
 fclose(fid);
 t=text{1,1};
@@ -116,7 +116,7 @@ S4=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><pre class="codeoutput">
 ans =
 
-   3.127624200000000
+                 3.1276242
 
 </pre><h2 id="14">PGV</h2><pre class="codeinput">sw=<span class="string">'pgv'</span>;
 S5=OpenSeismoMatlab(dt,xgtt,sw);
@@ -124,7 +124,7 @@ S5=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><pre class="codeoutput">
 ans =
 
-   0.360920691000000
+               0.360920691
 
 </pre><h2 id="16">PGD</h2><pre class="codeinput">sw=<span class="string">'pgd'</span>;
 S6=OpenSeismoMatlab(dt,xgtt,sw);
@@ -132,7 +132,7 @@ S6=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><pre class="codeoutput">
 ans =
 
-   0.211893410160001
+         0.211893410160001
 
 </pre><h2 id="18">Total cumulative energy, Arias intensity and significant duration</h2><pre class="codeinput">sw=<span class="string">'arias'</span>;
 S7=OpenSeismoMatlab(dt,xgtt,sw);
@@ -140,7 +140,7 @@ S7=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><pre class="codeoutput">
 ans =
 
-  11.251388628141992
+           11.251388628142
 
 </pre><pre class="codeinput">figure()
 plot(S7.time,S7.EcumTH,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
@@ -150,31 +150,31 @@ pause(0.1)
 </pre><pre class="codeoutput">
 ans =
 
-   1.680000000000000  25.500000000000000
+                      1.68                      25.5
 
 </pre><pre class="codeinput">S7.Td_5_95
 </pre><pre class="codeoutput">
 ans =
 
-  23.840000000000000
+                     23.84
 
 </pre><pre class="codeinput">S7.t_5_75
 </pre><pre class="codeoutput">
 ans =
 
-   1.680000000000000  11.800000000000001
+                      1.68                      11.8
 
 </pre><pre class="codeinput">S7.Td_5_75
 </pre><pre class="codeoutput">
 ans =
 
-  10.140000000000001
+                     10.14
 
 </pre><pre class="codeinput">S7.arias
 </pre><pre class="codeoutput">
 ans =
 
-   1.801594284243355
+          1.80159428424335
 
 </pre><h2 id="26">Pulse decomposition</h2><pre class="codeinput">xgt=S1.vel;
 sw=<span class="string">'pulsedecomp'</span>;
@@ -191,7 +191,7 @@ pause(0.1)
 </pre><pre class="codeoutput">
 ans =
 
-   3.303999999999999
+                     3.304
 
 </pre><pre class="codeinput">S8.wavScale
 </pre><pre class="codeoutput">
@@ -203,7 +203,7 @@ ans =
 </pre><pre class="codeoutput">
 ans =
 
-   1.712471322212483
+          1.71247132221248
 
 </pre><h2 id="32">Linear elastic response spectra and pseudospectra</h2><pre class="codeinput">sw=<span class="string">'elrs'</span>;
 ksi=0.05;
@@ -237,13 +237,13 @@ pause(0.1)
 </pre><pre class="codeoutput">
 ans =
 
-   9.011815256159021
+          9.01181525615902
 
 </pre><pre class="codeinput">S9.PredPeriod
 </pre><pre class="codeoutput">
 ans =
 
-   0.500000000000000
+                       0.5
 
 </pre><h2 id="41">Rigid plastic sliding displacement response spectra</h2><pre class="codeinput">sw=<span class="string">'rpsrs'</span>;
 S10=OpenSeismoMatlab(dt,xgtt,sw);
@@ -335,13 +335,13 @@ pause(0.1)
 </pre><pre class="codeoutput">
 ans =
 
-   0.514862185011529
+         0.533389590787328
 
 </pre><pre class="codeinput">S13.Fm
 </pre><pre class="codeoutput">
 ans =
 
-   3.555642260516752
+          3.29375516366188
 
 </pre><h2 id="65">High pass Butterworth filter</h2><pre class="codeinput">sw=<span class="string">'butterworthhigh'</span>;
 bOrder=4;
@@ -371,7 +371,7 @@ S17=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><pre class="codeoutput">
 ans =
 
-   3.095467796310664
+          3.09546779631066
 
 </pre><h2 id="73">Spectral intensity according to Housner (1952)</h2><pre class="codeinput">sw=<span class="string">'sih1952'</span>;
 S18=OpenSeismoMatlab(dt,xgtt,sw);
@@ -379,7 +379,7 @@ S18=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><pre class="codeoutput">
 ans =
 
-   1.243733116623177
+          1.24373311662318
 
 </pre><h2 id="75">Spectral intensity according to Nau &amp; Hall (1984)</h2><pre class="codeinput">sw=<span class="string">'sinh1984'</span>;
 S19=OpenSeismoMatlab(dt,xgtt,sw);
@@ -387,7 +387,7 @@ S19=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><pre class="codeoutput">
 ans =
 
-   0.530561283239986
+         0.530561283239986
 
 </pre><h2 id="77">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
@@ -400,7 +400,7 @@ ans =
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, El Centro Terminal Substation Building)
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};

@@ -80,9 +80,11 @@ xgtt=zeros(size(t));
 <span class="keyword">end</span>
 </pre><h2 id="3">Plot the generated time history</h2><pre class="codeinput">figure()
 plot(t,xgtt,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
-ylabel(<span class="string">'Acceleration (m/s2)'</span>)
+ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
 xlabel(<span class="string">'Time (sec)'</span>)
 title(<span class="string">'Artificial acceleration time history'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_LEReSp_01.png" alt=""> <h2 id="4">Setup parameters for LEReSp function</h2><p>Eigenperiods</p><pre class="codeinput">T=logspace(log10(0.02),log10(5),1000)';
 </pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
 </pre><p>Maximum ratio of the integration time step to the eigenperiod</p><pre class="codeinput">dtTol=0.02;
@@ -91,28 +93,40 @@ title(<span class="string">'Artificial acceleration time history'</span>)
 </pre><h2 id="9">Calculate spectra and pseudospectra</h2><p>Apply LEReSp</p><pre class="codeinput">[PSa,PSv,Sd,Sv,Sa,Siev]=LEReSp(dt,xgtt,T,ksi,dtTol,AlgID,rinf);
 </pre><h2 id="10">Plot the spectra and pseudospectra</h2><p>Pseudoacceleration spectrum</p><pre class="codeinput">figure()
 plot(T,PSa,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
-ylabel(<span class="string">'Pseudoacceleration (m/s2)'</span>)
+ylabel(<span class="string">'Pseudoacceleration (m/s^2)'</span>)
 xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_LEReSp_02.png" alt=""> <p>Pseudovelocity spectrum</p><pre class="codeinput">figure()
 plot(T,PSv,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 ylabel(<span class="string">'Pseudovelocity (m/s)'</span>)
 xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_LEReSp_03.png" alt=""> <p>Displacement spectrum</p><pre class="codeinput">figure()
 plot(T,Sd,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 ylabel(<span class="string">'Displacement (m)'</span>)
 xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_LEReSp_04.png" alt=""> <p>Velocity spectrum</p><pre class="codeinput">figure()
 plot(T,Sv,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 ylabel(<span class="string">'Velocity (m/s)'</span>)
 xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_LEReSp_05.png" alt=""> <p>Acceleration spectrum</p><pre class="codeinput">figure()
 plot(T,Sa,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
-ylabel(<span class="string">'Acceleration (m/s2)'</span>)
+ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
 xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_LEReSp_06.png" alt=""> <p>Equivalent relative input energy velocity</p><pre class="codeinput">figure()
 plot(T,Siev,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 ylabel(<span class="string">'Equivalent relative input energy velocity (m/s)'</span>)
 xlabel(<span class="string">'Eigenperiod (sec)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="example_LEReSp_07.png" alt=""> <h2 id="16">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% example LEReSp
@@ -138,9 +152,11 @@ end
 % 
 figure()
 plot(t,xgtt,'k','LineWidth',1)
-ylabel('Acceleration (m/s2)')
+ylabel('Acceleration (m/s^2)')
 xlabel('Time (sec)')
 title('Artificial acceleration time history')
+drawnow;
+pause(0.1)
 
 %% Setup parameters for LEReSp function
 % Eigenperiods
@@ -170,8 +186,10 @@ rinf=1;
 % Pseudoacceleration spectrum
 figure()
 plot(T,PSa,'k','LineWidth',1)
-ylabel('Pseudoacceleration (m/s2)')
+ylabel('Pseudoacceleration (m/s^2)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %%
 % Pseudovelocity spectrum
@@ -179,6 +197,8 @@ figure()
 plot(T,PSv,'k','LineWidth',1)
 ylabel('Pseudovelocity (m/s)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %%
 % Displacement spectrum
@@ -186,6 +206,8 @@ figure()
 plot(T,Sd,'k','LineWidth',1)
 ylabel('Displacement (m)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %%
 % Velocity spectrum
@@ -193,13 +215,17 @@ figure()
 plot(T,Sv,'k','LineWidth',1)
 ylabel('Velocity (m/s)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %%
 % Acceleration spectrum
 figure()
 plot(T,Sa,'k','LineWidth',1)
-ylabel('Acceleration (m/s2)')
+ylabel('Acceleration (m/s^2)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %%
 % Equivalent relative input energy velocity
@@ -207,6 +233,8 @@ figure()
 plot(T,Siev,'k','LineWidth',1)
 ylabel('Equivalent relative input energy velocity (m/s)')
 xlabel('Eigenperiod (sec)')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

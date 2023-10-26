@@ -18,7 +18,7 @@
 %% Load earthquake data
 % Earthquake acceleration time history of the El Centro earthquake will be
 % used (El Centro, 1940, El Centro Terminal Substation Building)
-fid=fopen('elcentro.dat','r');
+fid=fopen('elcentro_NS_trunc.dat','r');
 text=textscan(fid,'%f %f');
 fclose(fid);
 t=text{1,1};
@@ -102,6 +102,8 @@ title('(a)','FontSize',10)
 grid on
 legend({'Damping energy','Damping+strain energy',...
     'Damping+strain+kinetic energy'},'location','northwest')
+drawnow;
+pause(0.1)
 
 %% Calculate dynamic response of the linear SDOF using LIDA.m
 % Apply the LIDA.m function for the linear SDOF
@@ -119,6 +121,8 @@ ylabel('Energy/unit mass (cm/s)^2','FontSize',10);
 title('(b)','FontSize',10)
 grid on
 legend('Input energy')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

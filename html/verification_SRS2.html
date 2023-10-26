@@ -72,7 +72,7 @@ data=load([eqmotion{1},<span class="string">'.dat'</span>]);
 t1=data(:,1);
 dt1=t1(2)-t1(1);
 xgtt1=data(:,2);
-</pre><p>Load earthquake data of El Centro 1940 record</p><pre class="codeinput">eqmotion={<span class="string">'elcentro'</span>};
+</pre><p>Load earthquake data of El Centro 1940 record</p><pre class="codeinput">eqmotion={<span class="string">'elcentro_NS_trunc'</span>};
 data=load([eqmotion{1},<span class="string">'.dat'</span>]);
 t2=data(:,1);
 dt2=t2(2)-t2(1);
@@ -90,6 +90,8 @@ grid <span class="string">on</span>
 title(<span class="string">'Northridge Sylmar County 1994'</span>)
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_SRS2_01.png" alt=""> <p>Initialize figure</p><pre class="codeinput">figure()
 <span class="comment">% Plot the acceleration time history</span>
 plot(t2,xgtt2)
@@ -98,6 +100,8 @@ grid <span class="string">on</span>
 title(<span class="string">'El Centro 1940'</span>)
 xlabel(<span class="string">'Time (sec)'</span>)
 ylabel(<span class="string">'Acceleration (m/s^2)'</span>)
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_SRS2_02.png" alt=""> <h2 id="10">Plot the rigid plastic sliding response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
 <span class="comment">% Plot the rigid plastic sliding response spectra</span>
 plot(S1.CF,S1.RPSSd, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 1)
@@ -107,6 +111,8 @@ xlabel(<span class="string">'Coulomb friction coefficient (-)'</span>)
 ylabel(<span class="string">'Yielding displacement (m)'</span>)
 title(<span class="string">'Northridge Sylmar County 1994'</span>)
 xlim([0,1])
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_SRS2_03.png" alt=""> <p>Initialize figure</p><pre class="codeinput">figure()
 <span class="comment">% Plot the rigid plastic sliding response spectra</span>
 plot(S2.CF,S2.RPSSd, <span class="string">'k-'</span>, <span class="string">'LineWidth'</span>, 1)
@@ -116,6 +122,8 @@ xlabel(<span class="string">'Coulomb friction coefficient (-)'</span>)
 ylabel(<span class="string">'Yielding displacement (m)'</span>)
 title(<span class="string">'El Centro 1940'</span>)
 xlim([0,0.5])
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_SRS2_04.png" alt=""> <h2 id="12">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Rigid plastic sliding response spectrum
@@ -145,7 +153,7 @@ dt1=t1(2)-t1(1);
 xgtt1=data(:,2);
 %%
 % Load earthquake data of El Centro 1940 record
-eqmotion={'elcentro'};
+eqmotion={'elcentro_NS_trunc'};
 data=load([eqmotion{1},'.dat']);
 t2=data(:,1);
 dt2=t2(2)-t2(1);
@@ -174,6 +182,8 @@ grid on
 title('Northridge Sylmar County 1994')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 %%
 % Initialize figure
 figure()
@@ -184,6 +194,8 @@ grid on
 title('El Centro 1940')
 xlabel('Time (sec)')
 ylabel('Acceleration (m/s^2)')
+drawnow;
+pause(0.1)
 
 %% Plot the rigid plastic sliding response spectra
 % Initialize figure
@@ -196,6 +208,8 @@ xlabel('Coulomb friction coefficient (-)')
 ylabel('Yielding displacement (m)')
 title('Northridge Sylmar County 1994')
 xlim([0,1])
+drawnow;
+pause(0.1)
 %%
 % Initialize figure
 figure()
@@ -207,6 +221,8 @@ xlabel('Coulomb friction coefficient (-)')
 ylabel('Yielding displacement (m)')
 title('El Centro 1940')
 xlim([0,0.5])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

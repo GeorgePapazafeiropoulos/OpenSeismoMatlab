@@ -61,7 +61,6 @@ S2=OpenSeismoMatlab(dt,cxgtt,sw,bOrder,fuc);
 cxgtt=S2.acc;
 
 %% Plot the acceleration time histories
-
 % Initialize figure
 figure()
 hold on
@@ -76,6 +75,8 @@ grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Time, sec')
 ylabel('Acc, g')
+drawnow;
+pause(0.1)
 
 %% Calculate the Fourier spectra
 % Switch
@@ -88,7 +89,6 @@ S3=OpenSeismoMatlab(dt,xgtt,sw);
 S4=OpenSeismoMatlab(dt,cxgtt,sw);
 
 %% Plot the Fourier spectra
-
 % Initialize figure
 figure()
 loglog(1,1,'w')
@@ -108,6 +108,8 @@ ylim([1e-4,1])
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Frequency, Hz')
 ylabel('Fourier spectra, g*sec')
+drawnow;
+pause(0.1)
 
 %% Calculate the acceleration response spectra
 % Switch
@@ -125,7 +127,6 @@ S5=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
 S6=OpenSeismoMatlab(dt,cxgtt,sw,T,ksi);
 
 %% Plot the acceleration response spectra
-
 % Initialize figure
 figure()
 semilogx(1,1,'w')
@@ -142,6 +143,8 @@ grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Frequency, Hz')
 ylabel('Spectral acceleration, g')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

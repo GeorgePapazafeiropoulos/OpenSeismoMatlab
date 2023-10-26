@@ -86,7 +86,6 @@ jmax=200;
 dak=eps;
 
 %% Construct and plot the IDA curves in a loop
-
 % Initialize figure
 figure()
 hold on
@@ -105,6 +104,8 @@ xlabel('Maximum Acceleration (g)')
 ylabel('PGV (m/s)')
 xlim([0,0.5])
 ylim([0,2])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

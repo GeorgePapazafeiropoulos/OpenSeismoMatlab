@@ -47,7 +47,7 @@ S1=OpenSeismoMatlab(dt,xgt,sw,wname);
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 hold on
 % Plot the velocity time history of the initial ground motion
 plot(t,xgt, 'Color', [0 0 0], 'LineWidth', 2)
@@ -62,6 +62,8 @@ xlim([0,20])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Original ground motion','Largest wavelet'})
+drawnow;
+pause(0.1)
 
 %%
 % Apply OpenSeismoMatlab for extracting the 2nd up to 10th largest pulses
@@ -76,7 +78,7 @@ end
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 hold on
 % Plot the velocity time history of the residual ground motion
 plot(t,Sout{1}.resTH, 'Color', [0 0 0], 'LineWidth', 2)
@@ -91,6 +93,8 @@ xlim([0,20])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Residual after 1st wavelet removed','2nd largest wavelet'})
+drawnow;
+pause(0.1)
 
 %% Sum the 10 largest pulses extracted from the input motion
 sum10=zeros(size(S1.pulseTH));
@@ -102,7 +106,7 @@ end
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 % Plot the time history of the largest velocity pulse
 plot(t,sum10, 'Color', [0.7 0.7 0.7], 'LineWidth', 2)
 % Finalize figure
@@ -113,12 +117,14 @@ xlim([0,20])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Sum of 10 largest pulses'})
+drawnow;
+pause(0.1)
 
 %% Plot the final residual ground motion
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 % Plot the time history of the largest velocity pulse
 plot(t,S1.resTH, 'Color', [0 0 0], 'LineWidth', 2)
 % Finalize figure
@@ -129,7 +135,8 @@ xlim([0,20])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Final residual ground motion'})
-
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

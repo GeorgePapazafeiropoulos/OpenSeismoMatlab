@@ -74,8 +74,7 @@ dt=t(2)-t(1);
 xgtt=100*data(:,2);
 </pre><h2 id="4">Calculate the Fourier amplitude spectrum</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'fas'</span>;
 </pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw);
-</pre><h2 id="6">Plot the Fourier amplitude spectrum</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
-figure()
+</pre><h2 id="6">Plot the Fourier amplitude spectrum</h2><p>Initialize figure</p><pre class="codeinput">figure()
 <span class="comment">% Plot the Fourier amplitude spectrum on page 12 of the above reference</span>
 plot(S1.freq,S1.FAS,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 <span class="comment">% Finalize figure</span>
@@ -84,8 +83,9 @@ xlabel(<span class="string">'Frequency - CPS'</span>)
 ylabel(<span class="string">'Fourier amplitude spectrum - cm/sec'</span>)
 ylim([0,200])
 xlim([0,25])
-</pre><img vspace="5" hspace="5" src="verification_Fourier_spectrum1_01.png" alt=""> <h2 id="7">Plot the Fourier amplitude spectrum in logarithmic scale</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
-figure()
+drawnow;
+pause(0.1)
+</pre><img vspace="5" hspace="5" src="verification_Fourier_spectrum1_01.png" alt=""> <h2 id="7">Plot the Fourier amplitude spectrum in logarithmic scale</h2><p>Initialize figure</p><pre class="codeinput">figure()
 <span class="comment">% Plot the Fourier amplitude spectrum on page 13 of the above reference</span>
 plot(log10(S1.freq),log10(S1.FAS),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 <span class="comment">% Finalize figure</span>
@@ -94,6 +94,8 @@ xlabel(<span class="string">'Log of frequency - CPS'</span>)
 ylabel(<span class="string">'Log of Fourier amplitude spectrum - cm/sec'</span>)
 ylim([-2,3])
 xlim([-2,1.5])
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_Fourier_spectrum1_02.png" alt=""> <h2 id="8">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Fourier amplitude spectrum of OpenSeismoMatlab
@@ -125,7 +127,6 @@ sw='fas';
 S1=OpenSeismoMatlab(dt,xgtt,sw);
 
 %% Plot the Fourier amplitude spectrum
-
 % Initialize figure
 figure()
 % Plot the Fourier amplitude spectrum on page 12 of the above reference
@@ -136,9 +137,10 @@ xlabel('Frequency - CPS')
 ylabel('Fourier amplitude spectrum - cm/sec')
 ylim([0,200])
 xlim([0,25])
+drawnow;
+pause(0.1)
 
 %% Plot the Fourier amplitude spectrum in logarithmic scale
-
 % Initialize figure
 figure()
 % Plot the Fourier amplitude spectrum on page 13 of the above reference
@@ -149,6 +151,8 @@ xlabel('Log of frequency - CPS')
 ylabel('Log of Fourier amplitude spectrum - cm/sec')
 ylim([-2,3])
 xlim([-2,1.5])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

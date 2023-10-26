@@ -50,7 +50,7 @@ end
 % Initialize figure
 figure('Position',[7.4,508.2,1517.6,253.8],...
     'InnerPosition',[7.4,508.2,1517.6,253.8],...
-    'OuterPosition',[0.2,501,1532,343.2])
+    'OuterPosition',[0.2,501,1000,343.2])
 hold on
 % Plot the velocity time history of the original ground motion
 plot(t,xgt, 'Color', [0 0 0], 'LineWidth', 2)
@@ -65,13 +65,15 @@ xlim([0,40])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
 legend({'Original ground motion','Reconstructed ground motion'})
+drawnow;
+pause(0.1)
 
 %% Plot the 30 velocity pulses in a single plot
 % Verify with the middle plot of Figure 3
 % Initialize figure
 figure('Position',[5	50.6	1524.8	731.2],...
     'InnerPosition',[5	50.6	1524.8	731.2],...
-    'OuterPosition',[-2.20	43.4	1539.2	820.8])
+    'OuterPosition',[-2.20	43.4	1000	820.8])
 hold on
 offSet=0;
 for i=1:30
@@ -88,6 +90,8 @@ set(gca, 'YDir','reverse')
 xlim([0,40])
 xlabel('Time (sec)')
 ylabel('Velocity (cm/s)')
+drawnow;
+pause(0.1)
 
 
 %% Copyright

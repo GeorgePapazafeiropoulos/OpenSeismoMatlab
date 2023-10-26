@@ -12,7 +12,7 @@ eqmotions={'Imperial Valley'; % Imperial valley 1979
     'Spitak';
     'Cape Mendocino';
     'ChiChi';
-    'El Centro'; % Imperial valley 1940
+    'elcentro_NS_trunc'; % Imperial valley 1940
     'Hollister';
     'Kobe'};
 
@@ -47,6 +47,8 @@ for i=1:numel(eqmotions)
     xlabel('Frequency (Hz)','FontName','Times New Roman')
     axis tight
 end
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

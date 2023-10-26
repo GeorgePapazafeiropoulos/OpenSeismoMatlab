@@ -91,8 +91,7 @@ xgtt=text{1,2};
 </pre><p>Infinitesimal variation of acceleration</p><pre class="codeinput">dak=eps;
 </pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw,T,lambdaF,IM_DM,m,uy,pysf,ksi,AlgID,<span class="keyword">...</span>
     u0,ut0,rinf,maxtol,jmax,dak);
-</pre><h2 id="20">Plot the IDA curve</h2><pre class="codeinput"><span class="comment">% Initialize figure</span>
-figure()
+</pre><h2 id="20">Plot the IDA curve</h2><p>Initialize figure</p><pre class="codeinput">figure()
 <span class="comment">% Plot the IDA curve</span>
 plot(S1.DM,S1.IM/9.81,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 <span class="comment">% Finalize figure</span>
@@ -101,6 +100,8 @@ xlabel(<span class="string">'Ductility, \mu'</span>)
 ylabel(<span class="string">'Spectral acceleration Sa(T1,5%) (g)'</span>)
 xlim([0,3])
 ylim([0,3.5])
+drawnow;
+pause(0.1)
 </pre><img vspace="5" hspace="5" src="verification_IDA3_01.png" alt=""> <h2 id="21">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Incremental dynamic analysis for ductility response
@@ -177,7 +178,6 @@ S1=OpenSeismoMatlab(dt,xgtt,sw,T,lambdaF,IM_DM,m,uy,pysf,ksi,AlgID,...
     u0,ut0,rinf,maxtol,jmax,dak);
 
 %% Plot the IDA curve
-
 % Initialize figure
 figure()
 % Plot the IDA curve
@@ -188,6 +188,8 @@ xlabel('Ductility, \mu')
 ylabel('Spectral acceleration Sa(T1,5%) (g)')
 xlim([0,3])
 ylim([0,3.5])
+drawnow;
+pause(0.1)
 
 %% Copyright
 %

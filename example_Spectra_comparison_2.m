@@ -58,6 +58,8 @@ legend('CDS with mu=2','SeismoSignal');
 xlabel('Period');
 ylabel('Spectra Acc.')
 hold off
+drawnow;
+pause(0.1)
 %%
 % Plot spectral velocity response spectra
 figure()
@@ -69,6 +71,8 @@ legend('CDS with mu=2','SeismoSignal');
 xlabel('Period');
 ylabel('Spectra Vel.')
 hold off
+drawnow;
+pause(0.1)
 %%
 % Plot spectral displacement response spectra
 figure()
@@ -80,6 +84,8 @@ legend('CDS with mu=2','SeismoSignal');
 xlabel('Period');
 ylabel('Spectra Disp.')
 hold off
+drawnow;
+pause(0.1)
 %%
 % Plot the achieved ductility for each eigenperiod. It should be equal or
 % close to the target ductility mu=2
@@ -87,6 +93,8 @@ figure()
 plot(S1.Period,S1.muK,'k','LineWidth',1);
 xlabel('Period');
 ylabel('Real mu values after iterations')
+drawnow;
+pause(0.1)
 
 %% Copyright
 %
