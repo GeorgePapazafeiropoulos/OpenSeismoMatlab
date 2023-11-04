@@ -1,7 +1,7 @@
 # OpenSeismoMatlab
 Software for strong ground motion data processing
 
-See the file Contents.html for more details
+See [the OpenSeismoMatlab documentation](https://georgepapazafeiropoulos.github.io/html/Contents_.html) for more details
 
 OpenSeismoMatlab has been already published in an original research article:
 Papazafeiropoulos, G., & Plevris, V. (2018). OpenSeismoMatlab: A new open-source software for strong ground motion data processing. Heliyon, 4(9), e00784.
