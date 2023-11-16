@@ -57,7 +57,7 @@ pause(0.1)
 
 %% Resample acceleration time history from 0.02 sec to 0.01 sec.
 %
-sw='samplefreqmod';
+sw='sincresample';
 dti=0.01;
 S3=OpenSeismoMatlab(dt,xgtt,sw,dti);
 %%
