@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>example General demonstration of the OpenSeismoMatlab capabilities</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-10-25"><meta name="DC.source" content="example_general.m"><style type="text/css">
+      --><title>example General demonstration of the OpenSeismoMatlab capabilities</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-11-16"><meta name="DC.source" content="example_general.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -103,7 +103,7 @@ pause(0.1)
 plot(S2.time,S2.acc,<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 drawnow;
 pause(0.1)
-</pre><img vspace="5" hspace="5" src="example_general_06.png" alt=""> <h2 id="10">Resample acceleration time history from 0.02 sec to 0.01 sec.</h2><pre class="codeinput">sw=<span class="string">'resample'</span>;
+</pre><img vspace="5" hspace="5" src="example_general_06.png" alt=""> <h2 id="10">Resample acceleration time history from 0.02 sec to 0.01 sec.</h2><pre class="codeinput">sw=<span class="string">'samplefreqmod'</span>;
 dti=0.01;
 S3=OpenSeismoMatlab(dt,xgtt,sw,dti);
 </pre><pre class="codeinput">figure()
@@ -450,7 +450,7 @@ pause(0.1)
 
 %% Resample acceleration time history from 0.02 sec to 0.01 sec.
 %
-sw='resample';
+sw='samplefreqmod';
 dti=0.01;
 S3=OpenSeismoMatlab(dt,xgtt,sw,dti);
 %%
