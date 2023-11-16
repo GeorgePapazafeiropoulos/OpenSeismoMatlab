@@ -81,7 +81,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
      PARAM=OpenSeismoMatlab(DT,XGTT,'SIH1952')
      PARAM=OpenSeismoMatlab(DT,XGTT,'SINH1984')
      PARAM=OpenSeismoMatlab(DT,XGTT,'TIMEHIST',BASELINESW)
-     PARAM=OpenSeismoMatlab(DT,XGTT,'RESAMPLE',DTI)
+     PARAM=OpenSeismoMatlab(DT,XGTT,'SAMPLEFREQMOD',DTI)
      PARAM=OpenSeismoMatlab(DT,XGT,'PULSEDECOMP',WNAME,TPMIN,TPMAX,...
          NSCALES)
      PARAM=OpenSeismoMatlab(DT,XGTT,'ELRS',T,KSI,ALGID,RINF,DTTOL)
@@ -148,7 +148,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
          are case insensitive):
          'TIMEHIST': the displacement, velocity and acceleration time
              histories are calculated.
-         'RESAMPLE': the acceleration time history with modified time step
+         'SAMPLEFREQMOD': the acceleration time history with modified time step
              size is calculated.
          'PGA': The peak ground acceleration is calculated.
          'PGV': The peak ground velocity is calculated.
