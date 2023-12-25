@@ -9,7 +9,7 @@
 %% Description
 % Figure 1(b) of the above reference presents the median IDA curves of SDOF
 % systems with T=0.5sec. The actual capacity curve of the SDOF oscillator
-% shown in FIgure 1(a) of the same reference (green line), has been fitted
+% shown in Figure 1(a) of the same reference (green line), has been fitted
 % with an elastoplastic bilinear fit according to FEMA-440 (blue line).
 % This fitting introduces an error (bias) which appears as the blue area in
 % Figure 1(b), which is generally conservative. In this example two

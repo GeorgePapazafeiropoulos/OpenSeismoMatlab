@@ -7,7 +7,7 @@
 % Engineering, Lisbon, Portugal (pp. 24-28).
 
 %% Description
-% Verify Figure 3.2 of the above reference, for the the MW 6.3
+% Verify Figure 3.2 of the above reference, for the MW 6.3
 % Christchurch, New Zealand earthquake at Heathcote Valley Primary School
 % (HVSC) station, Up-component. The time histories, elastic response
 % spectra and Fourier spectra from unfiltered and filtered accelerations
@@ -66,15 +66,29 @@ figure()
 hold on
 plot(t,zeros(size(t)),'k','LineWidth',1)
 % Plot the acceleration time history of the initial ground motion
-p1=plot(t,xgtt);
+p1=plot(t,xgtt,'k');
 % Plot the acceleration time history of the bandpass filtered ground motion
-p2=plot(t,cxgtt);
+p2=plot(t,cxgtt,'r');
 % Finalize figure
 hold off
 grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Time, sec')
 ylabel('Acc, g')
+xlim([5,45])
+ylim([-1.5,2.5])
+drawnow;
+pause(0.1)
+
+%% Plot a zoom-in view of the acceleration time histories 
+% Capture the handle of the plot of the acceleration time histories
+originalFigure = gcf;
+% Create a copy of the figure
+copiedFigure = copyobj(originalFigure, 0);
+% Show the copied figure
+figure(copiedFigure);
+% Apply zoom along x-axis
+xlim([11.5,13])
 drawnow;
 pause(0.1)
 
@@ -104,6 +118,7 @@ p2=loglog(S4.freq(ind11),S4.FAS(ind11),'r','LineWidth',1);
 % Finalize figure
 hold off
 grid on
+xlim([1e-2,1e2])
 ylim([1e-4,1])
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Frequency, Hz')
@@ -143,6 +158,8 @@ grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Frequency, Hz')
 ylabel('Spectral acceleration, g')
+xlim([0.1,100])
+ylim([0,6])
 drawnow;
 pause(0.1)
 
@@ -154,6 +171,4 @@ pause(0.1)
 % * Civil Engineer, M.Sc., Ph.D.
 % * Email: gpapazafeiropoulos@yahoo.gr
 %
-
-
 

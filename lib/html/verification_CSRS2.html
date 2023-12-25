@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>verification Constant strength response spectrum</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-11-16"><meta name="DC.source" content="verification_CSRS2.m"><style type="text/css">
+      --><title>verification Constant strength response spectrum</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-12-25"><meta name="DC.source" content="verification_CSRS2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>verification Constant strength response spectrum</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Calculate constant strength response spectra of earthquake motion</a></li><li><a href="#10">Plot the ductility demand response spectra</a></li><li><a href="#11">Plot the displacement demand response spectra</a></li><li><a href="#12">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Tena-Colunga, A. (1999). Simplified seismic evaluation of existing structures, 8th Canadian Conference on Earthquake Engineering, Vancouver, Canada, 317-322.</p><h2 id="2">Description</h2><p>In the above reference, a new type of spectrum is proposed, the constant strength response spectrum (CSRS). A displacement ductility demand spectrum (DDDS) relates peak displacement ductility demands (and other important response quantities, i.e., displacements) with structural periods of nonlinear elastic-perfectly-plastic hysteretic SDOF systems with given yield strengths. Figure 1 of the above reference is verified in this example. The SDOF system has a yield strength ratio equal to V/W=0.15 and the acceleration time history of the SCT-EW component recorded during the 1985 Michoacan earthquake is considered.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the 1985 Michoacan earthquake will be used (SCT-EW component). The txt file contains the following columns: time, acceleration N-S, acceleration E-W, acceleration V</p><pre class="codeinput">fid=fopen(<span class="string">'sct190985.txt'</span>,<span class="string">'r'</span>);
+  </style></head><body><div class="content"><h1>verification Constant strength response spectrum</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Load earthquake data</a></li><li><a href="#4">Calculate constant strength response spectra of earthquake motion</a></li><li><a href="#10">Plot the ductility demand response spectra</a></li><li><a href="#11">Plot the displacement demand response spectra</a></li><li><a href="#12">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Tena-Colunga, A. "Displacement ductility demand spectra for the seismic evaluation of structures." Engineering Structures 23, no. 10 (2001): 1319-1330.</p><h2 id="2">Description</h2><p>The above reference presents an integral method for the seismic evaluation of the existing structures, using what the author defines as displacement ductility demand spectrum (DDDS). This DDDS is equivalent to the constant strength response spectrum (CSRS). Figure 1 of the above reference is verified in this example. The SDOF system has a yield strength ratio equal to V/W=0.10 and the acceleration time history of the SCT-EW component recorded during the 1985 Michoacan earthquake is considered.</p><h2 id="3">Load earthquake data</h2><p>Earthquake acceleration time history of the 1985 Michoacan earthquake will be used (SCT-EW component). The txt file contains the following columns: time, acceleration N-S, acceleration E-W, acceleration V</p><pre class="codeinput">fid=fopen(<span class="string">'sct190985.txt'</span>,<span class="string">'r'</span>);
 text=textscan(fid,<span class="string">'%f %f %f %f'</span>);
 fclose(fid);
 t=text{1,1};
@@ -76,7 +76,7 @@ xgtt=9.81*text{1,3};
 </pre><h2 id="4">Calculate constant strength response spectra of earthquake motion</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'csrs'</span>;
 </pre><p>Eigenperiods</p><pre class="codeinput">T=linspace(0.05,5,50);
 </pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
-</pre><p>Strength ratios</p><pre class="codeinput">fyR=0.10;
+</pre><p>Strength ratio</p><pre class="codeinput">fyR=0.10;
 </pre><p>Post-yield stiffness factor</p><pre class="codeinput">pysf=0.001;
 </pre><p>Apply OpenSeismoMatlab</p><pre class="codeinput">S1=OpenSeismoMatlab(dt,xgtt,sw,T,ksi,fyR,pysf);
 </pre><h2 id="10">Plot the ductility demand response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
@@ -106,20 +106,19 @@ pause(0.1)
 %% verification Constant strength response spectrum
 
 %% Reference
-% Tena-Colunga, A. (1999). Simplified seismic evaluation of existing
-% structures, 8th Canadian Conference on Earthquake Engineering, Vancouver,
-% Canada, 317-322.
+% Tena-Colunga, A. "Displacement ductility demand spectra for the seismic
+% evaluation of structures." Engineering Structures 23, no. 10 (2001):
+% 1319-1330.
 
 %% Description
-% In the above reference, a new type of spectrum is proposed, the constant
-% strength response spectrum (CSRS). A displacement ductility demand
-% spectrum (DDDS) relates peak displacement ductility demands (and other
-% important response quantities, i.e., displacements) with structural
-% periods of nonlinear elastic-perfectly-plastic hysteretic SDOF systems
-% with given yield strengths. Figure 1 of the above reference is verified
-% in this example. The SDOF system has a yield strength ratio equal to
-% V/W=0.15 and the acceleration time history of the SCT-EW component
-% recorded during the 1985 Michoacan earthquake is considered.
+% The above reference presents an integral method for the seismic
+% evaluation of the existing structures, using what the author defines as
+% displacement ductility demand spectrum (DDDS). This DDDS is equivalent to
+% the constant strength response spectrum (CSRS). Figure 1 of the above
+% reference is verified in this example. The SDOF system has a yield
+% strength ratio equal to V/W=0.10 and the acceleration time history of the
+% SCT-EW component recorded during the 1985 Michoacan earthquake is
+% considered.
 
 %% Load earthquake data
 % Earthquake acceleration time history of the 1985 Michoacan earthquake
@@ -145,7 +144,7 @@ T=linspace(0.05,5,50);
 ksi=0.05;
 
 %%
-% Strength ratios
+% Strength ratio
 fyR=0.10;
 
 %%

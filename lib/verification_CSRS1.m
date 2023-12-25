@@ -40,7 +40,7 @@ T=linspace(0.1,5,50);
 ksi=0.05;
 
 %%
-% Strength ratios
+% Strength ratio
 fyR=0.15;
 
 %%

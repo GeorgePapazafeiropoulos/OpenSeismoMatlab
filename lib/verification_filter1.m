@@ -68,17 +68,26 @@ S3=OpenSeismoMatlab(dt,cxgtt,sw,baselineSw);
 % Initialize figure
 figure()
 hold on
+yyaxis left;
 plot(S3.time,zeros(size(S3.time)),'k','LineWidth',1)
-% Plot the displacement time history of the initial ground motion
-p1=plot(S2.time,S2.disp,'k','LineWidth',1);
 % Plot the displacement time history of the filtered ground motion
 p2=plot(S3.time,S3.disp,'r','LineWidth',1);
+ylabel('Disp. (cm)')
+ylim([-25,25])
+ax1 = gca; 
+ax1.YColor = 'k'; 
+% Plot the displacement time history of the initial ground motion
+yyaxis right;
+p1=plot(S2.time,S2.disp,'k','LineWidth',1);
+ylabel('Disp. (cm)')
+ylim([-201,201])
+ax2 = gca; 
+ax2.YColor = 'k'; 
 % Finalize figure
 hold off
 grid on
-legend([p1,p2],{'Initial','Filtered'})
+legend([p1,p2],{'Initial','Filtered'},'location','southeast')
 xlabel('Time (sec)')
-ylabel('Disp. (cm)')
 drawnow;
 pause(0.1)
 

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>verification Low- and high- pass Butterworth filter of OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-11-16"><meta name="DC.source" content="verification_filter2.m"><style type="text/css">
+      --><title>verification Low- and high- pass Butterworth filter of OpenSeismoMatlab</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-12-25"><meta name="DC.source" content="verification_filter2.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>verification Low- and high- pass Butterworth filter of OpenSeismoMatlab</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Earthquake motion</a></li><li><a href="#4">Apply high pass Butterworth filter</a></li><li><a href="#9">Apply low pass Butterworth filter</a></li><li><a href="#14">Plot the acceleration time histories</a></li><li><a href="#15">Calculate the Fourier spectra</a></li><li><a href="#18">Plot the Fourier spectra</a></li><li><a href="#19">Calculate the acceleration response spectra</a></li><li><a href="#23">Plot the acceleration response spectra</a></li><li><a href="#24">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Graizer, V. (2012, September). Effect of low-pass filtering and re-sampling on spectral and peak ground acceleration in strong-motion records. In Proceedings of the 15th World Conference of Earthquake Engineering, Lisbon, Portugal (pp. 24-28).</p><h2 id="2">Description</h2><p>Verify Figure 3.2 of the above reference, for the the MW 6.3 Christchurch, New Zealand earthquake at Heathcote Valley Primary School (HVSC) station, Up-component. The time histories, elastic response spectra and Fourier spectra from unfiltered and filtered accelerations are shown and compared. In the above reference, the ground motion was processed following the 1970s Caltech procedure, low-pass filtered and re-sampled to 50 samples/sec by the GeoNet New Zealand strong motion network. However in this example, Butterworth filter is applied and it gives similar results.</p><h2 id="3">Earthquake motion</h2><p>Load earthquake data</p><pre class="codeinput">eqmotions={<span class="string">'Christchurch2011HVPS_UP'</span>};
+  </style></head><body><div class="content"><h1>verification Low- and high- pass Butterworth filter of OpenSeismoMatlab</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reference</a></li><li><a href="#2">Description</a></li><li><a href="#3">Earthquake motion</a></li><li><a href="#4">Apply high pass Butterworth filter</a></li><li><a href="#9">Apply low pass Butterworth filter</a></li><li><a href="#14">Plot the acceleration time histories</a></li><li><a href="#15">Plot a zoom-in view of the acceleration time histories</a></li><li><a href="#16">Calculate the Fourier spectra</a></li><li><a href="#19">Plot the Fourier spectra</a></li><li><a href="#20">Calculate the acceleration response spectra</a></li><li><a href="#24">Plot the acceleration response spectra</a></li><li><a href="#25">Copyright</a></li></ul></div><h2 id="1">Reference</h2><p>Graizer, V. (2012, September). Effect of low-pass filtering and re-sampling on spectral and peak ground acceleration in strong-motion records. In Proceedings of the 15th World Conference of Earthquake Engineering, Lisbon, Portugal (pp. 24-28).</p><h2 id="2">Description</h2><p>Verify Figure 3.2 of the above reference, for the MW 6.3 Christchurch, New Zealand earthquake at Heathcote Valley Primary School (HVSC) station, Up-component. The time histories, elastic response spectra and Fourier spectra from unfiltered and filtered accelerations are shown and compared. In the above reference, the ground motion was processed following the 1970s Caltech procedure, low-pass filtered and re-sampled to 50 samples/sec by the GeoNet New Zealand strong motion network. However in this example, Butterworth filter is applied and it gives similar results.</p><h2 id="3">Earthquake motion</h2><p>Load earthquake data</p><pre class="codeinput">eqmotions={<span class="string">'Christchurch2011HVPS_UP'</span>};
 data=load([eqmotions{1},<span class="string">'.dat'</span>]);
 t=data(:,1);
 dt=t(2)-t(1);
@@ -89,21 +89,32 @@ xgtt=xgtt/9.81;
 hold <span class="string">on</span>
 plot(t,zeros(size(t)),<span class="string">'k'</span>,<span class="string">'LineWidth'</span>,1)
 <span class="comment">% Plot the acceleration time history of the initial ground motion</span>
-p1=plot(t,xgtt);
+p1=plot(t,xgtt,<span class="string">'k'</span>);
 <span class="comment">% Plot the acceleration time history of the bandpass filtered ground motion</span>
-p2=plot(t,cxgtt);
+p2=plot(t,cxgtt,<span class="string">'r'</span>);
 <span class="comment">% Finalize figure</span>
 hold <span class="string">off</span>
 grid <span class="string">on</span>
 legend([p1,p2],{<span class="string">'Initial'</span>,<span class="string">'Filtered'</span>})
 xlabel(<span class="string">'Time, sec'</span>)
 ylabel(<span class="string">'Acc, g'</span>)
+xlim([5,45])
+ylim([-1.5,2.5])
 drawnow;
 pause(0.1)
-</pre><img vspace="5" hspace="5" src="verification_filter2_01.png" alt=""> <h2 id="15">Calculate the Fourier spectra</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'fas'</span>;
+</pre><img vspace="5" hspace="5" src="verification_filter2_01.png" alt=""> <h2 id="15">Plot a zoom-in view of the acceleration time histories</h2><p>Capture the handle of the plot of the acceleration time histories</p><pre class="codeinput">originalFigure = gcf;
+<span class="comment">% Create a copy of the figure</span>
+copiedFigure = copyobj(originalFigure, 0);
+<span class="comment">% Show the copied figure</span>
+figure(copiedFigure);
+<span class="comment">% Apply zoom along x-axis</span>
+xlim([11.5,13])
+drawnow;
+pause(0.1)
+</pre><img vspace="5" hspace="5" src="verification_filter2_02.png" alt=""> <img vspace="5" hspace="5" src="verification_filter2_03.png" alt=""> <h2 id="16">Calculate the Fourier spectra</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'fas'</span>;
 </pre><p>Apply OpenSeismoMatlab to the initial ground motion</p><pre class="codeinput">S3=OpenSeismoMatlab(dt,xgtt,sw);
 </pre><p>Apply OpenSeismoMatlab to the filtered ground motion</p><pre class="codeinput">S4=OpenSeismoMatlab(dt,cxgtt,sw);
-</pre><h2 id="18">Plot the Fourier spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
+</pre><h2 id="19">Plot the Fourier spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
 loglog(1,1,<span class="string">'w'</span>)
 hold <span class="string">on</span>
 <span class="comment">% Plot the Fourier spectrum of the initial ground motion in logarithmic</span>
@@ -117,19 +128,20 @@ p2=loglog(S4.freq(ind11),S4.FAS(ind11),<span class="string">'r'</span>,<span cla
 <span class="comment">% Finalize figure</span>
 hold <span class="string">off</span>
 grid <span class="string">on</span>
+xlim([1e-2,1e2])
 ylim([1e-4,1])
 legend([p1,p2],{<span class="string">'Initial'</span>,<span class="string">'Filtered'</span>})
 xlabel(<span class="string">'Frequency, Hz'</span>)
 ylabel(<span class="string">'Fourier spectra, g*sec'</span>)
 drawnow;
 pause(0.1)
-</pre><img vspace="5" hspace="5" src="verification_filter2_02.png" alt=""> <h2 id="19">Calculate the acceleration response spectra</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'elrs'</span>;
+</pre><img vspace="5" hspace="5" src="verification_filter2_04.png" alt=""> <h2 id="20">Calculate the acceleration response spectra</h2><p>Switch</p><pre class="codeinput">sw=<span class="string">'elrs'</span>;
 </pre><p>Critical damping ratio</p><pre class="codeinput">ksi=0.05;
 <span class="comment">% Period range for which the response spectrum is queried</span>
 T=logspace(1,-2,100);
 </pre><p>Apply OpenSeismoMatlab to the initial ground motion</p><pre class="codeinput">S5=OpenSeismoMatlab(dt,xgtt,sw,T,ksi);
 </pre><p>Apply OpenSeismoMatlab to the filtered ground motion</p><pre class="codeinput">S6=OpenSeismoMatlab(dt,cxgtt,sw,T,ksi);
-</pre><h2 id="23">Plot the acceleration response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
+</pre><h2 id="24">Plot the acceleration response spectra</h2><p>Initialize figure</p><pre class="codeinput">figure()
 semilogx(1,1,<span class="string">'w'</span>)
 hold <span class="string">on</span>
 <span class="comment">% Plot the acceleration response spectrum of the initial ground motion in</span>
@@ -144,9 +156,11 @@ grid <span class="string">on</span>
 legend([p1,p2],{<span class="string">'Initial'</span>,<span class="string">'Filtered'</span>})
 xlabel(<span class="string">'Frequency, Hz'</span>)
 ylabel(<span class="string">'Spectral acceleration, g'</span>)
+xlim([0.1,100])
+ylim([0,6])
 drawnow;
 pause(0.1)
-</pre><img vspace="5" hspace="5" src="verification_filter2_03.png" alt=""> <h2 id="24">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="verification_filter2_05.png" alt=""> <h2 id="25">Copyright</h2><p>Copyright (c) 2018-2023 by George Papazafeiropoulos</p><div><ul><li>Major, Infrastructure Engineer, Hellenic Air Force</li><li>Civil Engineer, M.Sc., Ph.D.</li><li>Email: <a href="mailto:gpapazafeiropoulos@yahoo.gr">gpapazafeiropoulos@yahoo.gr</a></li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% verification Low- and high- pass Butterworth filter of OpenSeismoMatlab
 
@@ -157,7 +171,7 @@ pause(0.1)
 % Engineering, Lisbon, Portugal (pp. 24-28).
 
 %% Description
-% Verify Figure 3.2 of the above reference, for the the MW 6.3
+% Verify Figure 3.2 of the above reference, for the MW 6.3
 % Christchurch, New Zealand earthquake at Heathcote Valley Primary School
 % (HVSC) station, Up-component. The time histories, elastic response
 % spectra and Fourier spectra from unfiltered and filtered accelerations
@@ -216,15 +230,29 @@ figure()
 hold on
 plot(t,zeros(size(t)),'k','LineWidth',1)
 % Plot the acceleration time history of the initial ground motion
-p1=plot(t,xgtt);
+p1=plot(t,xgtt,'k');
 % Plot the acceleration time history of the bandpass filtered ground motion
-p2=plot(t,cxgtt);
+p2=plot(t,cxgtt,'r');
 % Finalize figure
 hold off
 grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Time, sec')
 ylabel('Acc, g')
+xlim([5,45])
+ylim([-1.5,2.5])
+drawnow;
+pause(0.1)
+
+%% Plot a zoom-in view of the acceleration time histories 
+% Capture the handle of the plot of the acceleration time histories
+originalFigure = gcf;
+% Create a copy of the figure
+copiedFigure = copyobj(originalFigure, 0);
+% Show the copied figure
+figure(copiedFigure);
+% Apply zoom along x-axis
+xlim([11.5,13])
 drawnow;
 pause(0.1)
 
@@ -254,6 +282,7 @@ p2=loglog(S4.freq(ind11),S4.FAS(ind11),'r','LineWidth',1);
 % Finalize figure
 hold off
 grid on
+xlim([1e-2,1e2])
 ylim([1e-4,1])
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Frequency, Hz')
@@ -293,6 +322,8 @@ grid on
 legend([p1,p2],{'Initial','Filtered'})
 xlabel('Frequency, Hz')
 ylabel('Spectral acceleration, g')
+xlim([0.1,100])
+ylim([0,6])
 drawnow;
 pause(0.1)
 
@@ -304,8 +335,6 @@ pause(0.1)
 % * Civil Engineer, M.Sc., Ph.D.
 % * Email: gpapazafeiropoulos@yahoo.gr
 %
-
-
 
 
 ##### SOURCE END #####

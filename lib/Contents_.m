@@ -43,12 +43,6 @@
 %
 % -
 %%
-% <help_ffft.html ffft.m>
-%
-% Fast Finite Fourier Transform
-%
-% -
-%%
 % <help_HalfStep.html HalfStep.m>
 %
 % Reproduce signal with half time step
@@ -58,12 +52,6 @@
 % <help_IDA.html IDA.m>
 %
 % Incremental Dynamic Analysis
-%
-% -
-%%
-% <help_iffft.html iffft.m>
-%
-% Inverse Fast Finite Fourier Transform
 %
 % -
 %%

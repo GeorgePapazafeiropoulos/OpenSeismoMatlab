@@ -1,20 +1,19 @@
 %% verification Constant strength response spectrum
 
 %% Reference
-% Tena-Colunga, A. (1999). Simplified seismic evaluation of existing
-% structures, 8th Canadian Conference on Earthquake Engineering, Vancouver,
-% Canada, 317-322.
+% Tena-Colunga, A. "Displacement ductility demand spectra for the seismic
+% evaluation of structures." Engineering Structures 23, no. 10 (2001):
+% 1319-1330.
 
 %% Description
-% In the above reference, a new type of spectrum is proposed, the constant
-% strength response spectrum (CSRS). A displacement ductility demand
-% spectrum (DDDS) relates peak displacement ductility demands (and other
-% important response quantities, i.e., displacements) with structural
-% periods of nonlinear elastic-perfectly-plastic hysteretic SDOF systems
-% with given yield strengths. Figure 1 of the above reference is verified
-% in this example. The SDOF system has a yield strength ratio equal to
-% V/W=0.15 and the acceleration time history of the SCT-EW component
-% recorded during the 1985 Michoacan earthquake is considered.
+% The above reference presents an integral method for the seismic
+% evaluation of the existing structures, using what the author defines as
+% displacement ductility demand spectrum (DDDS). This DDDS is equivalent to
+% the constant strength response spectrum (CSRS). Figure 1 of the above
+% reference is verified in this example. The SDOF system has a yield
+% strength ratio equal to V/W=0.10 and the acceleration time history of the
+% SCT-EW component recorded during the 1985 Michoacan earthquake is
+% considered.
 
 %% Load earthquake data
 % Earthquake acceleration time history of the 1985 Michoacan earthquake
@@ -40,7 +39,7 @@ T=linspace(0.05,5,50);
 ksi=0.05;
 
 %%
-% Strength ratios
+% Strength ratio
 fyR=0.10;
 
 %%

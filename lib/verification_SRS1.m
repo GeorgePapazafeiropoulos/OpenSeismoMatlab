@@ -17,6 +17,11 @@
 % February) EW, Lixouri (3 February) NS]. The rigid plastic sliding
 % response spectra extracted in this example are compared to the
 % corresponding spectra that appear in Figure 6 of the above reference.
+% Note that The two horizontal and the vertical component of the various
+% records are imposed in the above reference, whereas in OpenSeismoMatlab
+% only the horizontal component is considered. Therefore there may be some
+% differences between the results of the above reference and the results of
+% OpenSeismoMatlab.
 
 %% Earthquake motions
 % Load earthquake data of Chavriata EW record
