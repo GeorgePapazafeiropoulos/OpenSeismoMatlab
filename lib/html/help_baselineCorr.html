@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>doc baselineCorr</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-12-25"><meta name="DC.source" content="help_baselineCorr.m"><style type="text/css">
+      --><title>doc baselineCorr</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2024-04-03"><meta name="DC.source" content="help_baselineCorr.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -75,17 +75,10 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
  Description
      Linear baseline correction is performed for an uncorrected
-     acceleration time history. Initially, first order fitting (straight
-     line) is performed on the acceleration time history and the fitting
-     line is subrtacted from the acceleration time history, giving thus
-     the first correction. Afterwards, the first correction of the
-     acceleration is integrated to obtain the velocity, and then first
-     order fitting (straight line) is performed on this velocity time
-     history. The gradient of the straight fitting line is then subtracted
-     from the first correction of the acceleration time history, giving
-     thus the second correction of the acceleration time history. The
-     second correction of the acceleration time history is then integrated
-     to give the corrected velocity and displacement time histories.
+     acceleration time history. First order fitting (straight line) is
+     performed on the raw acceleration time history and the fitting line
+     is subtracted from the raw acceleration time history, giving thus the
+     corrected acceleration time history.
 
  Input parameters
      T [double(1:numsteps x 1)] is the time vector of the input
